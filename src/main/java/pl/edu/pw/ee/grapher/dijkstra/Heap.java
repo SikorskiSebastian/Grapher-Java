@@ -82,7 +82,7 @@ public class Heap {
 
         tmp = nodes[index];
         priorities[index] = nodes[parent];
-        priorities[parent] = index;
+        priorities[parent] = tmp;
 
         nodesIndex[nodes[index]] = index;
         nodesIndex[nodes[parent]] = parent;
