@@ -1,0 +1,24 @@
+*.java  text diff=java
+
+*.css  	text diff=css
+*.html  text diff=html
+*.tld   text
+*.xml   text
+*.fxml	text
+
+*.class binary
+*.jar   binary
+
+*.jpg binary
+*.jpeg binary
+*.png binary
+
+*.md text diff=markdown
+*.mdx text diff=markdown
+*.tex text diff=tex
+*.pdf diff=astextplain
+*.PDF diff=astextplain
+*.txt text
+
+.gitignore export-ignore
+.gitattributes export-ignore

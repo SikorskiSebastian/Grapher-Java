@@ -1,0 +1,30 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+.mvn/
+
+### Mac OS ###
+.DS_Store
+
+grapher.iml
+mvnw
+mvnw.cmd
+*.aux
+*.fls
+*.synctex.gz
+*.log
+*.fdb_latexmk
+*.toc
+
+*:Zone.identifier
