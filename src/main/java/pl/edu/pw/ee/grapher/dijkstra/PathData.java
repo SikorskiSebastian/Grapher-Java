@@ -1,11 +1,13 @@
 package pl.edu.pw.ee.grapher.dijkstra;
 
+import java.util.Arrays;
+
 public class PathData {
     private final int numOfVertices;
     private int start;
     private int end;
-    private int[] predecessors;
-    private float[] weights;
+    private final int[] predecessors;
+    private final float[] weights;
 
     public PathData(int numOfVertices){
         this.start = -1;
@@ -13,6 +15,8 @@ public class PathData {
         this.numOfVertices = numOfVertices;
         this.predecessors = new int[numOfVertices];
         this.weights = new float[numOfVertices];
+
+        Arrays.fill(predecessors, -1);
     }
 
     public int getEnd() {
@@ -21,10 +25,6 @@ public class PathData {
 
     public int getStart() {
         return start;
-    }
-
-    public float[] getWeights() {
-        return weights;
     }
 
     public void setStart(int start) {

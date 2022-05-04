@@ -3,11 +3,11 @@ package pl.edu.pw.ee.grapher.dijkstra;
 import java.util.Arrays;
 
 public class Heap {
-    private int numOfVertices;
+    private final int numOfVertices;
     private int length;
-    private float[] priorities;
-    private int[] nodes;
-    private int[] nodesIndex;
+    private final float[] priorities;
+    private final int[] nodes;
+    private final int[] nodesIndex;
 
     public Heap(int numOfVertices){
         this.numOfVertices = numOfVertices;
@@ -23,28 +23,8 @@ public class Heap {
         return length;
     }
 
-    public float[] getPriorities() {
-        return priorities;
-    }
-
-    public int[] getNodes() {
-        return nodes;
-    }
-
-    public int[] getNodesIndex() {
-        return nodesIndex;
-    }
-
     public int getNumOfVertices() {
         return numOfVertices;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public void setNodes(int[] nodes) {
-        this.nodes = nodes;
     }
 
     public void updatePriority(int id, float priority){

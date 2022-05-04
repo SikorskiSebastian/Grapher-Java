@@ -49,32 +49,4 @@ public class Graph {
     public void setVertices(Vertex[] vertices) {
         this.vertices = vertices;
     }
-
-    @Override
-    public String toString(){
-        return "Rows: " + rows + " Columns: " + columns + "\n" + Arrays.toString(vertices);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()) {
-            return false;
-        }
-
-        Graph graph = (Graph) object;
-        
-        return rows == graph.rows && columns == graph.columns && Arrays.equals(vertices, graph.vertices);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(rows, columns);
-
-        result = 31 * result + Arrays.hashCode(vertices);
-
-        return result;
-    }
 }

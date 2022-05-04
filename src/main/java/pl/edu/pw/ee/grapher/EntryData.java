@@ -12,8 +12,10 @@ public class EntryData {
     private float rangeEnd;
     private int[] points;
     private File graphFile;
+    private int printMode;
 
     public EntryData(int rows, int columns){
+        this.printMode = NO_MODE;
         this.mode = NO_MODE;
         this.rows = rows;
         this.columns = columns;
@@ -21,6 +23,14 @@ public class EntryData {
         this.rangeStart = 0;
         this.points = new int[rows * columns];
         this.graphFile = null;
+    }
+
+    public int getPrintMode() {
+        return printMode;
+    }
+
+    public void setPrintMode(int printMode) {
+        this.printMode = printMode;
     }
 
     public int getRows() {
@@ -37,10 +47,6 @@ public class EntryData {
 
     public float getRangeStart() {
         return rangeStart;
-    }
-
-    public int[] getPoints() {
-        return points;
     }
 
     public void setGraphFile(File graphFile) {

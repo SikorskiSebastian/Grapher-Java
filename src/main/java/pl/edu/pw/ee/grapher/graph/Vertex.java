@@ -1,60 +1,37 @@
 package pl.edu.pw.ee.grapher.graph;
 
-import java.util.Objects;
-
 public class Vertex {
-    private Existence existence;
-    private Connections connections;
-    private Weights weights;
+    private final boolean[] existence;
+    private final int[] connections;
+    private final float[] weights;
 
     public Vertex(){
-        this.existence = new Existence();
-        this.connections = new Connections();
-        this.weights = new Weights();
+        this.existence = new boolean[4];
+        this.connections = new int[4];
+        this.weights = new float[4];
     }
 
-    public Connections getConnections() {
-        return connections;
+    public int getConnection(int index){
+        return connections[index];
     }
 
-    public Existence getExistence() {
-        return existence;
+    public float getWeight(int index){
+        return weights[index];
     }
 
-    public void setConnections(Connections connections) {
-        this.connections = connections;
+    public boolean getExistence(int index){
+        return existence[index];
     }
 
-    public void setExistence(Existence existence) {
-        this.existence = existence;
+    public void setWeight(int index, float weight){
+        this.weights[index] = weight;
     }
 
-    public void setWeights(Weights weights) {
-        this.weights = weights;
+    public void setConnections(int index, int connection){
+        this.connections[index] = connection;
     }
 
-    @Override
-    public String toString(){
-        return this.existence.toString() + "\n" + this.connections.toString() + "\n" + this.weights.toString() + "\n";
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object){
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()){
-            return false;
-        }
-
-        Vertex vertex = (Vertex) object;
-
-        return Objects.equals(existence, vertex.existence) && Objects.equals(connections, vertex.connections)
-                && Objects.equals(weights, vertex.weights);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(existence, connections, weights);
+    public void setExistence(int index, boolean exist){
+        this.existence[index] = exist;
     }
 }
