@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.grapher.graph;
 
+import java.util.Objects;
+
 public class Connections {
     private float connectionUp;
     private float connectionDown;
@@ -48,6 +50,28 @@ public class Connections {
     @Override
     public String toString(){
         return "UpConnection: " + connectionUp + " DownConnection: " + connectionDown +" RightConnection: "
-                + connectionRight + " LeftConnection: " + connectionLeft;
+                + connectionRight + " LeftConnection: " + connectionLeft +"\n";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object){
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+
+        Connections that = (Connections) object;
+
+        return Float.compare(that.connectionUp, connectionUp) == 0
+                && Float.compare(that.connectionDown, connectionDown) == 0
+                && Float.compare(that.connectionLeft, connectionLeft) == 0
+                && Float.compare(that.connectionRight, connectionRight) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectionUp, connectionDown, connectionLeft, connectionRight);
     }
 }

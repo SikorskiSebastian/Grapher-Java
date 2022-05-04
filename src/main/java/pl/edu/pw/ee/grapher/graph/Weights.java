@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.grapher.graph;
 
+import java.util.Objects;
+
 public class Weights {
     private float weightUp;
     private float weightDown;
@@ -48,6 +50,27 @@ public class Weights {
     @Override
     public String toString(){
         return "UpWeight: " + weightUp + " DownWeight: " + weightDown +" RightWeight: " + weightRight + " LeftWeight: "
-                + weightLeft;
+                + weightLeft + "\n";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object){
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+
+        Weights weights = (Weights) object;
+
+        return Float.compare(weights.weightUp, weightUp) == 0 && Float.compare(weights.weightDown, weightDown) == 0
+                && Float.compare(weights.weightLeft, weightLeft) == 0
+                && Float.compare(weights.weightRight, weightRight) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(weightUp, weightDown, weightLeft, weightRight);
     }
 }

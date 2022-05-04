@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.grapher.graph;
 
+import java.util.Objects;
+
 public class Existence {
     private boolean existUp;
     private boolean existDown;
@@ -48,6 +50,27 @@ public class Existence {
     @Override
     public String toString(){
         return "UpExist: " + existUp + " DownExist: " + existDown +" RightExist: " + existRight + " LeftExist: "
-                + existLeft;
+                + existLeft + "\n";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object){
+            return true;
+        }
+
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+
+        Existence existence = (Existence) object;
+
+        return existUp == existence.existUp && existDown == existence.existDown && existLeft == existence.existLeft
+                && existRight == existence.existRight;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(existUp, existDown, existLeft, existRight);
     }
 }

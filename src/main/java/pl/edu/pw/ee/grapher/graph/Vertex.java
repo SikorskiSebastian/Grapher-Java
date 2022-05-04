@@ -1,6 +1,6 @@
 package pl.edu.pw.ee.grapher.graph;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.Objects;
 
 public class Vertex {
     private Existence existence;
@@ -31,5 +31,30 @@ public class Vertex {
 
     public void setWeights(Weights weights) {
         this.weights = weights;
+    }
+
+    @Override
+    public String toString(){
+        return this.existence.toString() + "\n" + this.connections.toString() + "\n" + this.weights.toString() + "\n";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object){
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+
+        Vertex vertex = (Vertex) object;
+
+        return Objects.equals(existence, vertex.existence) && Objects.equals(connections, vertex.connections)
+                && Objects.equals(weights, vertex.weights);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(existence, connections, weights);
     }
 }
