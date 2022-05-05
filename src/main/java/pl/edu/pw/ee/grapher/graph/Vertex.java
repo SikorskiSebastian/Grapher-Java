@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.grapher.graph;
 
+import java.util.Arrays;
+
 public class Vertex {
     private final boolean[] existence;
     private final int[] connections;
@@ -9,6 +11,10 @@ public class Vertex {
         this.existence = new boolean[4];
         this.connections = new int[4];
         this.weights = new float[4];
+
+        Arrays.fill(weights, -1);
+        Arrays.fill(connections, -1);
+        Arrays.fill(existence, false);
     }
 
     public int getConnection(int index){

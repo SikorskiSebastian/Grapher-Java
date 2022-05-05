@@ -2,7 +2,6 @@ package pl.edu.pw.ee.grapher;
 
 public class Constants {
     //w tej klasie będą stałe wartości w kodzie
-
     public final static int NO_MODE = -1;
     public final static int WEIGHT_MODE = 1;
     public final static int EDGE_MODE = 2;

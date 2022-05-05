@@ -1,21 +1,23 @@
 package pl.edu.pw.ee.grapher.dijkstra;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.edu.pw.ee.grapher.EntryData;
-import pl.edu.pw.ee.grapher.graph.Graph;
+import pl.edu.pw.ee.grapher.testData.ExpectedPath;
+import pl.edu.pw.ee.grapher.testData.GraphCoherent;
+import pl.edu.pw.ee.grapher.testData.TestEntry;
 
 public class DijkstraTest {
     @Test
-    public void findPath_test_pass(){ //TODO po napisaniu generacji grafu dokonczyc test
+    public void findPath_test_pass(){
         //given
-        Graph graph = new Graph(2, 2);
-        EntryData userData = new EntryData(2, 2);
+        GraphCoherent graph = new GraphCoherent();
+        TestEntry entry = new TestEntry();
+        ExpectedPath expected = new ExpectedPath();
 
         //when
-        PathData result = Dijkstra.findPath(graph, userData, 0);
+        PathData result = Dijkstra.findPath(graph.getGraph(), entry.getEntry(), 0);
 
         //then
-
-        assert(true);
+        Assertions.assertEquals(expected.getPathData(), result);
     }
 }

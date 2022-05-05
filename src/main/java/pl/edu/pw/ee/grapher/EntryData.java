@@ -73,8 +73,8 @@ public class EntryData {
         return graphFile;
     }
 
-    public void setPoints(int[] points) {
-        this.points = points;
+    public void setPoint(int index, int point){
+        this.points[index] = point;
     }
 
     public int getPoint(int index){
