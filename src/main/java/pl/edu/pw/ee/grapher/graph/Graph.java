@@ -1,8 +1,5 @@
 package pl.edu.pw.ee.grapher.graph;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 public class Graph {
     private Vertex[] vertices;
     private int rows;

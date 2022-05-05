@@ -6,15 +6,15 @@ public class Heap {
     private final int numOfVertices;
     private int length;
     private final float[] priorities;
-    private final int[] nodes;
-    private final int[] nodesIndex;
+    private final int[] vertices;
+    private final int[] vertexIndex;
 
     public Heap(int numOfVertices){
         this.numOfVertices = numOfVertices;
         this.length = 0;
         this.priorities = new float[numOfVertices];
-        this.nodes = new int[numOfVertices];
-        this.nodesIndex = new int[numOfVertices];
+        this.vertices = new int[numOfVertices];
+        this.vertexIndex = new int[numOfVertices];
 
         Arrays.fill(priorities, Float.MAX_VALUE);
     }
@@ -27,8 +27,20 @@ public class Heap {
         return numOfVertices;
     }
 
+    public float getPriority(int index){
+        return priorities[index];
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public void setPriorities(int index, float priority){
+        this.priorities[index] = priority;
+    }
+
     public void updatePriority(int id, float priority){
-        int index = nodesIndex[id];
+        int index = vertexIndex[id];
         float prevPriority = priorities[index];
 
         priorities[index] = priority;
@@ -80,21 +92,21 @@ public class Heap {
         priorities[index] = priorities[parent];
         priorities[parent] = temp;
 
-        tmp = nodes[index];
-        priorities[index] = nodes[parent];
-        priorities[parent] = tmp;
+        tmp = vertices[index];
+        vertices[index] = vertices[parent];
+        vertices[parent] = tmp;
 
-        nodesIndex[nodes[index]] = index;
-        nodesIndex[nodes[parent]] = parent;
+        vertexIndex[vertices[index]] = index;
+        vertexIndex[vertices[parent]] = parent;
     }
 
     public void addToHeap(float priority){
         int index = length;
 
         priorities[index] = priority;
-        nodes[index] = index;
+        vertices[index] = index;
         length++;
-        nodesIndex[index] = index;
+        vertexIndex[index] = index;
 
         while (ifParentBigger(index)){
             swapPriorities(index);
@@ -111,12 +123,12 @@ public class Heap {
         priorities[index] = priorities[parent];
         priorities[parent] = temp;
 
-        tmp = nodes[index];
-        nodes[index] = nodes[parent];
-        nodes[parent] = tmp;
+        tmp = vertices[index];
+        vertices[index] = vertices[parent];
+        vertices[parent] = tmp;
 
-        nodesIndex[nodes[index]] = index;
-        nodesIndex[nodes[parent]] = parent;
+        vertexIndex[vertices[index]] = index;
+        vertexIndex[vertices[parent]] = parent;
     }
 
     public boolean ifParentBigger(int index){
@@ -131,11 +143,11 @@ public class Heap {
     public int popFromHeap(){
         int parent = 0;
         int index = 0;
-        int toReturn = nodes[0];
+        int toReturn = vertices[0];
 
         priorities[0] = priorities[--length];
-        nodes[0] = nodes[length];
-        nodesIndex[nodes[0]] = 0;
+        vertices[0] = vertices[length];
+        vertexIndex[vertices[0]] = 0;
 
         while ((index = returnSmallerIndex(parent)) >= 0){
             swapChildren(parent, index);
