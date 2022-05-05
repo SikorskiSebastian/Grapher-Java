@@ -1,10 +1,11 @@
-package pl.edu.pw.ee.grapher;
+package pl.edu.pw.ee.grapher.generator;
 
+import pl.edu.pw.ee.grapher.EntryData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
 public class EdgeMode extends GraphGenerator{
     @Override
-    void generate(Graph graph, EntryData userData) {
+    public void generate(Graph graph, EntryData userData) {
 
     }
 

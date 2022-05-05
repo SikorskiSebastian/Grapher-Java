@@ -6,4 +6,6 @@ module pl.edu.pw.ee.grapher {
 
     opens pl.edu.pw.ee.grapher to javafx.fxml;
     exports pl.edu.pw.ee.grapher;
+    exports pl.edu.pw.ee.grapher.generator;
+    opens pl.edu.pw.ee.grapher.generator to javafx.fxml;
 }

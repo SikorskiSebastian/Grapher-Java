@@ -1,5 +1,6 @@
-package pl.edu.pw.ee.grapher;
+package pl.edu.pw.ee.grapher.generator;
 
+import pl.edu.pw.ee.grapher.EntryData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
 import static pl.edu.pw.ee.grapher.Constants.*;
