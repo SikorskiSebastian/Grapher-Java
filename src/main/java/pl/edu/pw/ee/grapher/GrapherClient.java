@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
+import pl.edu.pw.ee.grapher.graph.Graph;
 
 import java.io.IOException;
 import java.util.Objects;
