@@ -54,4 +54,32 @@ public class PathData {
     public void setWeight(int index, float weight){
         this.weights[index] = weight;
     }
+
+    @Override
+    public boolean equals(Object object){
+        if (object == null){
+            return false;
+        }
+        if (!(object instanceof PathData)){
+            return false;
+        }
+        PathData pathData = (PathData) object;
+
+        for (int i = 0; i < numOfVertices; i++){
+            if (this.getWeight(i) != pathData.getWeight(i)){
+                return false;
+            }
+            if (this.getPredecessor(i) != pathData.getPredecessor(i)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public String toString(){
+        return "\nPredecessors:\n" + Arrays.toString(predecessors) +"\n" + "Weights:\n" +
+                Arrays.toString(weights) + "\n";
+    }
 }

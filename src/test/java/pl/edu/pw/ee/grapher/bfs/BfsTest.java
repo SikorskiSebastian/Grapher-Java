@@ -3,7 +3,7 @@ package pl.edu.pw.ee.grapher.bfs;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.edu.pw.ee.grapher.graph.Graph;
-import pl.edu.pw.ee.grapher.testGraph.GraphCoherent;
+import pl.edu.pw.ee.grapher.testData.GraphCoherent;
 
 public class BfsTest {
     @Test

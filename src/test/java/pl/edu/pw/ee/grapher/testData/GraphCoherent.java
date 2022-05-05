@@ -1,10 +1,10 @@
-package pl.edu.pw.ee.grapher.testGraph;
+package pl.edu.pw.ee.grapher.testData;
 
 import pl.edu.pw.ee.grapher.graph.Graph;
 import static pl.edu.pw.ee.grapher.Constants.*;
 
 public class GraphCoherent {
-    private Graph graph;
+    private final Graph graph;
 
     public GraphCoherent(){
         this.graph = new Graph(2, 2);
