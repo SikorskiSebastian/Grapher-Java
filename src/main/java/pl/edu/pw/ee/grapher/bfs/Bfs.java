@@ -1,11 +1,12 @@
 package pl.edu.pw.ee.grapher.bfs;
 
+import org.jetbrains.annotations.NotNull;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
 import java.util.Arrays;
 
 public class Bfs {
-    public static boolean checkIfCoherent(Graph graph){
+    public static boolean checkIfCoherent(@NotNull Graph graph){
         int numOfVertices = graph.getNumOfVertices();
         int[] queue = new int[numOfVertices];
         Arrays.fill(queue, -1);
