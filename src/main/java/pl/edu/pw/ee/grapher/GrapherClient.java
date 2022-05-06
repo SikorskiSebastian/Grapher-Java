@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
 import pl.edu.pw.ee.grapher.generator.GraphGenerator;
-import pl.edu.pw.ee.grapher.generator.RandomMode;
 import pl.edu.pw.ee.grapher.generator.WageMode;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
