@@ -156,4 +156,28 @@ public class Heap {
 
         return toReturn;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object){
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+        Heap heap = (Heap) object;
+
+        return numOfVertices == heap.numOfVertices && length == heap.length && Arrays.equals(priorities, heap.priorities) && Arrays.equals(vertices, heap.vertices) && Arrays.equals(vertexIndex, heap.vertexIndex);
+    }
+
+    @Override
+    public String toString() {
+        return "Heap{" +
+                "\nnumOfVertices=" + numOfVertices +
+                "\n length=" + length +
+                "\n priorities=" + Arrays.toString(priorities) +
+                "\n vertices=" + Arrays.toString(vertices) +
+                "\n vertexIndex=" + Arrays.toString(vertexIndex) +
+                "}\n";
+    }
 }

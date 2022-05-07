@@ -40,4 +40,26 @@ public class Vertex {
     public void setExistence(int index, boolean exist){
         this.existence[index] = exist;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object){
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+        Vertex vertex = (Vertex) object;
+
+        return Arrays.equals(existence, vertex.existence) && Arrays.equals(connections, vertex.connections) && Arrays.equals(weights, vertex.weights);
+    }
+
+    @Override
+    public String toString() {
+        return "Vertex{" +
+                "\nExistence=" + Arrays.toString(existence) +
+                "\nConnections=" + Arrays.toString(connections) +
+                "\nWeights=" + Arrays.toString(weights) +
+                "\n";
+    }
 }
