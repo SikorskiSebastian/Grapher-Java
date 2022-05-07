@@ -50,19 +50,24 @@ public class Graph {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Graph graph = (Graph) o;
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+        Graph graph = (Graph) object;
+
         return rows == graph.rows && columns == graph.columns && Arrays.equals(vertices, graph.vertices);
     }
 
     @Override
     public String toString() {
         return "Graph{" +
-                "vertices=" + Arrays.toString(vertices) +
-                "\n, rows=" + rows +
-                "\n, columns=" + columns +
+                "Vertices=" + Arrays.toString(vertices) +
+                "\n, Rows=" + rows +
+                "\n, Columns=" + columns +
                 "\n";
     }
 }

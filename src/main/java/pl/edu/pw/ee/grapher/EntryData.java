@@ -1,6 +1,7 @@
 package pl.edu.pw.ee.grapher;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static pl.edu.pw.ee.grapher.Constants.NO_MODE;
 
@@ -79,5 +80,19 @@ public class EntryData {
 
     public int getPoint(int index){
         return this.points[index];
+    }
+
+    @Override
+    public String toString() {
+        return "EntryData{" +
+                "\nMode=" + mode +
+                "\n rows=" + rows +
+                "\n columns=" + columns +
+                "\n rangeStart=" + rangeStart +
+                "\n rangeEnd=" + rangeEnd +
+                "\n points=" + Arrays.toString(points) +
+                "\n graphFile=" + graphFile +
+                "\n printMode=" + printMode +
+                "}\n";
     }
 }
