@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.grapher.graph;
 
+import java.util.Arrays;
+
 public class Graph {
     private Vertex[] vertices;
     private int rows;
@@ -45,5 +47,22 @@ public class Graph {
 
     public void setVertices(Vertex[] vertices) {
         this.vertices = vertices;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Graph graph = (Graph) o;
+        return rows == graph.rows && columns == graph.columns && Arrays.equals(vertices, graph.vertices);
+    }
+
+    @Override
+    public String toString() {
+        return "Graph{" +
+                "vertices=" + Arrays.toString(vertices) +
+                "\n, rows=" + rows +
+                "\n, columns=" + columns +
+                "\n";
     }
 }

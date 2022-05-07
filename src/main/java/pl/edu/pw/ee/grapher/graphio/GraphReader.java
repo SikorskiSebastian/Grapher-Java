@@ -19,17 +19,14 @@ public class GraphReader{
             in.close();
             throw new IllegalArgumentException("No columns or rows found!");
         }
+        in.nextLine();
         Graph graph = new Graph(rows, columns);
 
         for (int i = 0; i < graph.getNumOfVertices(); i++){
             String line = in.nextLine();
+            boolean insertion = insertGraph(graph, i, line);
 
-            if (line == null){
-                in.close();
-                throw new NullPointerException("There is nothing i can read!!");
-            }
-
-            if (!insertGraph(graph, i, line)){
+            if (!insertion){
                 in.close();
                 throw new IllegalStateException("I was not able to insert graph!");
             }
@@ -44,10 +41,11 @@ public class GraphReader{
         int rows = graph.getRows();
         int columns = graph.getColumns();
 
-        while (in.hasNext()){
+        while (in.hasNextInt()){
             boolean hasBeenAdded = false;
             int vertex = in.nextInt();
-            float weight = in.nextFloat();
+            in.skip("[\\s]*:");
+            float weight = in.nextFloat(); //to wywala error
 
             if (index - columns >= 0 && index - columns < columns * rows){
                 if (vertex == index - columns){
@@ -59,7 +57,7 @@ public class GraphReader{
             } else {
                 graph.getVertex(index).setExistence(UP, false);
             }
-            if(index + 1 < columns * rows && (index+1)%columns != 0){
+            if(index + 1 < columns * rows && (index+1) % columns != 0){
                 if (vertex == index + 1){
                     graph.getVertex(index).setExistence(RIGHT, true);
                     graph.getVertex(index).setConnections(RIGHT, index + 1);
@@ -79,7 +77,7 @@ public class GraphReader{
             } else {
                 graph.getVertex(index).setExistence(DOWN, false);
             }
-            if(index - 1 >= 0 && index%columns != 0){
+            if(index - 1 >= 0 && index % columns != 0){
                 if(vertex == index - 1){
                     graph.getVertex(index).setExistence(LEFT, true);
                     graph.getVertex(index).setConnections(LEFT, index - 1);
