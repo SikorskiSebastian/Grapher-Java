@@ -5,7 +5,7 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 
 import static pl.edu.pw.ee.grapher.Constants.*;
 
-public abstract class GraphGenerator {
+public class GraphGenerator {
 
     public void generate(Graph graph, EntryData userData) {
         int numOfVertices = graph.getNumOfVertices();
