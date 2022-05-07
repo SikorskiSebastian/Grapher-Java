@@ -19,6 +19,7 @@ public class EdgeMode extends GraphGenerator{
             for (int i = 0; i < numOfVertices; i++) {
                 makeConnectionFromVertex(i, graph, userData);
             }
+            numOfTries++;
         }
 
     }
