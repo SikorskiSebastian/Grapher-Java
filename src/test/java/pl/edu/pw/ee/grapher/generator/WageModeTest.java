@@ -32,25 +32,21 @@ public class WageModeTest {
         for(int i = 0; i < rows * columns; i++){
             Vertex currentVertex = graph.getVertex(i);
 
-            //check up
             if(i - columns >= 0){
                 if(!currentVertex.getExistence(UP)){
                    result = false;
                 }
             }
-            //check right
             if(i + 1 < columns * rows && (i + 1) % columns != 0){
                 if(!currentVertex.getExistence(RIGHT)){
                     result = false;
                 }
             }
-            //check down
             if(i + columns < columns * rows){
                 if(!currentVertex.getExistence(DOWN)){
                     result = false;
                 }
             }
-            //check left
             if(i - 1 >= 0 && i % columns != 0){
                 if(!currentVertex.getExistence(LEFT)){
                     result = false;
