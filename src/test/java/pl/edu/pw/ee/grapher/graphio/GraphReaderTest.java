@@ -14,7 +14,7 @@ public class GraphReaderTest {
     public void readFromFile_test_pass() throws FileNotFoundException {
         //given
         GraphCoherent expected = new GraphCoherent();
-        File graphFile = new File("testFiles/resultGraph.txt");
+        File graphFile = new File("src/test/resources/resultGraph.txt");
 
         //when
         Graph result = GraphReader.readFromFile(graphFile);
@@ -26,7 +26,7 @@ public class GraphReaderTest {
     @Test
     public void readFromFile_test_IllegalArgument_exception(){
         //given
-        File graphFile = new File("testFiles/rowsEqualsZero.txt");
+        File graphFile = new File("src/test/resources/rowsEqualsZero.txt");
 
         //when
 
@@ -37,13 +37,11 @@ public class GraphReaderTest {
     @Test
     public void readFromFile_test_IllegalState_exception(){
         //given
-        File graphFile = new File("testFiles/illegalState.txt");
+        File graphFile = new File("src/test/resources/illegalState.txt");
 
         //when
 
         //then
         Assertions.assertThrows(IllegalStateException.class, () -> GraphReader.readFromFile(graphFile));
     }
-
- 
 }
