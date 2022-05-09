@@ -3,7 +3,7 @@ package pl.edu.pw.ee.grapher.testData;
 import pl.edu.pw.ee.grapher.dijkstra.PathData;
 
 public class ExpectedPath {
-    private PathData pathData;
+    private final PathData pathData;
 
     public ExpectedPath(){
         pathData = new PathData(4);

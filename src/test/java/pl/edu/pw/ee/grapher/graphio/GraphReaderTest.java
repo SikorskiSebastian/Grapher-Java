@@ -9,9 +9,9 @@ import pl.edu.pw.ee.grapher.testData.GraphCoherent;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class GraphReaderTest {
+class GraphReaderTest {
     @Test
-    public void readFromFile_test_pass() throws FileNotFoundException {
+    void readFromFile_test_pass() throws FileNotFoundException {
         //given
         GraphCoherent expected = new GraphCoherent();
         File graphFile = new File("src/test/resources/resultGraph.txt");
@@ -24,7 +24,7 @@ public class GraphReaderTest {
     }
 
     @Test
-    public void readFromFile_test_IllegalArgument_exception(){
+    void readFromFile_test_IllegalArgument_exception(){
         //given
         File graphFile = new File("src/test/resources/rowsEqualsZero.txt");
 
@@ -35,7 +35,7 @@ public class GraphReaderTest {
     }
 
     @Test
-    public void readFromFile_test_IllegalState_exception(){
+    void readFromFile_test_IllegalState_exception(){
         //given
         File graphFile = new File("src/test/resources/illegalState.txt");
 

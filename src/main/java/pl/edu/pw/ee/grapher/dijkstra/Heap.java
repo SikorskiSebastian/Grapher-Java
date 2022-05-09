@@ -1,6 +1,7 @@
 package pl.edu.pw.ee.grapher.dijkstra;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Heap {
     private final int numOfVertices;
@@ -149,9 +150,8 @@ public class Heap {
         vertices[0] = vertices[length];
         vertexIndex[vertices[0]] = 0;
 
-        while ((index = returnSmallerIndex(parent)) >= 0){
-            swapChildren(parent, index);
-            parent = index;
+        while ((parent = returnSmallerIndex(index)) >= 0){
+            swapChildren(index, parent);
         }
 
         return toReturn;
@@ -168,6 +168,17 @@ public class Heap {
         Heap heap = (Heap) object;
 
         return numOfVertices == heap.numOfVertices && length == heap.length && Arrays.equals(priorities, heap.priorities) && Arrays.equals(vertices, heap.vertices) && Arrays.equals(vertexIndex, heap.vertexIndex);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(numOfVertices, length);
+
+        result = 31 * result + Arrays.hashCode(priorities);
+        result = 31 * result + Arrays.hashCode(vertices);
+        result = 31 * result + Arrays.hashCode(vertexIndex);
+
+        return result;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package pl.edu.pw.ee.grapher.dijkstra;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class PathData {
     private final int numOfVertices;
@@ -63,7 +64,7 @@ public class PathData {
         if (!(object instanceof PathData)){
             return false;
         }
-        PathData pathData = (PathData) object;
+        var pathData = (PathData) object;
 
         for (int i = 0; i < numOfVertices; i++){
             if (this.getWeight(i) != pathData.getWeight(i)){
@@ -75,6 +76,16 @@ public class PathData {
         }
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(numOfVertices, start, end);
+
+        result = 31 * result + Arrays.hashCode(predecessors);
+        result = 31 * result + Arrays.hashCode(weights);
+
+        return result;
     }
 
     @Override

@@ -55,6 +55,16 @@ public class Vertex {
     }
 
     @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(existence);
+
+        result = 31 * result + Arrays.hashCode(connections);
+        result = 31 * result + Arrays.hashCode(weights);
+
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Vertex{" +
                 "\nExistence=" + Arrays.toString(existence) +

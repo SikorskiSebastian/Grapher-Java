@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 import pl.edu.pw.ee.grapher.testData.ExpectedPath;
 import pl.edu.pw.ee.grapher.testData.GraphCoherent;
 import pl.edu.pw.ee.grapher.testData.TestEntry;
-
-public class DijkstraTest {
+class DijkstraTest {
     @Test
-    public void findPath_test_pass(){
+    void findPath_test_pass(){
         //given
         GraphCoherent graph = new GraphCoherent();
         TestEntry entry = new TestEntry();

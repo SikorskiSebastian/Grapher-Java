@@ -7,11 +7,11 @@ import static pl.edu.pw.ee.grapher.Constants.NO_MODE;
 
 public class EntryData {
     private int mode;
-    private final int rows; //i guess useless
-    private final int columns; //i guess useless
+    private final int rows;
+    private final int columns;
     private float rangeStart;
     private float rangeEnd;
-    private int[] points;
+    private final int[] points;
     private File graphFile;
     private int printMode;
 

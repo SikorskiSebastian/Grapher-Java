@@ -6,44 +6,50 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 import java.util.Arrays;
 
 public class Bfs {
+    private Bfs() {}
+
     public static boolean checkIfCoherent(@NotNull Graph graph){
-        int numOfVertices = graph.getNumOfVertices();
-        int[] queue = new int[numOfVertices];
+        var queue = new int[graph.getNumOfVertices()];
         Arrays.fill(queue, -1);
 
-        for (int i = 0; i < numOfVertices; i++){
-            boolean[] visited = new boolean[numOfVertices];
+        for (int i = 0; i < graph.getNumOfVertices(); i++){
+            var visited = new boolean[graph.getNumOfVertices()];
             int reader = 0;
             int writer = 0;
 
             queue[writer] = i;
             visited[i] = true;
-            writer = Bfs.calculateVertex(writer, numOfVertices);
+            writer = Bfs.calculateVertex(writer, graph.getNumOfVertices());
 
             while (reader != writer){
                 int currentVertex = queue[reader];
-                reader = Bfs.calculateVertex(reader, numOfVertices);
+                reader = Bfs.calculateVertex(reader, graph.getNumOfVertices());
 
                 for (int j = 0; j < 4; j++){
                     int aim = graph.getVertex(currentVertex).getConnection(j);
 
-                    if (graph.getVertex(currentVertex).getExistence(j)){
-                        if (!visited[aim]){
-                            visited[aim] = true;
-                            queue[writer] = aim;
-                            writer = Bfs.calculateVertex(writer, numOfVertices);
-                        }
+                    if (graph.getVertex(currentVertex).getExistence(j) && !visited[aim]){
+                        queue[writer] = aim;
+                        visited[aim] = true;
+                        writer = Bfs.calculateVertex(writer, graph.getNumOfVertices());
                     }
                 }
             }
 
-            for (int k = 0; k < numOfVertices; k++){
-                if (!visited[k]){
-                    return false;
-                }
+            if (!Bfs.checkIfVisited(visited, graph.getNumOfVertices())){
+                return false;
             }
         }
 
+        return true;
+    }
+
+    private static boolean checkIfVisited(boolean[] visited, int numOfVertices){
+        for (int k = 0; k < numOfVertices; k++){
+            if (!visited[k]){
+                return false;
+            }
+        }
         return true;
     }
 

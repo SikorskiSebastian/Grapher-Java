@@ -8,10 +8,12 @@ import pl.edu.pw.ee.grapher.graph.Vertex;
 import java.util.Arrays;
 
 public class Dijkstra {
+    private Dijkstra() {}
+
     public static @NotNull PathData findPath(Graph graph, @NotNull EntryData userData, int index){
-        int numOfVertices = userData.getColumns() * userData.getRows();
-        float[] distance = new float[numOfVertices];
-        Heap heap = new Heap(numOfVertices);
+        var numOfVertices = userData.getColumns() * userData.getRows();
+        var distance = new float[numOfVertices];
+        var heap = new Heap(numOfVertices);
 
         PathData pathData = new PathData(numOfVertices);
         pathData.setStart(userData.getPoint(2*index));
@@ -34,7 +36,7 @@ public class Dijkstra {
                 Vertex vertex = graph.getVertex(currentPoint);
 
                 if (graph.getVertex(currentPoint).getExistence(i)){
-                    float newDistance = distance[currentPoint] + vertex.getWeight(i);
+                    var newDistance = distance[currentPoint] + vertex.getWeight(i);
                     int j = vertex.getConnection(i);
 
                     if (distance[j] > newDistance){

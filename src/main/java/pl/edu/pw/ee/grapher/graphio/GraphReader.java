@@ -12,9 +12,11 @@ import java.util.Scanner;
 import static pl.edu.pw.ee.grapher.Constants.*;
 
 public class GraphReader{
+    private GraphReader(){}
+
     public static @Nullable Graph readFromFile(File graphFile) throws FileNotFoundException {
         try {
-            Scanner in = new Scanner(graphFile);
+            var in = new Scanner(graphFile);
             int rows = in.nextInt();
             int columns = in.nextInt();
 
@@ -23,11 +25,11 @@ public class GraphReader{
                 throw new IllegalArgumentException("No columns or rows found!");
             }
             in.nextLine();
-            Graph graph = new Graph(rows, columns);
+            var graph = new Graph(rows, columns);
 
             for (int i = 0; i < graph.getNumOfVertices(); i++){
                 String line = in.nextLine();
-                boolean insertion = insertGraph(graph, i, line);
+                var insertion = insertGraph(graph, i, line);
 
                 if (!insertion){
                     in.close();
@@ -45,7 +47,7 @@ public class GraphReader{
     }
 
     public static boolean insertGraph(@NotNull Graph graph, int index, String line){
-        Scanner in = new Scanner(line);
+        var in = new Scanner(line);
         int rows = graph.getRows();
         int columns = graph.getColumns();
 

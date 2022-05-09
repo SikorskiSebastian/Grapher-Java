@@ -8,10 +8,10 @@ import pl.edu.pw.ee.grapher.graph.Vertex;
 
 import static pl.edu.pw.ee.grapher.Constants.*;
 
-public class WageModeTest {
+class WageModeTest {
 
     @Test
-    public void generateGraph_WageMode_test_pass(){
+    void generateGraph_WageMode_test_pass(){
         //given
         int rows = 3;
         int columns = 3;

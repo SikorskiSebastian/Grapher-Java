@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import pl.edu.pw.ee.grapher.graph.Graph;
 import pl.edu.pw.ee.grapher.testData.GraphCoherent;
 
-public class BfsTest {
+class BfsTest {
     @Test
-    public void checkIfCoherent_coherent_graph(){
+    void checkIfCoherent_coherent_graph(){
         //given
         GraphCoherent graph = new GraphCoherent();
         boolean expected = true;
@@ -20,7 +20,7 @@ public class BfsTest {
     }
 
     @Test
-    public void checkIfCoherent_not_coherent_graph(){
+    void checkIfCoherent_not_coherent_graph(){
         //given
         Graph graph = new Graph(2,2);
         boolean expected = false;
@@ -33,7 +33,7 @@ public class BfsTest {
     }
 
     @Test
-    public void calculateVertex_test_pass(){
+    void calculateVertex_test_pass(){
         //given
         int index = 4;
         int numOfVertices = 12;

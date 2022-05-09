@@ -1,5 +1,6 @@
 package pl.edu.pw.ee.grapher.generator;
 
+import org.jetbrains.annotations.NotNull;
 import pl.edu.pw.ee.grapher.EntryData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
@@ -7,7 +8,7 @@ import static pl.edu.pw.ee.grapher.Constants.*;
 
 public class GraphGenerator {
 
-    public void generate(Graph graph, EntryData userData) {
+    public void generate(@NotNull Graph graph, EntryData userData) {
         int numOfVertices = graph.getNumOfVertices();
         for (int i = 0; i < numOfVertices; i++) {
             makeConnectionFromVertex(i, graph, userData);
@@ -15,7 +16,7 @@ public class GraphGenerator {
     }
 
     float generateWeight(float start, float end) {
-        return (int) ((Math.random() * (end - start)) + start);
+        return (float) ((Math.random() * (end - start)) + start);
     }
 
     static boolean generateEdge(){

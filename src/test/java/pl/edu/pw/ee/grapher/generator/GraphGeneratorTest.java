@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import pl.edu.pw.ee.grapher.EntryData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
-public class GraphGeneratorTest {
+class GraphGeneratorTest {
 
     @Test
-    public void generateGraph_EdgeWeights_test_pass(){
+    void generateGraph_EdgeWeights_test_pass(){
         //given
         int rows = 3;
         int columns = 3;

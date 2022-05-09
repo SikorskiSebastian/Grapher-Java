@@ -6,10 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
-import pl.edu.pw.ee.grapher.bfs.Bfs;
-import pl.edu.pw.ee.grapher.generator.GraphGenerator;
-import pl.edu.pw.ee.grapher.generator.WageMode;
-import pl.edu.pw.ee.grapher.graph.Graph;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -19,7 +15,9 @@ public class GrapherClient extends Application {
     public void start(@NotNull Stage stage){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(GrapherClient.class.getResource("fxml/GrapherController.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 1000, 800);
+            int width = 1000;
+            int height = 800;
+            Scene scene = new Scene(fxmlLoader.load(), width, height);
 
             stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("img/icon.png")).toString()));
             stage.setTitle("Grapher");
@@ -28,7 +26,7 @@ public class GrapherClient extends Application {
             stage.setScene(scene);
             stage.show();
         } catch (IOException exception) {
-            System.out.println("I can't load fxml file!");
+            System.err.println("I can't load fxml file!");
             exception.printStackTrace();
         }
     }

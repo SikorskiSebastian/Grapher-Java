@@ -1,12 +1,13 @@
 package pl.edu.pw.ee.grapher.generator;
 
+import org.jetbrains.annotations.NotNull;
 import pl.edu.pw.ee.grapher.EntryData;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
 public class EdgeMode extends GraphGenerator{
     @Override
-    public void generate(Graph graph, EntryData userData) {
+    public void generate(@NotNull Graph graph, EntryData userData) {
         boolean continueGeneration = true;
         int numOfTries = 0;
         int maxNumOfTries = 500;

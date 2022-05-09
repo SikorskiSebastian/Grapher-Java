@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class GraphSaver {
+    private GraphSaver(){}
+
     public static void saveToFile(@NotNull Graph graph, File graphFile){
         StringBuilder myGraph = new StringBuilder();
 

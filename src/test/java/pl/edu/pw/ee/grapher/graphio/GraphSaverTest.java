@@ -8,9 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class GraphSaverTest {
+class GraphSaverTest {
     @Test
-    public void saveToFile_test_pass() throws IOException {
+    void saveToFile_test_pass() throws IOException {
         //given
         GraphCoherent graph = new GraphCoherent();
         File resultGraph = new File("src/test/resources/resultGraph.txt");

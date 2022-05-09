@@ -6,10 +6,10 @@ import pl.edu.pw.ee.grapher.EntryData;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
-public class EdgeModeTest {
+class EdgeModeTest {
 
     @Test
-    public void generateGraph_EdgeMode_test_pass(){
+    void generateGraph_EdgeMode_test_pass(){
         //given
         int rows = 3;
         int columns = 3;

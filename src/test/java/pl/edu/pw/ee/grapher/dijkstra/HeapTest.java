@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class HeapTest {
+class HeapTest {
     private Heap heap;
 
     @BeforeEach
@@ -13,7 +13,7 @@ public class HeapTest {
     }
 
     @Test
-    public void update_priority_prevPriority_higher_priority(){
+    void update_priority_prevPriority_higher_priority(){
         //given
         int index = 2;
         float priority = 4;
@@ -29,7 +29,7 @@ public class HeapTest {
     }
 
     @Test
-    public void update_priority_prevPriority_less_priority(){
+    void update_priority_prevPriority_less_priority(){
         //given
         int index = 2;
         float priority = 5;
@@ -45,7 +45,7 @@ public class HeapTest {
     }
 
     @Test
-    public void returnSmallerIndex_leftChild_higher_length(){
+    void returnSmallerIndex_leftChild_higher_length(){
         //given
         int parent = 2;
         int expected = -1;
@@ -58,7 +58,7 @@ public class HeapTest {
     }
 
     @Test
-    public void returnSmallerIndex_rightChild_higher_length(){
+    void returnSmallerIndex_rightChild_higher_length(){
         //given
         int parent = 1;
         int expected = 3;
@@ -73,7 +73,7 @@ public class HeapTest {
     }
 
     @Test
-    public void returnSmallerIndex_leftChildPriority_higher_rightChildPriority(){
+    void returnSmallerIndex_leftChildPriority_higher_rightChildPriority(){
         //given
         int parent = 0;
         int expected = -1;
@@ -88,7 +88,7 @@ public class HeapTest {
     }
 
     @Test
-    public void returnSmallerIndex_smallerIndexPriority_higher_parentPriority(){
+    void returnSmallerIndex_smallerIndexPriority_higher_parentPriority(){
         //given
         int parent = 1;
         int expected = 3;
@@ -104,7 +104,7 @@ public class HeapTest {
     }
 
     @Test
-    public void swapChildren_test_pass(){
+    void swapChildren_test_pass(){
         //given
         int index = 2;
         int parent = 4;
@@ -125,7 +125,7 @@ public class HeapTest {
     }
 
     @Test
-    public void addToHeap_test_pass(){
+    void addToHeap_test_pass(){
         //given
         float priority = 4;
 
@@ -138,7 +138,7 @@ public class HeapTest {
     }
 
     @Test
-    public void swapPriorities_test_pass(){
+    void swapPriorities_test_pass(){
         //given
         int index = 3;
         float expected = Float.MAX_VALUE;
@@ -154,7 +154,7 @@ public class HeapTest {
     }
 
     @Test
-    public void ifParentBigger_test_pass(){
+    void ifParentBigger_test_pass(){
         //given
         int index = 3;
         int parent = (index - 1) / 2;
@@ -170,7 +170,7 @@ public class HeapTest {
     }
 
     @Test
-    public void ifParentBigger_index_equal_0(){
+    void ifParentBigger_index_equal_0(){
         //given
         int index = 0;
         boolean expected = false;
