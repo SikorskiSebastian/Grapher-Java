@@ -53,8 +53,10 @@ public class GraphReader{
             while (in.hasNextInt()) {
                 boolean hasBeenAdded = false;
                 int vertex = in.nextInt();
-                in.skip("[\\s]*:");
-                float weight = in.nextFloat(); //to wywala error
+                String s = in.nextLine();
+                in.close();
+                in = new Scanner(s.substring(s.indexOf(":") + 1));
+                float weight = Float.parseFloat(in.next());
 
                 if (index - columns >= 0 && index - columns < columns * rows) {
                     if (vertex == index - columns) {
@@ -103,9 +105,8 @@ public class GraphReader{
                 }
             }
         } catch (InputMismatchException e ) {
-            System.out.println("Wrong arguments found!");
+            System.err.println("Wrong arguments found!");
             in.close();
-            e.printStackTrace();
         }
 
         in.close();
