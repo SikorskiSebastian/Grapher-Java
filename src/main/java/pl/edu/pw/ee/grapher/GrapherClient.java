@@ -15,8 +15,8 @@ public class GrapherClient extends Application {
     public void start(@NotNull Stage stage){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(GrapherClient.class.getResource("fxml/GrapherController.fxml"));
-            int width = 1000;
-            int height = 800;
+            int width = 1280;
+            int height = 720;
             Scene scene = new Scene(fxmlLoader.load(), width, height);
 
             stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("img/icon.png")).toString()));
