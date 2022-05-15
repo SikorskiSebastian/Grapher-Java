@@ -7,8 +7,8 @@ import static pl.edu.pw.ee.grapher.Constants.NO_MODE;
 
 public class EntryData {
     private int mode;
-    private final int rows;
-    private final int columns;
+    private int rows;
+    private int columns;
     private float rangeStart;
     private float rangeEnd;
     private final int[] points;
@@ -20,6 +20,17 @@ public class EntryData {
         this.mode = NO_MODE;
         this.rows = rows;
         this.columns = columns;
+        this.rangeEnd = 0;
+        this.rangeStart = 0;
+        this.points = new int[rows * columns];
+        this.graphFile = null;
+    }
+
+    public EntryData(){
+        this.printMode = NO_MODE;
+        this.mode = NO_MODE;
+        this.rows = 0;
+        this.columns = 0;
         this.rangeEnd = 0;
         this.rangeStart = 0;
         this.points = new int[rows * columns];
@@ -80,6 +91,13 @@ public class EntryData {
 
     public int getPoint(int index){
         return this.points[index];
+    }
+
+    public void setColumns(int columns){
+        this.columns = columns;
+    }
+    public void setRows(int rows){
+        this.rows = rows;
     }
 
     @Override
