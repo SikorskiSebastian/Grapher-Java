@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -151,7 +152,12 @@
                         <Font size="23.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="pointsInput" layoutX="95.0" layoutY="10.0" prefHeight="40.0" prefWidth="142.0">
+                  <TextField fx:id="startPointInput" layoutX="95.0" layoutY="10.0" prefHeight="40.0" prefWidth="71.0">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="endPointInput" layoutX="166.0" layoutY="10.0" prefHeight="40.0" prefWidth="71.0">
                      <font>
                         <Font size="23.0" />
                      </font>
@@ -182,11 +188,7 @@
       </Pane>
       <Pane layoutX="37.0" layoutY="590.0" prefHeight="100.0" prefWidth="1200.0" style="-fx-border-color: #a9a9a9#a9a9a9;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
          <children>
-            <TextField fx:id="consoleOutput" prefHeight="100.0" prefWidth="1200.0">
-               <font>
-                  <Font size="23.0" />
-               </font>
-            </TextField>
+            <TextArea fx:id="consoleOutput" prefHeight="100.0" prefWidth="1200.0" />
          </children>
       </Pane>
    </children>

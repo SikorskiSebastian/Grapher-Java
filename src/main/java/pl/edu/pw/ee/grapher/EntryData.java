@@ -11,7 +11,8 @@ public class EntryData {
     private int columns;
     private float rangeStart;
     private float rangeEnd;
-    private final int[] points;
+    private int startPoint;
+    private int endPoint;
     private File graphFile;
     private int printMode;
 
@@ -22,7 +23,6 @@ public class EntryData {
         this.columns = columns;
         this.rangeEnd = 0;
         this.rangeStart = 0;
-        this.points = new int[rows * columns];
         this.graphFile = null;
     }
 
@@ -33,7 +33,8 @@ public class EntryData {
         this.columns = 0;
         this.rangeEnd = 0;
         this.rangeStart = 0;
-        this.points = new int[rows * columns];
+        this.startPoint = 0;
+        this.endPoint = 0;
         this.graphFile = null;
     }
 
@@ -69,6 +70,14 @@ public class EntryData {
         return mode;
     }
 
+    public int getStartPoint() {
+        return startPoint;
+    }
+
+    public int getEndPoint() {
+        return endPoint;
+    }
+
     public void setRangeEnd(float rangeEnd) {
         this.rangeEnd = rangeEnd;
     }
@@ -81,16 +90,16 @@ public class EntryData {
         this.mode = mode;
     }
 
+    public void setStartPoint(int startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public void setEndPoint(int endPoint) {
+        this.endPoint = endPoint;
+    }
+
     public File getGraphFile() {
         return graphFile;
-    }
-
-    public void setPoint(int index, int point){
-        this.points[index] = point;
-    }
-
-    public int getPoint(int index){
-        return this.points[index];
     }
 
     public void setColumns(int columns){
@@ -108,7 +117,8 @@ public class EntryData {
                 "\n columns=" + columns +
                 "\n rangeStart=" + rangeStart +
                 "\n rangeEnd=" + rangeEnd +
-                "\n points=" + Arrays.toString(points) +
+                "\n startPoint=" + startPoint +
+                "\n endPoint=" + endPoint +
                 "\n graphFile=" + graphFile +
                 "\n printMode=" + printMode +
                 "}\n";
