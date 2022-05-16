@@ -17,6 +17,7 @@ public class PathData {
         this.predecessors = new int[numOfVertices];
         this.weights = new float[numOfVertices];
 
+        Arrays.fill(weights, Float.MAX_VALUE);
         Arrays.fill(predecessors, -1);
     }
 
@@ -38,10 +39,6 @@ public class PathData {
 
     public int getPredecessor(int index){
         return predecessors[index];
-    }
-
-    public int getNumOfVertices() {
-        return numOfVertices;
     }
 
     public float getWeight(int index){

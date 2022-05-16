@@ -1,7 +1,6 @@
 package pl.edu.pw.ee.grapher;
 
 import java.io.File;
-import java.util.Arrays;
 
 import static pl.edu.pw.ee.grapher.Constants.NO_MODE;
 

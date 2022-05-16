@@ -23,7 +23,7 @@ public class GraphGenerator {
         return (Math.random() < 0.5);
     }
 
-    void makeConnectionFromVertex(int index, Graph graph, EntryData userData) {
+    void makeConnectionFromVertex(int index, @NotNull Graph graph, EntryData userData) {
         int columns = graph.getColumns();
         int rows = graph.getRows();
 

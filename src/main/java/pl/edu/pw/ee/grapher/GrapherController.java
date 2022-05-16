@@ -18,6 +18,9 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static pl.edu.pw.ee.grapher.Constants.STANDARD_MODE;
+import static pl.edu.pw.ee.grapher.Constants.WEIGHT_MODE;
+
 public class GrapherController implements Initializable {
     @FXML
     private Button genButton, openButton, saveButton, searchButton;
@@ -31,12 +34,13 @@ public class GrapherController implements Initializable {
     private EntryData userData;
     private Graph graph;
     private PathData path;
-    private String consoleText = "Grapher by SS & SP\n";
+    private String consoleText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userData = new EntryData();
         fileInput.setEditable(false);
+        consoleText = "Grapher by SS & SP\n";
         consoleOutput.setText(consoleText);
 
         ToggleGroup genModeGroup = new ToggleGroup();
@@ -44,15 +48,13 @@ public class GrapherController implements Initializable {
         edgeModeRB.setToggleGroup(genModeGroup);
         randomModeRB.setToggleGroup(genModeGroup);
         wageModeRB.setSelected(true);
-        userData.setMode(1);
+        userData.setMode(WEIGHT_MODE);
 
         ToggleGroup pathModeGroup = new ToggleGroup();
         standardRB.setToggleGroup(pathModeGroup);
         extendedRB.setToggleGroup(pathModeGroup);
         standardRB.setSelected(true);
-        userData.setPrintMode(1);
-
-
+        userData.setPrintMode(STANDARD_MODE);
 
         genButton.setOnMouseClicked(event -> {
             userData.setColumns(Integer.parseInt(columnInput.getText()));
@@ -62,36 +64,31 @@ public class GrapherController implements Initializable {
 
             if(userData.getMode() == 1) {
                 graph = null;
-                var graphgenw = new WageMode();
+                var graphGenW = new WageMode();
                 graph = new Graph(userData.getRows(), userData.getColumns());
-                graphgenw.generate(graph, userData);
+                graphGenW.generate(graph, userData);
             } else if (userData.getMode() == 2) {
                 graph = null;
-                var graphgene = new EdgeMode();
+                var graphGenE = new EdgeMode();
                 graph = new Graph(userData.getRows(), userData.getColumns());
-                graphgene.generate(graph, userData);
+                graphGenE.generate(graph, userData);
             } else if (userData.getMode() == 3) {
                 graph = null;
-                var graphgenr = new GraphGenerator();
+                var graphGenR = new GraphGenerator();
                 graph = new Graph(userData.getRows(), userData.getColumns());
-                graphgenr.generate(graph, userData);
+                graphGenR.generate(graph, userData);
             }
-
-            //System.out.println(userData);
-            //System.out.println(graph);
-
         });
 
         saveButton.setOnMouseClicked(event -> {
-            File file = null;
             FileChooser fc = new FileChooser();
-            file = fc.showOpenDialog(null);
+            File file = fc.showOpenDialog(null);
 
             if (file != null && graph != null) {
                 GraphSaver.saveToFile(graph, file);
                 fileInput.setText(file.getName());
 
-                consoleText += String.format("Pomyślnie zapisano graf (%d x %d) do pliku (%s)\n",graph.getColumns(), graph.getRows(),file.getName());
+                consoleText += String.format("Pomyślnie zapisano graf (%d x %d) do pliku (%s)%n",graph.getRows(), graph.getColumns(),file.getName());
                 consoleOutput.setText(consoleText);
             } else if (graph == null) {
                 consoleText += "Brak grafu do zapisania\n";
@@ -100,15 +97,14 @@ public class GrapherController implements Initializable {
         });
 
         openButton.setOnMouseClicked(event -> {
-            File file = null;
             FileChooser fc = new FileChooser();
-            file = fc.showOpenDialog(null);
+            File file = fc.showOpenDialog(null);
 
             if(file != null ) {
                 try {
                     graph = GraphReader.readFromFile(file);
                     fileInput.setText(file.getName());
-                    consoleText += String.format("Pomyślnie wczytano graf (%d x %d) z pliku(%s)\n",graph.getColumns(), graph.getRows(), file.getName());
+                    consoleText += String.format("Pomyślnie wczytano graf (%d x %d) z pliku(%s)%n",graph.getColumns(), graph.getRows(), file.getName());
                     consoleOutput.setText(consoleText);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -119,24 +115,18 @@ public class GrapherController implements Initializable {
             }
         });
 
-        wageModeRB.setOnMouseClicked(event -> {
-            userData.setMode(1);
-        });
+        wageModeRB.setOnMouseClicked(event -> userData.setMode(1));
 
-        edgeModeRB.setOnMouseClicked(event -> {
-            userData.setMode(2);
-        });
+        edgeModeRB.setOnMouseClicked(event -> userData.setMode(2));
 
-        randomModeRB.setOnMouseClicked(event -> {
-            userData.setMode(3);
-        });
+        randomModeRB.setOnMouseClicked(event -> userData.setMode(3));
 
         searchButton.setOnMouseClicked(event -> {
             userData.setStartPoint(Integer.parseInt(startPointInput.getText().trim()));
             userData.setEndPoint(Integer.parseInt(endPointInput.getText().trim()));
 
-            PathData path = Dijkstra.findPath(graph, userData);
-            System.out.println(path.toString());
+            path = Dijkstra.findPath(graph, userData);
+            System.out.println(path);
 
 
             if(userData.getPrintMode() == 1){

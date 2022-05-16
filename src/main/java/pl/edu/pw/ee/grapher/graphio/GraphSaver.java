@@ -29,7 +29,7 @@ public class GraphSaver {
         try {
             Files.writeString(graphFile.toPath(), myGraph.toString());
         } catch (IOException exception) {
-            System.out.println("I can't write to this file!");
+            System.err.println("I can't write to this file!");
             exception.printStackTrace();
         }
     }

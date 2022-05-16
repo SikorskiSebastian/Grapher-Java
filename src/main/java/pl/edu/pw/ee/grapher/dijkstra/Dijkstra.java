@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class Dijkstra {
     private Dijkstra() {}
 
-    public static @NotNull PathData findPath(Graph graph, @NotNull EntryData userData){
+    public static @NotNull PathData findPath(@NotNull Graph graph, @NotNull EntryData userData){
         var numOfVertices = graph.getColumns() * graph.getRows();
         var distance = new float[numOfVertices];
         var heap = new Heap(numOfVertices);
