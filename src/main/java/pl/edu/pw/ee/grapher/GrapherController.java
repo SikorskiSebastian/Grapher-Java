@@ -149,7 +149,15 @@ public class GrapherController implements Initializable {
 
                 updateConsole(pathConsoleOutput + "\n");
             } else if (userData.getPrintMode() == EXTENDED_MODE) {
-                updateConsole("RIGHT NOW ONLY STANDARD MODE WORKS!\n");
+                String pathConsoleOutput;
+
+                pathConsoleOutput = String.format("(%d;%d): ", path.getStart(), path.getEnd());
+                for(int i = 0; i <pathInOrder.length - 1; i++){
+                    pathConsoleOutput += String.format("%d (%.2f) ----> ",pathInOrder[i], path.getWeight(pathInOrder[i+1]));
+                }
+                pathConsoleOutput += pathInOrder[pathInOrder.length-1];
+
+                updateConsole(pathConsoleOutput + "\n");
             }
         });
 
