@@ -16,7 +16,6 @@ import pl.edu.pw.ee.grapher.graphio.GraphSaver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import static pl.edu.pw.ee.grapher.Constants.STANDARD_MODE;
@@ -83,7 +82,7 @@ public class GrapherController implements Initializable {
                 graph = new Graph(userData.getRows(), userData.getColumns());
                 graphGenR.generate(graph, userData);
             }
-            updateConsole(String.format("Pomyślnie wygenerowano graf (%d x%d) o wagach z zakresu (%.2f %.2f)\n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
+            updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)\n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
         });
 
         saveButton.setOnMouseClicked(event -> {
@@ -94,9 +93,9 @@ public class GrapherController implements Initializable {
                 GraphSaver.saveToFile(graph, file);
                 fileInput.setText(file.getName());
 
-                updateConsole(String.format("Pomyślnie zapisano graf (%d x %d) do pliku (%s)\n",graph.getRows(), graph.getColumns(),file.getName()));
+                updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)\n",graph.getRows(), graph.getColumns(),file.getName()));
             } else if (graph == null) {
-                updateConsole("Brak grafu do zapisania\n");
+                updateConsole("No graph to save\n");
             }
         });
 
@@ -108,12 +107,12 @@ public class GrapherController implements Initializable {
                 try {
                     graph = GraphReader.readFromFile(file);
                     fileInput.setText(file.getName());
-                    updateConsole(String.format("Pomyślnie wczytano graf (%d x %d) z pliku(%s)\n",graph.getColumns(), graph.getRows(), file.getName()));
+                    updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)\n",graph.getColumns(), graph.getRows(), file.getName()));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             } else {
-                updateConsole("Problem z plikiem podczas czytania \n");
+                updateConsole("There is a problem with a file or user did not select the file \n");
             }
         });
 
@@ -159,5 +158,6 @@ public class GrapherController implements Initializable {
     private void updateConsole (String msg){
         consoleText += msg;
         consoleOutput.setText(consoleText);
+        consoleOutput.setScrollTop(Double.MAX_VALUE);
     }
 }
