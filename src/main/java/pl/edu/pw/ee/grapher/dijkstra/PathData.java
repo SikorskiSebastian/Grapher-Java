@@ -90,4 +90,30 @@ public class PathData {
         return "\nPredecessors:\n" + Arrays.toString(predecessors) +"\n" + "Weights:\n" +
                 Arrays.toString(weights) + "\n";
     }
+
+    public static int[] pathInOrder (PathData path) {
+        int currentPoint = path.getEnd();
+
+        int[] pathInOrder = new int[path.numOfVertices];
+        int size = 0;
+
+        while (true) {
+            pathInOrder[size++] = currentPoint;
+            currentPoint = path.getPredecessor(currentPoint);
+            if (currentPoint == -1) {
+                break;
+            }
+        }
+        int[] trimedPathInOrder = new int[size];
+        System.arraycopy(pathInOrder,0, trimedPathInOrder, 0, size);
+
+        for(int i = 0; i < trimedPathInOrder.length / 2; i++) {
+            int tmp = trimedPathInOrder[i];
+            trimedPathInOrder[i] = trimedPathInOrder[trimedPathInOrder.length - i - 1];
+            trimedPathInOrder[trimedPathInOrder.length - i - 1] = tmp;
+        }
+
+
+        return trimedPathInOrder;
+    }
 }

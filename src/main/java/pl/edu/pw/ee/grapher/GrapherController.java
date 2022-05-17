@@ -16,6 +16,7 @@ import pl.edu.pw.ee.grapher.graphio.GraphSaver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import static pl.edu.pw.ee.grapher.Constants.STANDARD_MODE;
@@ -40,6 +41,7 @@ public class GrapherController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userData = new EntryData();
         fileInput.setEditable(false);
+        consoleOutput.setEditable(false);
         consoleText = "Grapher by SS & SP\n";
         consoleOutput.setText(consoleText);
 
@@ -127,6 +129,10 @@ public class GrapherController implements Initializable {
 
             path = Dijkstra.findPath(graph, userData);
             System.out.println(path);
+
+            int[] pathInOrder = PathData.pathInOrder(path);
+            System.out.println(String.format("Shortest path between (%d, %d) with a length of %d",path.getStart(),path.getEnd(),pathInOrder.length));
+            System.out.println(Arrays.toString(pathInOrder));
 
 
             if(userData.getPrintMode() == 1){
