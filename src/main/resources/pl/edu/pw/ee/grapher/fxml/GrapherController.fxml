@@ -46,7 +46,7 @@
                <children>
                   <Label fx:id="startLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="64.0" prefWidth="90.0" text="Range Start" textAlignment="CENTER">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="17.0" />
                      </font>
                   </Label>
                   <TextField fx:id="startInput" layoutX="95.0" layoutY="10.0" prefHeight="40.0" prefWidth="55.0">

@@ -20,7 +20,6 @@ public class Dijkstra {
         pathData.setEnd(userData.getEndPoint());
 
         int currentPoint = pathData.getStart();
-
         Arrays.fill(distance, Float.MAX_VALUE);
 
         for (int i = 0; i < numOfVertices; i++){

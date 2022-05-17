@@ -26,14 +26,39 @@ import static pl.edu.pw.ee.grapher.Constants.RANDOM_MODE;
 
 public class GrapherController implements Initializable {
     @FXML
-    private Button genButton, openButton, saveButton, searchButton;
+    private Button genButton;
     @FXML
-    private RadioButton wageModeRB, edgeModeRB, randomModeRB, standardRB, extendedRB;
+    private Button openButton;
     @FXML
-    private TextField columnInput, rowsInput, startInput, endInput, fileInput, startPointInput, endPointInput;
+    private Button saveButton;
+    @FXML
+    private Button searchButton;
+    @FXML
+    private RadioButton wageModeRB;
+    @FXML
+    private RadioButton edgeModeRB;
+    @FXML
+    private RadioButton randomModeRB;
+    @FXML
+    private RadioButton standardRB;
+    @FXML
+    private RadioButton extendedRB;
+    @FXML
+    private TextField columnInput;
+    @FXML
+    private TextField rowsInput;
+    @FXML
+    private TextField startInput;
+    @FXML
+    private TextField endInput;
+    @FXML
+    private TextField fileInput;
+    @FXML
+    private TextField startPointInput;
+    @FXML
+    private TextField endPointInput;
     @FXML
     private TextArea consoleOutput;
-
     private EntryData userData;
     private Graph graph;
     private PathData path;
@@ -65,9 +90,7 @@ public class GrapherController implements Initializable {
             userData.setRows(Integer.parseInt(rowsInput.getText()));
             userData.setRangeEnd(Float.parseFloat(endInput.getText()));
             userData.setRangeStart(Float.parseFloat(startInput.getText()));
-
             graph = null;
-
 
             if(userData.getMode() == WEIGHT_MODE) {
                 var graphGenW = new WageMode();
@@ -82,7 +105,7 @@ public class GrapherController implements Initializable {
                 graph = new Graph(userData.getRows(), userData.getColumns());
                 graphGenR.generate(graph, userData);
             }
-            updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)\n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
+            updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)%n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
         });
 
         saveButton.setOnMouseClicked(event -> {
@@ -92,8 +115,7 @@ public class GrapherController implements Initializable {
             if (file != null && graph != null) {
                 GraphSaver.saveToFile(graph, file);
                 fileInput.setText(file.getName());
-
-                updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)\n",graph.getRows(), graph.getColumns(),file.getName()));
+                updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)%n",graph.getRows(), graph.getColumns(),file.getName()));
             } else if (graph == null) {
                 updateConsole("No graph to save\n");
             }
@@ -107,7 +129,7 @@ public class GrapherController implements Initializable {
                 try {
                     graph = GraphReader.readFromFile(file);
                     fileInput.setText(file.getName());
-                    updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)\n",graph.getColumns(), graph.getRows(), file.getName()));
+                    updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -117,50 +139,39 @@ public class GrapherController implements Initializable {
         });
 
         wageModeRB.setOnMouseClicked(event -> userData.setMode(WEIGHT_MODE));
-
         edgeModeRB.setOnMouseClicked(event -> userData.setMode(EDGE_MODE));
-
         randomModeRB.setOnMouseClicked(event -> userData.setMode(RANDOM_MODE));
-
         standardRB.setOnMouseClicked(event -> userData.setPrintMode(STANDARD_MODE));
-
         extendedRB.setOnMouseClicked(event -> userData.setPrintMode(EXTENDED_MODE));
 
         searchButton.setOnMouseClicked(event -> {
             userData.setStartPoint(Integer.parseInt(startPointInput.getText().trim()));
             userData.setEndPoint(Integer.parseInt(endPointInput.getText().trim()));
-
             path = Dijkstra.findPath(graph, userData);
-            //System.out.println(path);
-
-            int[] pathInOrder = PathData.pathInOrder(path);
-            //System.out.println(String.format("Shortest path between (%d, %d) with a length of %d",path.getStart(),path.getEnd(),pathInOrder.length));
-            //System.out.println(Arrays.toString(pathInOrder));
-
+            var pathInOrder = PathData.pathInOrder(path);
 
             if(userData.getPrintMode() == STANDARD_MODE){
-                String pathConsoleOutput;
+                var pathConsoleOutput = new StringBuilder();
 
-                pathConsoleOutput = String.format("(%d;%d): ", path.getStart(), path.getEnd());
-                for(int i = 0; i <pathInOrder.length - 1; i++){
-                    pathConsoleOutput += String.format("%d ----> ",pathInOrder[i]);
+                pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
+                for (int vertex = 0; vertex <pathInOrder.length - 1; vertex++) {
+                    pathConsoleOutput.append(String.format("%d ----> ", vertex));
                 }
-                pathConsoleOutput += pathInOrder[pathInOrder.length-1];
+                pathConsoleOutput.append(pathInOrder[pathInOrder.length - 1]).append("\n");
 
-                updateConsole(pathConsoleOutput + "\n");
+                updateConsole(pathConsoleOutput.toString());
             } else if (userData.getPrintMode() == EXTENDED_MODE) {
-                String pathConsoleOutput;
+                var pathConsoleOutput = new StringBuilder();
 
-                pathConsoleOutput = String.format("(%d;%d): ", path.getStart(), path.getEnd());
-                for(int i = 0; i <pathInOrder.length - 1; i++){
-                    pathConsoleOutput += String.format("%d (%.2f) ----> ",pathInOrder[i], path.getWeight(pathInOrder[i+1]));
+                pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
+                for (int i = 0; i < pathInOrder.length - 1; i++){
+                    pathConsoleOutput.append(String.format("%d (%.2f) ----> ",pathInOrder[i], path.getWeight(pathInOrder[i+1])));
                 }
-                pathConsoleOutput += pathInOrder[pathInOrder.length-1];
+                pathConsoleOutput.append(pathInOrder[pathInOrder.length-1]).append("\n");
 
-                updateConsole(pathConsoleOutput + "\n");
+                updateConsole(pathConsoleOutput.toString());
             }
         });
-
     }
 
     private void updateConsole (String msg){
