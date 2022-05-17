@@ -118,7 +118,7 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <TextField fx:id="fileInput" layoutX="55.0" prefHeight="50.0" prefWidth="410.0">
+            <TextField fx:id="fileInput" layoutX="55.0" prefHeight="50.0" prefWidth="410.0" promptText="Wybierz plik">
                <font>
                   <Font size="23.0" />
                </font>

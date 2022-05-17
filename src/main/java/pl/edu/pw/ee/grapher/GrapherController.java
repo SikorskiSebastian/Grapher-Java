@@ -20,7 +20,10 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import static pl.edu.pw.ee.grapher.Constants.STANDARD_MODE;
+import static pl.edu.pw.ee.grapher.Constants.EXTENDED_MODE;
 import static pl.edu.pw.ee.grapher.Constants.WEIGHT_MODE;
+import static pl.edu.pw.ee.grapher.Constants.EDGE_MODE;
+import static pl.edu.pw.ee.grapher.Constants.RANDOM_MODE;
 
 public class GrapherController implements Initializable {
     @FXML
@@ -64,22 +67,23 @@ public class GrapherController implements Initializable {
             userData.setRangeEnd(Float.parseFloat(endInput.getText()));
             userData.setRangeStart(Float.parseFloat(startInput.getText()));
 
-            if(userData.getMode() == 1) {
-                graph = null;
+            graph = null;
+
+
+            if(userData.getMode() == WEIGHT_MODE) {
                 var graphGenW = new WageMode();
                 graph = new Graph(userData.getRows(), userData.getColumns());
                 graphGenW.generate(graph, userData);
-            } else if (userData.getMode() == 2) {
-                graph = null;
+            } else if (userData.getMode() == EDGE_MODE) {
                 var graphGenE = new EdgeMode();
                 graph = new Graph(userData.getRows(), userData.getColumns());
                 graphGenE.generate(graph, userData);
-            } else if (userData.getMode() == 3) {
-                graph = null;
+            } else if (userData.getMode() == RANDOM_MODE) {
                 var graphGenR = new GraphGenerator();
                 graph = new Graph(userData.getRows(), userData.getColumns());
                 graphGenR.generate(graph, userData);
             }
+            updateConsole(String.format("Pomyślnie wygenerowano graf (%d x%d) o wagach z zakresu (%.2f %.2f)\n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
         });
 
         saveButton.setOnMouseClicked(event -> {
@@ -90,11 +94,9 @@ public class GrapherController implements Initializable {
                 GraphSaver.saveToFile(graph, file);
                 fileInput.setText(file.getName());
 
-                consoleText += String.format("Pomyślnie zapisano graf (%d x %d) do pliku (%s)%n",graph.getRows(), graph.getColumns(),file.getName());
-                consoleOutput.setText(consoleText);
+                updateConsole(String.format("Pomyślnie zapisano graf (%d x %d) do pliku (%s)\n",graph.getRows(), graph.getColumns(),file.getName()));
             } else if (graph == null) {
-                consoleText += "Brak grafu do zapisania\n";
-                consoleOutput.setText(consoleText);
+                updateConsole("Brak grafu do zapisania\n");
             }
         });
 
@@ -106,40 +108,56 @@ public class GrapherController implements Initializable {
                 try {
                     graph = GraphReader.readFromFile(file);
                     fileInput.setText(file.getName());
-                    consoleText += String.format("Pomyślnie wczytano graf (%d x %d) z pliku(%s)%n",graph.getColumns(), graph.getRows(), file.getName());
-                    consoleOutput.setText(consoleText);
+                    updateConsole(String.format("Pomyślnie wczytano graf (%d x %d) z pliku(%s)\n",graph.getColumns(), graph.getRows(), file.getName()));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             } else {
-                consoleText += "Problem z plikiem podczas czytania \n";
-                consoleOutput.setText(consoleText);
+                updateConsole("Problem z plikiem podczas czytania \n");
             }
         });
 
-        wageModeRB.setOnMouseClicked(event -> userData.setMode(1));
+        wageModeRB.setOnMouseClicked(event -> userData.setMode(WEIGHT_MODE));
 
-        edgeModeRB.setOnMouseClicked(event -> userData.setMode(2));
+        edgeModeRB.setOnMouseClicked(event -> userData.setMode(EDGE_MODE));
 
-        randomModeRB.setOnMouseClicked(event -> userData.setMode(3));
+        randomModeRB.setOnMouseClicked(event -> userData.setMode(RANDOM_MODE));
+
+        standardRB.setOnMouseClicked(event -> userData.setPrintMode(STANDARD_MODE));
+
+        extendedRB.setOnMouseClicked(event -> userData.setPrintMode(EXTENDED_MODE));
 
         searchButton.setOnMouseClicked(event -> {
             userData.setStartPoint(Integer.parseInt(startPointInput.getText().trim()));
             userData.setEndPoint(Integer.parseInt(endPointInput.getText().trim()));
 
             path = Dijkstra.findPath(graph, userData);
-            System.out.println(path);
+            //System.out.println(path);
 
             int[] pathInOrder = PathData.pathInOrder(path);
-            System.out.println(String.format("Shortest path between (%d, %d) with a length of %d",path.getStart(),path.getEnd(),pathInOrder.length));
-            System.out.println(Arrays.toString(pathInOrder));
+            //System.out.println(String.format("Shortest path between (%d, %d) with a length of %d",path.getStart(),path.getEnd(),pathInOrder.length));
+            //System.out.println(Arrays.toString(pathInOrder));
 
 
-            if(userData.getPrintMode() == 1){
+            if(userData.getPrintMode() == STANDARD_MODE){
+                String pathConsoleOutput;
 
-            } else if (userData.getPrintMode() == 2) {
+                pathConsoleOutput = String.format("(%d;%d): ", path.getStart(), path.getEnd());
+                for(int i = 0; i <pathInOrder.length - 1; i++){
+                    pathConsoleOutput += String.format("%d ----> ",pathInOrder[i]);
+                }
+                pathConsoleOutput += pathInOrder[pathInOrder.length-1];
 
+                updateConsole(pathConsoleOutput + "\n");
+            } else if (userData.getPrintMode() == EXTENDED_MODE) {
+                updateConsole("RIGHT NOW ONLY STANDARD MODE WORKS!\n");
             }
         });
+
+    }
+
+    private void updateConsole (String msg){
+        consoleText += msg;
+        consoleOutput.setText(consoleText);
     }
 }
