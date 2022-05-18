@@ -10,10 +10,9 @@ import pl.edu.pw.ee.grapher.testData.TestEntry;
 import static pl.edu.pw.ee.grapher.utils.PathPrinter.printExtendedPathToString;
 import static pl.edu.pw.ee.grapher.utils.PathPrinter.printStandardPathToString;
 
-public class PathPrinterTest {
-
+class PathPrinterTest {
     @Test
-    void printStandardPathToString_Test(){
+    void printStandardPathToString_test_pass(){
         //given
         var expected = "(1;2): 0 ----> 1 ----> 2\n";
         var graph = new GraphCoherent();
@@ -27,7 +26,7 @@ public class PathPrinterTest {
     }
 
     @Test
-    void printExtendedPathToString_Test(){
+    void printExtendedPathToString_test_pass(){
         ///given
         var expected = "(1;2): 1 (5,84) ----> 3 (1,04) ----> 2\n";
         var graph = new GraphCoherent();

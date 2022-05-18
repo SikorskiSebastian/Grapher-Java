@@ -16,7 +16,6 @@ import pl.edu.pw.ee.grapher.graphio.GraphSaver;
 import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -67,9 +66,12 @@ public class GrapherController implements Initializable {
     private PathData path;
     private String consoleText;
 
+    private GrapherController(){}
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeGrapher();
+
         genButton.setOnMouseClicked(event -> {
             userData.setColumns(Integer.parseInt(columnInput.getText()));
             userData.setRows(Integer.parseInt(rowsInput.getText()));
@@ -94,32 +96,30 @@ public class GrapherController implements Initializable {
         });
 
         saveButton.setOnMouseClicked(event -> {
-            FileChooser fc = new FileChooser();
-            File file = fc.showOpenDialog(null);
+            var fc = new FileChooser();
+            var file = fc.showOpenDialog(null);
 
-            if (file != null && graph != null) {
-                GraphSaver.saveToFile(graph, file);
-                fileInput.setText(file.getName());
-                updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)%n",graph.getColumns(), graph.getRows(),file.getName()));
-            } else if (graph == null) {
-                updateConsole("No graph to save\n");
+            if (file == null || graph == null){
+                updateConsole("No graph to save or no file\n");
+                return;
             }
+
+            GraphSaver.saveToFile(graph, file);
+            fileInput.setText(file.getName());
+            updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)%n",graph.getColumns(), graph.getRows(),file.getName()));
         });
 
         openButton.setOnMouseClicked(event -> {
-            FileChooser fc = new FileChooser();
-            File file = fc.showOpenDialog(null);
+            var fc = new FileChooser();
+            var file = fc.showOpenDialog(null);
 
-            if(file != null ) {
-                try {
-                    graph = GraphReader.readFromFile(file);
-                    fileInput.setText(file.getName());
-                    updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
+            try {
+                graph = GraphReader.readFromFile(file);
+                fileInput.setText(file.getName());
+                updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
+            } catch (FileNotFoundException e) {
                 updateConsole("There is a problem with a file or user did not select the file \n");
+                e.printStackTrace();
             }
         });
 
@@ -164,7 +164,8 @@ public class GrapherController implements Initializable {
     }
 
     private void setSearchRadioButtons() {
-        ToggleGroup pathModeGroup = new ToggleGroup();
+        var pathModeGroup = new ToggleGroup();
+
         standardRB.setToggleGroup(pathModeGroup);
         extendedRB.setToggleGroup(pathModeGroup);
         standardRB.setSelected(true);
@@ -172,7 +173,8 @@ public class GrapherController implements Initializable {
     }
 
     private void setGenerationRadioButtons() {
-        ToggleGroup genModeGroup = new ToggleGroup();
+        var genModeGroup = new ToggleGroup();
+
         wageModeRB.setToggleGroup(genModeGroup);
         edgeModeRB.setToggleGroup(genModeGroup);
         randomModeRB.setToggleGroup(genModeGroup);

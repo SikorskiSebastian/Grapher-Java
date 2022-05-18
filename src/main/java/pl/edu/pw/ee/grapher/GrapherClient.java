@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class GrapherClient extends Application {
+    private GrapherClient(){}
+
     @Override
     public void start(@NotNull Stage stage) throws IOException{
         var fxmlLoader = new FXMLLoader(getClass().getResource("fxml/GrapherController.fxml"));
