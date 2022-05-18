@@ -2,11 +2,11 @@ package pl.edu.pw.ee.grapher.generator;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pl.edu.pw.ee.grapher.EntryData;
+import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 import pl.edu.pw.ee.grapher.graph.Vertex;
 
-import static pl.edu.pw.ee.grapher.Constants.*;
+import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 class WageModeTest {
 

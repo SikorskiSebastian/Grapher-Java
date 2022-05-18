@@ -97,12 +97,9 @@ public class PathData {
         int[] pathInOrder = new int[path.numOfVertices];
         int size = 0;
 
-        while (true) {
+        while (currentPoint != -1) {
             pathInOrder[size++] = currentPoint;
             currentPoint = path.getPredecessor(currentPoint);
-            if (currentPoint == -1) {
-                break;
-            }
         }
         int[] trimedPathInOrder = new int[size];
         System.arraycopy(pathInOrder,0, trimedPathInOrder, 0, size);

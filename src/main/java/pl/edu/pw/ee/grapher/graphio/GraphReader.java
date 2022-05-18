@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static pl.edu.pw.ee.grapher.Constants.*;
+import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 public class GraphReader{
     private GraphReader(){}

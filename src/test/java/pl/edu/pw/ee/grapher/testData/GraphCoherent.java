@@ -1,7 +1,7 @@
 package pl.edu.pw.ee.grapher.testData;
 
 import pl.edu.pw.ee.grapher.graph.Graph;
-import static pl.edu.pw.ee.grapher.Constants.*;
+import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 public class GraphCoherent {
     private final Graph graph;

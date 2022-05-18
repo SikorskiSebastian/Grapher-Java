@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import pl.edu.pw.ee.grapher.bfs.Bfs;
 import pl.edu.pw.ee.grapher.dijkstra.Dijkstra;
 import pl.edu.pw.ee.grapher.dijkstra.PathData;
 import pl.edu.pw.ee.grapher.generator.EdgeMode;
@@ -12,17 +13,19 @@ import pl.edu.pw.ee.grapher.generator.WageMode;
 import pl.edu.pw.ee.grapher.graph.Graph;
 import pl.edu.pw.ee.grapher.graphio.GraphReader;
 import pl.edu.pw.ee.grapher.graphio.GraphSaver;
+import pl.edu.pw.ee.grapher.utils.EntryData;
+import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static pl.edu.pw.ee.grapher.Constants.STANDARD_MODE;
-import static pl.edu.pw.ee.grapher.Constants.EXTENDED_MODE;
-import static pl.edu.pw.ee.grapher.Constants.WEIGHT_MODE;
-import static pl.edu.pw.ee.grapher.Constants.EDGE_MODE;
-import static pl.edu.pw.ee.grapher.Constants.RANDOM_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.STANDARD_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.EXTENDED_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.WEIGHT_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.EDGE_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.RANDOM_MODE;
 
 public class GrapherController implements Initializable {
     @FXML
@@ -66,25 +69,7 @@ public class GrapherController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        userData = new EntryData();
-        fileInput.setEditable(false);
-        consoleOutput.setEditable(false);
-        consoleText = "Grapher by SS & SP\n";
-        consoleOutput.setText(consoleText);
-
-        ToggleGroup genModeGroup = new ToggleGroup();
-        wageModeRB.setToggleGroup(genModeGroup);
-        edgeModeRB.setToggleGroup(genModeGroup);
-        randomModeRB.setToggleGroup(genModeGroup);
-        wageModeRB.setSelected(true);
-        userData.setMode(WEIGHT_MODE);
-
-        ToggleGroup pathModeGroup = new ToggleGroup();
-        standardRB.setToggleGroup(pathModeGroup);
-        extendedRB.setToggleGroup(pathModeGroup);
-        standardRB.setSelected(true);
-        userData.setPrintMode(STANDARD_MODE);
-
+        initializeGrapher();
         genButton.setOnMouseClicked(event -> {
             userData.setColumns(Integer.parseInt(columnInput.getText()));
             userData.setRows(Integer.parseInt(rowsInput.getText()));
@@ -115,7 +100,7 @@ public class GrapherController implements Initializable {
             if (file != null && graph != null) {
                 GraphSaver.saveToFile(graph, file);
                 fileInput.setText(file.getName());
-                updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)%n",graph.getRows(), graph.getColumns(),file.getName()));
+                updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)%n",graph.getColumns(), graph.getRows(),file.getName()));
             } else if (graph == null) {
                 updateConsole("No graph to save\n");
             }
@@ -145,38 +130,54 @@ public class GrapherController implements Initializable {
         extendedRB.setOnMouseClicked(event -> userData.setPrintMode(EXTENDED_MODE));
 
         searchButton.setOnMouseClicked(event -> {
+            if(!Bfs.checkIfCoherent(graph)){
+                updateConsole("Selected graph is not coherent!\n");
+                return;
+            }
             userData.setStartPoint(Integer.parseInt(startPointInput.getText().trim()));
             userData.setEndPoint(Integer.parseInt(endPointInput.getText().trim()));
+
             path = Dijkstra.findPath(graph, userData);
-            var pathInOrder = PathData.pathInOrder(path);
 
-            if(userData.getPrintMode() == STANDARD_MODE){
-                var pathConsoleOutput = new StringBuilder();
-
-                pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
-                for (int vertex = 0; vertex <pathInOrder.length - 1; vertex++) {
-                    pathConsoleOutput.append(String.format("%d ----> ", vertex));
-                }
-                pathConsoleOutput.append(pathInOrder[pathInOrder.length - 1]).append("\n");
-
-                updateConsole(pathConsoleOutput.toString());
+            if(userData.getPrintMode() == STANDARD_MODE) {
+                updateConsole(PathPrinter.printStandardPathToString(PathData.pathInOrder(path),path));
             } else if (userData.getPrintMode() == EXTENDED_MODE) {
-                var pathConsoleOutput = new StringBuilder();
-
-                pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
-                for (int i = 0; i < pathInOrder.length - 1; i++){
-                    pathConsoleOutput.append(String.format("%d (%.2f) ----> ",pathInOrder[i], path.getWeight(pathInOrder[i+1])));
-                }
-                pathConsoleOutput.append(pathInOrder[pathInOrder.length-1]).append("\n");
-
-                updateConsole(pathConsoleOutput.toString());
+                updateConsole(PathPrinter.printExtendedPathToString(PathData.pathInOrder(path),path));
             }
         });
     }
 
-    private void updateConsole (String msg){
+    private void initializeGrapher() {
+        userData = new EntryData();
+        fileInput.setEditable(false);
+        consoleOutput.setEditable(false);
+        consoleText = "Grapher by SS & SP\n";
+        consoleOutput.setText(consoleText);
+        setGenerationRadioButtons();
+        setSearchRadioButtons();
+    }
+
+    private void updateConsole (String msg) {
         consoleText += msg;
         consoleOutput.setText(consoleText);
         consoleOutput.setScrollTop(Double.MAX_VALUE);
     }
+
+    private void setSearchRadioButtons() {
+        ToggleGroup pathModeGroup = new ToggleGroup();
+        standardRB.setToggleGroup(pathModeGroup);
+        extendedRB.setToggleGroup(pathModeGroup);
+        standardRB.setSelected(true);
+        userData.setPrintMode(STANDARD_MODE);
+    }
+
+    private void setGenerationRadioButtons() {
+        ToggleGroup genModeGroup = new ToggleGroup();
+        wageModeRB.setToggleGroup(genModeGroup);
+        edgeModeRB.setToggleGroup(genModeGroup);
+        randomModeRB.setToggleGroup(genModeGroup);
+        wageModeRB.setSelected(true);
+        userData.setMode(WEIGHT_MODE);
+    }
 }
+

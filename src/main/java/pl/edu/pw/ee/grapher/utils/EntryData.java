@@ -1,8 +1,8 @@
-package pl.edu.pw.ee.grapher;
+package pl.edu.pw.ee.grapher.utils;
 
 import java.io.File;
 
-import static pl.edu.pw.ee.grapher.Constants.NO_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.NO_MODE;
 
 public class EntryData {
     private int mode;
@@ -12,7 +12,6 @@ public class EntryData {
     private float rangeEnd;
     private int startPoint;
     private int endPoint;
-    private File graphFile;
     private int printMode;
 
     public EntryData(int rows, int columns){
@@ -22,7 +21,6 @@ public class EntryData {
         this.columns = columns;
         this.rangeEnd = 0;
         this.rangeStart = 0;
-        this.graphFile = null;
     }
 
     public EntryData(){
@@ -34,7 +32,6 @@ public class EntryData {
         this.rangeStart = 0;
         this.startPoint = 0;
         this.endPoint = 0;
-        this.graphFile = null;
     }
 
     public int getPrintMode() {
@@ -59,10 +56,6 @@ public class EntryData {
 
     public float getRangeStart() {
         return rangeStart;
-    }
-
-    public void setGraphFile(File graphFile) {
-        this.graphFile = graphFile;
     }
 
     public int getMode() {
@@ -97,13 +90,10 @@ public class EntryData {
         this.endPoint = endPoint;
     }
 
-    public File getGraphFile() {
-        return graphFile;
-    }
-
     public void setColumns(int columns){
         this.columns = columns;
     }
+
     public void setRows(int rows){
         this.rows = rows;
     }
@@ -118,7 +108,6 @@ public class EntryData {
                 "\n rangeEnd=" + rangeEnd +
                 "\n startPoint=" + startPoint +
                 "\n endPoint=" + endPoint +
-                "\n graphFile=" + graphFile +
                 "\n printMode=" + printMode +
                 "}\n";
     }

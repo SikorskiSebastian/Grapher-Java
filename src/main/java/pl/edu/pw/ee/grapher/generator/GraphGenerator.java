@@ -1,10 +1,10 @@
 package pl.edu.pw.ee.grapher.generator;
 
 import org.jetbrains.annotations.NotNull;
-import pl.edu.pw.ee.grapher.EntryData;
+import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
-import static pl.edu.pw.ee.grapher.Constants.*;
+import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 public class GraphGenerator {
 
