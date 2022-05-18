@@ -1,6 +1,6 @@
 package pl.edu.pw.ee.grapher.testData;
 
-import pl.edu.pw.ee.grapher.EntryData;
+import pl.edu.pw.ee.grapher.utils.EntryData;
 
 public class TestEntry {
     private final EntryData entry;

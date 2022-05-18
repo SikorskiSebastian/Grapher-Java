@@ -97,23 +97,20 @@ public class PathData {
         int[] pathInOrder = new int[path.numOfVertices];
         int size = 0;
 
-        while (true) {
+        while (currentPoint != -1) {
             pathInOrder[size++] = currentPoint;
             currentPoint = path.getPredecessor(currentPoint);
-            if (currentPoint == -1) {
-                break;
-            }
         }
-        int[] trimedPathInOrder = new int[size];
-        System.arraycopy(pathInOrder,0, trimedPathInOrder, 0, size);
+        int[] trimmedPathInOrder = new int[size];
+        System.arraycopy(pathInOrder,0, trimmedPathInOrder, 0, size);
 
-        for(int i = 0; i < trimedPathInOrder.length / 2; i++) {
-            int tmp = trimedPathInOrder[i];
-            trimedPathInOrder[i] = trimedPathInOrder[trimedPathInOrder.length - i - 1];
-            trimedPathInOrder[trimedPathInOrder.length - i - 1] = tmp;
+        for(int i = 0; i < trimmedPathInOrder.length / 2; i++) {
+            int tmp = trimmedPathInOrder[i];
+            trimmedPathInOrder[i] = trimmedPathInOrder[trimmedPathInOrder.length - i - 1];
+            trimmedPathInOrder[trimmedPathInOrder.length - i - 1] = tmp;
         }
 
 
-        return trimedPathInOrder;
+        return trimmedPathInOrder;
     }
 }
