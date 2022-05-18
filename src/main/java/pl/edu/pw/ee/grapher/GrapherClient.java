@@ -13,7 +13,7 @@ import java.util.Objects;
 public class GrapherClient extends Application {
     @Override
     public void start(@NotNull Stage stage) throws IOException{
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/GrapherController.fxml"));
+        var fxmlLoader = new FXMLLoader(getClass().getResource("fxml/GrapherController.fxml"));
         int width = 1280;
         int height = 720;
         Scene scene = new Scene(fxmlLoader.load(), width, height);

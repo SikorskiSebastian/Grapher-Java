@@ -1,7 +1,6 @@
 package pl.edu.pw.ee.grapher.graphio;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.edu.pw.ee.grapher.graph.Graph;
 import pl.edu.pw.ee.grapher.testData.GraphCoherent;
