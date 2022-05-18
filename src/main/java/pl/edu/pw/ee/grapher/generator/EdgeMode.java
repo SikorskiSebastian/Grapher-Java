@@ -1,7 +1,7 @@
 package pl.edu.pw.ee.grapher.generator;
 
 import org.jetbrains.annotations.NotNull;
-import pl.edu.pw.ee.grapher.EntryData;
+import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
 import pl.edu.pw.ee.grapher.graph.Graph;
 

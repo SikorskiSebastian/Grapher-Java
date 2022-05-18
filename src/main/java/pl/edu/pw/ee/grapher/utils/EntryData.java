@@ -1,18 +1,17 @@
-package pl.edu.pw.ee.grapher;
+package pl.edu.pw.ee.grapher.utils;
 
 import java.io.File;
-import java.util.Arrays;
 
-import static pl.edu.pw.ee.grapher.Constants.NO_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.NO_MODE;
 
 public class EntryData {
     private int mode;
-    private final int rows;
-    private final int columns;
+    private int rows;
+    private int columns;
     private float rangeStart;
     private float rangeEnd;
-    private final int[] points;
-    private File graphFile;
+    private int startPoint;
+    private int endPoint;
     private int printMode;
 
     public EntryData(int rows, int columns){
@@ -22,8 +21,17 @@ public class EntryData {
         this.columns = columns;
         this.rangeEnd = 0;
         this.rangeStart = 0;
-        this.points = new int[rows * columns];
-        this.graphFile = null;
+    }
+
+    public EntryData(){
+        this.printMode = NO_MODE;
+        this.mode = NO_MODE;
+        this.rows = 0;
+        this.columns = 0;
+        this.rangeEnd = 0;
+        this.rangeStart = 0;
+        this.startPoint = 0;
+        this.endPoint = 0;
     }
 
     public int getPrintMode() {
@@ -50,12 +58,16 @@ public class EntryData {
         return rangeStart;
     }
 
-    public void setGraphFile(File graphFile) {
-        this.graphFile = graphFile;
-    }
-
     public int getMode() {
         return mode;
+    }
+
+    public int getStartPoint() {
+        return startPoint;
+    }
+
+    public int getEndPoint() {
+        return endPoint;
     }
 
     public void setRangeEnd(float rangeEnd) {
@@ -70,16 +82,20 @@ public class EntryData {
         this.mode = mode;
     }
 
-    public File getGraphFile() {
-        return graphFile;
+    public void setStartPoint(int startPoint) {
+        this.startPoint = startPoint;
     }
 
-    public void setPoint(int index, int point){
-        this.points[index] = point;
+    public void setEndPoint(int endPoint) {
+        this.endPoint = endPoint;
     }
 
-    public int getPoint(int index){
-        return this.points[index];
+    public void setColumns(int columns){
+        this.columns = columns;
+    }
+
+    public void setRows(int rows){
+        this.rows = rows;
     }
 
     @Override
@@ -90,8 +106,8 @@ public class EntryData {
                 "\n columns=" + columns +
                 "\n rangeStart=" + rangeStart +
                 "\n rangeEnd=" + rangeEnd +
-                "\n points=" + Arrays.toString(points) +
-                "\n graphFile=" + graphFile +
+                "\n startPoint=" + startPoint +
+                "\n endPoint=" + endPoint +
                 "\n printMode=" + printMode +
                 "}\n";
     }

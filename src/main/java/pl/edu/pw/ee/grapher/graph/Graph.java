@@ -1,11 +1,12 @@
 package pl.edu.pw.ee.grapher.graph;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Graph {
-    private Vertex[] vertices;
-    private int rows;
-    private int columns;
+    private final Vertex[] vertices;
+    private final int rows;
+    private final int columns;
 
     public Graph(int rows, int columns){
         this.rows = rows;
@@ -29,24 +30,17 @@ public class Graph {
         return rows;
     }
 
-    public Vertex[] getVertices() {
-        return vertices;
-    }
-
     public Vertex getVertex(int index){
         return vertices[index];
     }
 
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(rows, columns);
 
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
+        result = 31 * result + Arrays.hashCode(vertices);
 
-    public void setVertices(Vertex[] vertices) {
-        this.vertices = vertices;
+        return result;
     }
 
     @Override

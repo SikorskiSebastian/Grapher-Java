@@ -17,6 +17,7 @@ public class PathData {
         this.predecessors = new int[numOfVertices];
         this.weights = new float[numOfVertices];
 
+        Arrays.fill(weights, Float.MAX_VALUE);
         Arrays.fill(predecessors, -1);
     }
 
@@ -38,10 +39,6 @@ public class PathData {
 
     public int getPredecessor(int index){
         return predecessors[index];
-    }
-
-    public int getNumOfVertices() {
-        return numOfVertices;
     }
 
     public float getWeight(int index){
@@ -92,5 +89,28 @@ public class PathData {
     public String toString(){
         return "\nPredecessors:\n" + Arrays.toString(predecessors) +"\n" + "Weights:\n" +
                 Arrays.toString(weights) + "\n";
+    }
+
+    public static int[] pathInOrder (PathData path) {
+        int currentPoint = path.getEnd();
+
+        int[] pathInOrder = new int[path.numOfVertices];
+        int size = 0;
+
+        while (currentPoint != -1) {
+            pathInOrder[size++] = currentPoint;
+            currentPoint = path.getPredecessor(currentPoint);
+        }
+        int[] trimmedPathInOrder = new int[size];
+        System.arraycopy(pathInOrder,0, trimmedPathInOrder, 0, size);
+
+        for(int i = 0; i < trimmedPathInOrder.length / 2; i++) {
+            int tmp = trimmedPathInOrder[i];
+            trimmedPathInOrder[i] = trimmedPathInOrder[trimmedPathInOrder.length - i - 1];
+            trimmedPathInOrder[trimmedPathInOrder.length - i - 1] = tmp;
+        }
+
+
+        return trimmedPathInOrder;
     }
 }

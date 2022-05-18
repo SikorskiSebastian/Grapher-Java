@@ -1,6 +1,6 @@
 package pl.edu.pw.ee.grapher.testData;
 
-import pl.edu.pw.ee.grapher.EntryData;
+import pl.edu.pw.ee.grapher.utils.EntryData;
 
 public class TestEntry {
     private final EntryData entry;
@@ -8,8 +8,8 @@ public class TestEntry {
     public TestEntry(){
         entry = new EntryData(2, 2);
 
-        entry.setPoint(0, 1);
-        entry.setPoint(1, 2);
+        entry.setStartPoint(1);
+        entry.setEndPoint(2);
     }
 
     public EntryData getEntry(){

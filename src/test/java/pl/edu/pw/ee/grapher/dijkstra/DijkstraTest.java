@@ -14,7 +14,7 @@ class DijkstraTest {
         ExpectedPath expected = new ExpectedPath();
 
         //when
-        PathData result = Dijkstra.findPath(graph.getGraph(), entry.getEntry(), 0);
+        PathData result = Dijkstra.findPath(graph.getGraph(), entry.getEntry());
 
         //then
         Assertions.assertEquals(expected.getPathData(), result);

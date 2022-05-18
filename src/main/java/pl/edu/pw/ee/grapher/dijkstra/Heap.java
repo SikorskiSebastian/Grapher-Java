@@ -24,10 +24,6 @@ public class Heap {
         return length;
     }
 
-    public int getNumOfVertices() {
-        return numOfVertices;
-    }
-
     public float getPriority(int index){
         return priorities[index];
     }
@@ -150,8 +146,9 @@ public class Heap {
         vertices[0] = vertices[length];
         vertexIndex[vertices[0]] = 0;
 
-        while ((parent = returnSmallerIndex(index)) >= 0){
-            swapChildren(index, parent);
+        while ((index = returnSmallerIndex(parent)) >= 0){
+            swapChildren(parent, index);
+            parent = index;
         }
 
         return toReturn;

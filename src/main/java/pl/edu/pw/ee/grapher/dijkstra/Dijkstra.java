@@ -1,7 +1,7 @@
 package pl.edu.pw.ee.grapher.dijkstra;
 
 import org.jetbrains.annotations.NotNull;
-import pl.edu.pw.ee.grapher.EntryData;
+import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 import pl.edu.pw.ee.grapher.graph.Vertex;
 
@@ -10,17 +10,16 @@ import java.util.Arrays;
 public class Dijkstra {
     private Dijkstra() {}
 
-    public static @NotNull PathData findPath(Graph graph, @NotNull EntryData userData, int index){
-        var numOfVertices = userData.getColumns() * userData.getRows();
+    public static @NotNull PathData findPath(@NotNull Graph graph, @NotNull EntryData userData){
+        var numOfVertices = graph.getColumns() * graph.getRows();
         var distance = new float[numOfVertices];
         var heap = new Heap(numOfVertices);
 
         PathData pathData = new PathData(numOfVertices);
-        pathData.setStart(userData.getPoint(2*index));
-        pathData.setEnd(userData.getPoint(2 * index + 1));
+        pathData.setStart(userData.getStartPoint());
+        pathData.setEnd(userData.getEndPoint());
 
         int currentPoint = pathData.getStart();
-
         Arrays.fill(distance, Float.MAX_VALUE);
 
         for (int i = 0; i < numOfVertices; i++){

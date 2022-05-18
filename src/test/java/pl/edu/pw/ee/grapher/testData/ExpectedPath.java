@@ -14,7 +14,7 @@ public class ExpectedPath {
         pathData.setPredecessor(3, 1);
 
         pathData.setWeight(0, (float) 9.961426);
-        pathData.setWeight(1, (float) 0.0);
+        pathData.setWeight(1, Float.MAX_VALUE);
         pathData.setWeight(2, (float) 1.042517);
         pathData.setWeight(3, (float) 5.840989);
     }

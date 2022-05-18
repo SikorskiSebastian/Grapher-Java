@@ -1,15 +1,16 @@
 package pl.edu.pw.ee.grapher.generator;
 
-import pl.edu.pw.ee.grapher.EntryData;
+import org.jetbrains.annotations.NotNull;
+import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
-import static pl.edu.pw.ee.grapher.Constants.*;
-import static pl.edu.pw.ee.grapher.Constants.LEFT;
+import static pl.edu.pw.ee.grapher.utils.Constants.*;
+import static pl.edu.pw.ee.grapher.utils.Constants.LEFT;
 
 public class WageMode extends GraphGenerator {
 
     @Override
-    void makeConnectionFromVertex(int index, Graph graph, EntryData userData) {
+    void makeConnectionFromVertex(int index, @NotNull Graph graph, EntryData userData) {
         int columns = graph.getColumns();
         int rows = graph.getRows();
         if (index - columns >= 0 && index - columns < columns * rows) {
