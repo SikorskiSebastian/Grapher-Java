@@ -1,9 +1,12 @@
 package pl.edu.pw.ee.grapher.utils;
 
+import org.jetbrains.annotations.NotNull;
 import pl.edu.pw.ee.grapher.dijkstra.PathData;
 
 public class PathPrinter {
-    public static String printStandardPathToString(int[] pathInOrder, PathData path) {
+    private PathPrinter(){}
+
+    public static @NotNull String printStandardPathToString(int @NotNull [] pathInOrder, @NotNull PathData path) {
         var pathConsoleOutput = new StringBuilder();
 
         pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
@@ -16,7 +19,7 @@ public class PathPrinter {
         return pathConsoleOutput.toString();
     }
 
-    public static String printExtendedPathToString(int[] pathInOrder, PathData path) {
+    public static @NotNull String printExtendedPathToString(int @NotNull [] pathInOrder, @NotNull PathData path) {
         var pathConsoleOutput = new StringBuilder();
 
         pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));

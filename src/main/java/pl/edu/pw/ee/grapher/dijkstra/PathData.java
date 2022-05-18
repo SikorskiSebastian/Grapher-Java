@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.grapher.dijkstra;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -91,17 +93,17 @@ public class PathData {
                 Arrays.toString(weights) + "\n";
     }
 
-    public static int[] pathInOrder (PathData path) {
-        int currentPoint = path.getEnd();
+    public static int @NotNull [] pathInOrder (@NotNull PathData path) {
+        var currentPoint = path.getEnd();
 
-        int[] pathInOrder = new int[path.numOfVertices];
+        var pathInOrder = new int[path.numOfVertices];
         int size = 0;
 
         while (currentPoint != -1) {
             pathInOrder[size++] = currentPoint;
             currentPoint = path.getPredecessor(currentPoint);
         }
-        int[] trimmedPathInOrder = new int[size];
+        var trimmedPathInOrder = new int[size];
         System.arraycopy(pathInOrder,0, trimmedPathInOrder, 0, size);
 
         for(int i = 0; i < trimmedPathInOrder.length / 2; i++) {
@@ -109,7 +111,6 @@ public class PathData {
             trimmedPathInOrder[i] = trimmedPathInOrder[trimmedPathInOrder.length - i - 1];
             trimmedPathInOrder[trimmedPathInOrder.length - i - 1] = tmp;
         }
-
 
         return trimmedPathInOrder;
     }
