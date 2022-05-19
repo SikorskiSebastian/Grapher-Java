@@ -66,8 +66,6 @@ public class GrapherController implements Initializable {
     private PathData path;
     private String consoleText;
 
-    private GrapherController(){}
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeGrapher();
