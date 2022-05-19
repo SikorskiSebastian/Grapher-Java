@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap')
+
+#anchorPane{
+    -fx-background-color: #3d0c07;
+}
+
+#pathList{
+    -fx-background-color: white;
+}
+
+#genPane{
+    -fx-background-color: #e8dcda;
+}
+
+#filePane{
+    -fx-background-color: #e8dcda;
+}
+
+#fileLabel{
+    -fx-background-color: #e8dcda;
+    -fx-alignment: center;
+}
+
+#scrollAnchor{
+    -fx-background-color: #e8dcda;
+}
+
+#pathPane{
+    -fx-background-color: #e8dcda;
+}
+
+#titleLabel{
+    -fx-padding: 10px;
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-style: italic;
+    -fx-font-size: 40px;
+    -fx-text-fill: "white";
+    -fx-effect: dropshadow(two-pass-box, black, 5, 5, 1, 1);
+}
+
+#genLabel{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 20px;
+}
+
+#shortestPathLabel{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 20px;
+}
+
+.text-field{
+    -fx-focus-color: transparent;
+}
+
+.text-area{
+    -fx-focus-color: transparent;
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #e8dcda;
+}
+
+.radio-button{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 17px;
+}
+
+.label{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 17px;
+}
+
+.button{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 17px;
+    -fx-color: #C81412;
+}
