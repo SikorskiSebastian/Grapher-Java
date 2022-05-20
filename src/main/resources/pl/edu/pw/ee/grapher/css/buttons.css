@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap')
+
+.button{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 17px;
+    -fx-color: #1e88d9;
+}
+
+.button: hover{
+    -fx-color: #59aef0;
+}
+
+.button: pressed{
+    -fx-color: #62a1d1;
+}
+
+.radio-button{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 17px;
+}
