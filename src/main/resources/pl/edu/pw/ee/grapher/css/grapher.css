@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap')
 
 #anchorPane{
-    -fx-background-color: #3d0c07;
+    -fx-background-color: #005799;
 }
 
 #pathList{
@@ -9,24 +9,24 @@
 }
 
 #genPane{
-    -fx-background-color: #e8dcda;
+    -fx-background-color: #81abcc;
 }
 
 #filePane{
-    -fx-background-color: #e8dcda;
+    -fx-background-color: #81abcc;
 }
 
 #fileLabel{
-    -fx-background-color: #e8dcda;
+    -fx-background-color: #81abcc;
     -fx-alignment: center;
 }
 
 #scrollAnchor{
-    -fx-background-color: #e8dcda;
+    -fx-background-color: #81abcc;
 }
 
 #pathPane{
-    -fx-background-color: #e8dcda;
+    -fx-background-color: #81abcc;
 }
 
 #titleLabel{
@@ -72,13 +72,13 @@
 .button{
     -fx-font-family: 'Aldrich', sans-serif;
     -fx-font-size: 17px;
-    -fx-color: #C81412;
+    -fx-color: #1e88d9;
 }
 
 .button: hover{
-    -fx-color: #ed3937;
+    -fx-color: #59aef0;
 }
 
 .button: pressed{
-    -fx-color: #db211f;
+    -fx-color: #62a1d1;
 }
