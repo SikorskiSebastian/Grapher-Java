@@ -74,3 +74,11 @@
     -fx-font-size: 17px;
     -fx-color: #C81412;
 }
+
+.button: hover{
+    -fx-color: #ed3937;
+}
+
+.button: pressed{
+    -fx-color: #db211f;
+}

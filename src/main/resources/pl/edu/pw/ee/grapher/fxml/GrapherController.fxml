@@ -110,7 +110,7 @@
                   <Font size="15.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="extendedRB" layoutX="43.0" layoutY="142.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Extended Mode">
+            <RadioButton fx:id="extendedRB" layoutX="43.0" layoutY="142.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" text="Extended Mode">
                <font>
                   <Font size="15.0" />
                </font>
