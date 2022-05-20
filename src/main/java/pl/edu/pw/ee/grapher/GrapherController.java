@@ -16,8 +16,6 @@ import pl.edu.pw.ee.grapher.graphio.GraphSaver;
 import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 

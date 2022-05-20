@@ -8,11 +8,11 @@ import static pl.edu.pw.ee.grapher.utils.Constants.*;
 import static pl.edu.pw.ee.grapher.utils.Constants.LEFT;
 
 public class WageMode extends GraphGenerator {
-
     @Override
-    void makeConnectionFromVertex(int index, @NotNull Graph graph, EntryData userData) {
+    public void makeConnectionFromVertex(int index, @NotNull Graph graph, EntryData userData) {
         int columns = graph.getColumns();
         int rows = graph.getRows();
+
         if (index - columns >= 0 && index - columns < columns * rows) {
             graph.getVertex(index).setExistence(UP, true);
             graph.getVertex(index).setWeight(UP, generateWeight(userData.getRangeStart(), userData.getRangeEnd()));

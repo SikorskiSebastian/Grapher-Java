@@ -7,7 +7,6 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 public class GraphGenerator {
-
     public void generate(@NotNull Graph graph, EntryData userData) {
         int numOfVertices = graph.getNumOfVertices();
         for (int i = 0; i < numOfVertices; i++) {
@@ -15,15 +14,15 @@ public class GraphGenerator {
         }
     }
 
-    float generateWeight(float start, float end) {
+    public static float generateWeight(float start, float end) {
         return (float) ((Math.random() * (end - start)) + start);
     }
 
-    static boolean generateEdge(){
+    public static boolean generateEdge(){
         return (Math.random() < 0.5);
     }
 
-    void makeConnectionFromVertex(int index, @NotNull Graph graph, EntryData userData) {
+    public void makeConnectionFromVertex(int index, @NotNull Graph graph, EntryData userData) {
         int columns = graph.getColumns();
         int rows = graph.getRows();
 
@@ -58,7 +57,7 @@ public class GraphGenerator {
         }
 
         if(generateEdge()){
-            if( index - 1 >= 0 && index % columns != 0){
+            if(index - 1 >= 0 && index % columns != 0){
                 graph.getVertex(index).setExistence(LEFT, true);
                 graph.getVertex(index).setWeight(LEFT, generateWeight(userData.getRangeStart(), userData.getRangeEnd()));
                 graph.getVertex(index).setConnections(LEFT, index - 1);
@@ -68,5 +67,4 @@ public class GraphGenerator {
         }
 
     }
-
 }

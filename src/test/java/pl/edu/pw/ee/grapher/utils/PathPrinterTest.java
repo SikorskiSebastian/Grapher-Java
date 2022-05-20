@@ -38,7 +38,6 @@ class PathPrinterTest {
         var result = printExtendedPathToString(PathData.pathInOrder(path), path);
 
         //then
-        Assertions.assertEquals(expected,result);
+        Assertions.assertEquals(expected,result.replace('.', ','));
     }
-
 }
