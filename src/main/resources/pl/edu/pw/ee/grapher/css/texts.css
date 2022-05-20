@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap')
+
+#fileLabel{
+    -fx-background-color: #81abcc;
+    -fx-alignment: center;
+}
+
+#titleLabel{
+    -fx-padding: 10px;
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-style: italic;
+    -fx-font-size: 40px;
+    -fx-text-fill: "white";
+    -fx-effect: dropshadow(two-pass-box, black, 5, 5, 1, 1);
+}
+
+#genLabel{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 20px;
+}
+
+#shortestPathLabel{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 20px;
+}
+
+.text-field{
+    -fx-focus-color: transparent;
+}
+
+.text-area{
+    -fx-focus-color: transparent;
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #e8dcda;
+}
+
+.label{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 17px;
+}

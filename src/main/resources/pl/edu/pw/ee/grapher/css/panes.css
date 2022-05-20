@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap')
+
+#anchorPane{
+    -fx-background-color: #005799;
+}
+
+#pathList{
+    -fx-background-color: white;
+}
+
+#genPane{
+    -fx-background-color: #81abcc;
+}
+
+#filePane{
+    -fx-background-color: #81abcc;
+}
+
+#scrollAnchor{
+    -fx-background-color: #81abcc;
+}
+
+#pathPane{
+    -fx-background-color: #81abcc;
+}
