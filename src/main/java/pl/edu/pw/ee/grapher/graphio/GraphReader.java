@@ -5,7 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -14,8 +15,8 @@ import static pl.edu.pw.ee.grapher.utils.Constants.*;
 public class GraphReader{
     private GraphReader(){}
 
-    public static @Nullable Graph readFromFile(File graphFile) throws FileNotFoundException {
-        try (var in = new Scanner(graphFile)){
+    public static @Nullable Graph readFromFile(File graphFile) {
+        try (var in = new Scanner(graphFile, StandardCharsets.UTF_8)){
             int rows = in.nextInt();
             int columns = in.nextInt();
 
@@ -35,7 +36,7 @@ public class GraphReader{
             }
 
             return graph;
-        } catch (InputMismatchException e) {
+        } catch (InputMismatchException | IOException e) {
             System.err.println("Wrong arguments given!");
             e.printStackTrace();
         }

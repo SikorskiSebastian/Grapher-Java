@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&display=swap');
 
 .button{
     -fx-font-family: 'Aldrich', sans-serif;
@@ -6,11 +6,11 @@
     -fx-color: #1e88d9;
 }
 
-.button: hover{
+.button:hover{
     -fx-color: #59aef0;
 }
 
-.button: pressed{
+.button:pressed{
     -fx-color: #62a1d1;
 }
 
