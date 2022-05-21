@@ -9,12 +9,12 @@ class DijkstraTest {
     @Test
     void findPath_test_pass(){
         //given
-        GraphCoherent graph = new GraphCoherent();
-        TestEntry entry = new TestEntry();
-        ExpectedPath expected = new ExpectedPath();
+        var graph = new GraphCoherent();
+        var entry = new TestEntry();
+        var expected = new ExpectedPath();
 
         //when
-        PathData result = Dijkstra.findPath(graph.getGraph(), entry.getEntry());
+        var result = Dijkstra.findPath(graph.getGraph(), entry.getEntry());
 
         //then
         Assertions.assertEquals(expected.getPathData(), result);
