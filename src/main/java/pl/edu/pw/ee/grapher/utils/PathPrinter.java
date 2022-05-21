@@ -10,8 +10,6 @@ public class PathPrinter {
         var pathConsoleOutput = new StringBuilder();
 
         pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
-
-        pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
         for (int i = 0; i < pathInOrder.length - 1; i++){
             pathConsoleOutput.append(String.format("%d ----> ",pathInOrder[i] ));
         }
