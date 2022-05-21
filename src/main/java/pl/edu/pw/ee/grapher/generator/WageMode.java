@@ -14,24 +14,16 @@ public class WageMode extends GraphGenerator {
         int rows = graph.getRows();
 
         if (index - columns >= 0 && index - columns < columns * rows) {
-            graph.getVertex(index).setExistence(UP, true);
-            graph.getVertex(index).setWeight(UP, generateWeight(userData.getRangeStart(), userData.getRangeEnd()));
-            graph.getVertex(index).setConnections(UP, index - columns);
+            vertexSetter(graph, userData, new VertexData(index, index - columns, UP));
         }
         if (index + 1 < columns * rows && (index + 1) % columns != 0) {
-            graph.getVertex(index).setExistence(RIGHT, true);
-            graph.getVertex(index).setWeight(RIGHT, generateWeight(userData.getRangeStart(), userData.getRangeEnd()));
-            graph.getVertex(index).setConnections(RIGHT, index + 1);
+            vertexSetter(graph, userData, new VertexData(index, index + 1, RIGHT));
         }
         if (index + columns > 0 && index + columns < columns * rows) {
-            graph.getVertex(index).setExistence(DOWN, true);
-            graph.getVertex(index).setWeight(DOWN, generateWeight(userData.getRangeStart(), userData.getRangeEnd()));
-            graph.getVertex(index).setConnections(DOWN, index + columns);
+            vertexSetter(graph, userData, new VertexData(index, index + columns, DOWN));
         }
         if (index - 1 >= 0 && index % columns != 0) {
-            graph.getVertex(index).setExistence(LEFT, true);
-            graph.getVertex(index).setWeight(LEFT, generateWeight(userData.getRangeStart(), userData.getRangeEnd()));
-            graph.getVertex(index).setConnections(LEFT, index - 1);
+            vertexSetter(graph, userData, new VertexData(index, index - 1, LEFT));
         }
     }
 }

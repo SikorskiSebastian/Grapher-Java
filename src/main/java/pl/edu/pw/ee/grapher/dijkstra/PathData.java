@@ -81,8 +81,8 @@ public class PathData {
     public int hashCode() {
         int result = Objects.hash(numOfVertices, start, end);
 
-        result = 31 * result + Arrays.hashCode(predecessors);
-        result = 31 * result + Arrays.hashCode(weights);
+        result = 37 * result + Arrays.hashCode(predecessors);
+        result = 32 * result + Arrays.hashCode(weights);
 
         return result;
     }
@@ -97,7 +97,7 @@ public class PathData {
         var currentPoint = path.getEnd();
 
         var pathInOrder = new int[path.numOfVertices];
-        int size = 0;
+        var size = 0;
 
         while (currentPoint != -1) {
             pathInOrder[size++] = currentPoint;
@@ -107,7 +107,7 @@ public class PathData {
         System.arraycopy(pathInOrder,0, trimmedPathInOrder, 0, size);
 
         for(int i = 0; i < trimmedPathInOrder.length / 2; i++) {
-            int tmp = trimmedPathInOrder[i];
+            var tmp = trimmedPathInOrder[i];
             trimmedPathInOrder[i] = trimmedPathInOrder[trimmedPathInOrder.length - i - 1];
             trimmedPathInOrder[trimmedPathInOrder.length - i - 1] = tmp;
         }

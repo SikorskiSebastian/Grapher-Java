@@ -14,7 +14,7 @@ public class Bfs {
 
     public static boolean checkIfCoherent(@NotNull Graph graph) {
         var queue = new LinkedList<Integer>();
-        boolean[] visited = new boolean[graph.getNumOfVertices()];
+        var visited = new boolean[graph.getNumOfVertices()];
         Arrays.fill(visited, false);
         queue.add(0);
 
@@ -23,11 +23,9 @@ public class Bfs {
             Vertex currentVertex = graph.getVertex(currentIndex);
 
             for (int i = 0; i < 4; i++) {
-                if (currentVertex.getExistence(i)) {
-                    if (!visited[currentVertex.getConnection(i)]) {
-                        queue.add(currentVertex.getConnection(i));
-                        visited[currentVertex.getConnection(i)] = true;
-                    }
+                if (currentVertex.getExistence(i) && !visited[currentVertex.getConnection(i)]) {
+                    queue.add(currentVertex.getConnection(i));
+                    visited[currentVertex.getConnection(i)] = true;
                 }
             }
         }
@@ -49,11 +47,9 @@ public class Bfs {
             Vertex currentVertex = invertedGraph.getVertex(currentIndex);
 
             for (int i = 0; i < 4; i++) {
-                if (currentVertex.getExistence(i)) {
-                    if (!visited[currentVertex.getConnection(i)]) {
-                        queue.add(currentVertex.getConnection(i));
-                        visited[currentVertex.getConnection(i)] = true;
-                    }
+                if (currentVertex.getExistence(i) && !visited[currentVertex.getConnection(i)]) {
+                    queue.add(currentVertex.getConnection(i));
+                    visited[currentVertex.getConnection(i)] = true;
                 }
             }
         }
@@ -66,9 +62,12 @@ public class Bfs {
         return true;
     }
 
-    private static Graph invertGraph(Graph graph) {
-        Graph invertedGraph = new Graph(graph.getRows(),graph.getColumns());
-        int vertexUpIndex, vertexRightIndex, vertexDownIndex, vertexLeftIndex;
+    private static @NotNull Graph invertGraph(@NotNull Graph graph) {
+        var invertedGraph = new Graph(graph.getRows(),graph.getColumns());
+        int vertexUpIndex;
+        int vertexRightIndex;
+        int vertexDownIndex;
+        int vertexLeftIndex;
         Vertex currentInvertedVertex;
 
         for(int i = 0; i < graph.getNumOfVertices(); i++) {

@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.grapher.utils;
 
+import java.util.Objects;
+
 import static pl.edu.pw.ee.grapher.utils.Constants.NO_MODE;
 
 public class EntryData {
@@ -94,6 +96,24 @@ public class EntryData {
 
     public void setRows(int rows){
         this.rows = rows;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+
+        var entryData = (EntryData) object;
+        return mode == entryData.mode && rows == entryData.rows && columns == entryData.columns && Float.compare(entryData.rangeStart, rangeStart) == 0 && Float.compare(entryData.rangeEnd, rangeEnd) == 0 && startPoint == entryData.startPoint && endPoint == entryData.endPoint && printMode == entryData.printMode;
+    }
+
+    @Override
+    public int hashCode() {
+        return 37 * Objects.hash(mode, rows, columns, rangeStart, rangeEnd, startPoint, endPoint, printMode);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 
 class GraphReaderTest {
     @Test
-    void readFromFile_test_pass() throws FileNotFoundException {
+    void readFromFile_test_pass(){
         //given
         var expected = new GraphCoherent();
         var graphFile = new File("src/test/resources/resultGraph.txt");

@@ -51,7 +51,7 @@ public class Graph {
         if (object == null || getClass() != object.getClass()){
             return false;
         }
-        Graph graph = (Graph) object;
+        var graph = (Graph) object;
 
         return rows == graph.rows && columns == graph.columns && Arrays.equals(vertices, graph.vertices);
     }
