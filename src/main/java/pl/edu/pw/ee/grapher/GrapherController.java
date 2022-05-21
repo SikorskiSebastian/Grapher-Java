@@ -126,6 +126,7 @@ public class GrapherController implements Initializable {
                 updateConsole("Selected graph is not coherent!\n");
                 return;
             }
+
             userData.setStartPoint(Integer.parseInt(startPointInput.getText().trim()));
             userData.setEndPoint(Integer.parseInt(endPointInput.getText().trim()));
 
