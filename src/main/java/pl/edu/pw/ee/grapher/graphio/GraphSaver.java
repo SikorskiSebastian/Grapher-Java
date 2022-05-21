@@ -11,7 +11,7 @@ public class GraphSaver {
     private GraphSaver(){}
 
     public static void saveToFile(@NotNull Graph graph, File graphFile){
-        StringBuilder myGraph = new StringBuilder();
+        var myGraph = new StringBuilder();
 
         myGraph.append(graph.getRows()).append(" ").append(graph.getColumns()).append("\n");
 

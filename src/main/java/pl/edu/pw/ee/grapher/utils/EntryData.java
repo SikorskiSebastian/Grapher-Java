@@ -1,7 +1,5 @@
 package pl.edu.pw.ee.grapher.utils;
 
-import java.io.File;
-
 import static pl.edu.pw.ee.grapher.utils.Constants.NO_MODE;
 
 public class EntryData {

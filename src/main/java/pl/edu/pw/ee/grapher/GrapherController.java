@@ -16,7 +16,6 @@ import pl.edu.pw.ee.grapher.graphio.GraphSaver;
 import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -111,14 +110,9 @@ public class GrapherController implements Initializable {
             var fc = new FileChooser();
             var file = fc.showOpenDialog(null);
 
-            try {
-                graph = GraphReader.readFromFile(file);
-                fileInput.setText(file.getName());
-                updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
-            } catch (FileNotFoundException e) {
-                updateConsole("There is a problem with a file or user did not select the file \n");
-                e.printStackTrace();
-            }
+            graph = GraphReader.readFromFile(file);
+            fileInput.setText(file.getName());
+            updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
         });
 
         wageModeRB.setOnMouseClicked(event -> userData.setMode(WEIGHT_MODE));
