@@ -31,21 +31,4 @@ class BfsTest {
         //then
         Assertions.assertEquals(expected, result);
     }
-
-    @Test
-    void calculateVertex_test_pass(){
-        /*
-        //given
-        int index = 4;
-        int numOfVertices = 12;
-        int expected = 5;
-
-        //when
-        int result = Bfs.calculateVertex(index, numOfVertices);
-
-        //then
-        Assertions.assertEquals(expected, result);
-         */
-        Assertions.assertTrue(true);
-    }
 }

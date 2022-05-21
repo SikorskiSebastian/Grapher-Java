@@ -20,7 +20,7 @@ public class GraphGenerator {
     }
 
     static boolean generateEdge(){
-        return (Math.random() < 0.75);
+        return (Math.random() < 0.5);
     }
 
     void makeConnectionFromVertex(int index, @NotNull Graph graph, EntryData userData) {
