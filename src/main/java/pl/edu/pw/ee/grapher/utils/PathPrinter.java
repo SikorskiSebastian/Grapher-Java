@@ -11,10 +11,11 @@ public class PathPrinter {
 
         pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
 
-        for (int vertex = 0; vertex <pathInOrder.length - 1; vertex++) {
-            pathConsoleOutput.append(String.format("%d ----> ", vertex));
+        pathConsoleOutput.append(String.format("(%d;%d): ", path.getStart(), path.getEnd()));
+        for (int i = 0; i < pathInOrder.length - 1; i++){
+            pathConsoleOutput.append(String.format("%d ----> ",pathInOrder[i] ));
         }
-        pathConsoleOutput.append(pathInOrder[pathInOrder.length - 1]).append("\n");
+        pathConsoleOutput.append(pathInOrder[pathInOrder.length-1]).append("\n");
 
         return pathConsoleOutput.toString();
     }

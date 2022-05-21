@@ -14,7 +14,7 @@ class PathPrinterTest {
     @Test
     void printStandardPathToString_test_pass(){
         //given
-        var expected = "(1;2): 0 ----> 1 ----> 2\n";
+        var expected = "(1;2): (1;2): 1 ----> 3 ----> 2\n";
         var graph = new GraphCoherent();
         var entry = new TestEntry();
         var path = Dijkstra.findPath(graph.getGraph(), entry.getEntry());
