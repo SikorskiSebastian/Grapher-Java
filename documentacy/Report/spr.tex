@@ -1,0 +1,284 @@
+\documentclass[10pt, a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{a4wide}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{forest}
+\usepackage{xcolor}
+
+\graphicspath{ {./images} }
+
+\definecolor{folderbg}{RGB}{124,166,198}
+\definecolor{folderborder}{RGB}{110,144,169}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{listings}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=6pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+
+\def\Size{4pt}
+\tikzset{
+  folder/.pic={
+    \filldraw[draw=folderborder,top color=folderbg!50,bottom color=folderbg]
+      (-1.05*\Size,0.2\Size+5pt) rectangle ++(.75*\Size,-0.2\Size-5pt);  
+    \filldraw[draw=folderborder,top color=folderbg!50,bottom color=folderbg]
+      (-1.15*\Size,-\Size) rectangle (1.15*\Size,\Size);
+  }
+}
+
+\begin{titlepage}
+    \title{\huge{\textbf{Specyfikacja implementacyjna} \\ programu \textit{"grapher"}}}
+    \author{Szymon Półtorak, Sebastian Sikorski}
+    \date{02.06.2022r}
+\end{titlepage}
+\renewcommand{\footrulewidth}{1pt}
+
+\begin{document}
+\maketitle
+\lstset{style=listings}
+
+\begin{abstract}
+    Niniejszy dokument stanowi sprawozdanie z projektu \textit{grapher} napisanego w języku \textit{Java}.
+     Przedstawiamy cel projektu, użyte algorytmy, strukturę folderów oraz działanie naszego programu. Podsumowujemy projekt, współpracę i wyciągamy z niego wnioski.
+\end{abstract}
+
+
+\renewcommand*\thesection{\arabic{section}} 
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Sprawozdanie grapher(Java)}
+\rhead{Szymon Półtorak i Sebastian Sikorski}
+\cfoot{Strona \thepage \hspace{1pt} z \pageref{LastPage}}
+
+\fancypagestyle{plain}{
+    \lhead{Sprawozdanie grapher(Java)}
+    \rhead{Szymon Półtorak, Sebastian Sikorski}
+    \cfoot{Strona \thepage \hspace{1pt} z \pageref{LastPage}}
+}
+\tableofcontents
+\newpage
+
+\section{Cel Projektu}
+Celem projektu było stworzenie programu mającego za zadanie generowanie grafów, sprawdzanie ich spójności oraz wyszukiwanie w nich najkrótszej ścieżki między zadanymi przez użytkownika punktami. 
+Grafi są typu \textit{kartka w kratkę}.
+    \begin{itemize}
+        \item Wage Mode – program generuje graf o losowych wagach dróg między wierzchołkami w taki sposób, że jest on spójny,
+        \item Edge Mode – program losuje istnienie krawędzi między wierzchołkami grafu oraz wagi do momentu powstania 
+        grafu spójnego. Do sprawdzania wykorzystuje algorytm BFS,
+        \item Random Mode – program losuje wagi dróg oraz krawędzie między wierzchołkami. W tym trybie graf może być niespójny,
+        \item Read Mode -- program odczytuje odpowiednio sformatowany plik i szuka najkrótszej ścieżki
+        między podanymi przez użytkownika punktami za pomocą algorytmu Dijkstry.
+    \end{itemize}
+    Po szczegóły dotyczące tematyki projektu odsyłamy do specyfikacji funkcjonalnej.
+
+\section{Środowisko powstawania projektu}
+Poniżej przedstawiamy środowisko powstania programu, czyli wykorzystane przez nas technologie.
+    \newline \begin{tabularx}{\textwidth}{ l|l } 
+        \hline Nazwa & Wersja \\ 
+        \hline IntelliJ Idea & 2022.1.1\\
+        \hline Apache Maven & 3.8.1 \\ 
+        \hline JavaFX & 18.0.1 \\
+        \hline JUnit & 5.8.2\\
+        \hline Java Development Kit & 17.03 LTS \\
+        \hline Java Language Level & 11\\
+        \hline Git & 2.30.2. \\
+        \hline
+    \end{tabularx}
+
+\section{Wybrany wzorzec projektowy}
+    Niniejszy projekt oparty jest na wzorcu projektowym fasady.
+    Powoduje to stworzenie jednego prostego interfejsu służącego do sterowania programem
+    a jego dodatkową zaletą jest ukrycie przed użytkownikiem złożoności programu.
+
+    \begin{figure}[h]
+      \begin{center}
+          \includegraphics[scale=0.45]{facede.png}
+          \caption{Przykładowe zastosowanie fasady na bazie bankomatu.}
+      \end{center}
+    \end{figure}
+\newpage
+
+\section{Format pliku z grafem}
+Program do działania w trybie Read Mode przyjmuje plik o określonych właściwościach:
+    \begin{itemize}
+        \item W pierwszym wierszu pliku znajduje się informacja o liczbie wierszy i kolumn jakie składają się na graf,
+        \item W każdym następnym wierszu znajduję się informacja o tym z jakimi innymi wierzchołkami połączony jest dany wierzchołek oraz waga jaka odpowiada temu połączeniu.
+    \end{itemize}
+    Ze względu na numerowanie wierzchołków od zera, numer wiersza odpowiada numerowi wierzchołka zwiększonego o jeden. 
+    Przykładowa zawartość pliku:
+    \lstinputlisting{listings/format.txt}
+
+\section{Uruchomienie Programu}
+
+\section{Struktura Programu}
+W tym rozdziale przedstawiamy strukturę katalogów naszego programu oraz diagram klas.
+
+\subsection{Struktura folderów}
+Struktura różni się lekko od tej zaprezentowanej w specyfikacjach z racji przeniesienia projektu na osobną stronę
+z system kontroli wersji. Wszystkie nazwy zostały zmienione na język angielski.
+
+\begin{forest}
+    for tree={
+      font=\ttfamily,
+      grow'=0,
+      child anchor=west,
+      parent anchor=south,
+      anchor=west,
+      calign=first,
+      inner xsep=7pt,
+      edge path={
+        \noexpand\path [draw, \forestoption{edge}]
+        (!u.south west) +(7.5pt,0) |- (.child anchor) pic {folder} \forestoption{edge label};
+      },
+      before typesetting nodes={
+        if n=1
+          {insert before={[,phantom]}}
+          {}
+      },
+      fit=band,
+      before computing xy={l=15pt},
+    }  
+    [\texttt{Grapher}
+      [\texttt{documentacy}
+        [\texttt{Functional Datasheet}
+            [\texttt{images}]
+            [\texttt{listings}]
+        ]
+        [\texttt{Implementational Datasheet}
+            [\texttt{images}]
+            [\texttt{listings}]
+        ]
+        [\texttt{Report}
+            [\texttt{images}]
+            [\texttt{listing}]
+        ]
+      ]
+      [\texttt{src}
+        [\texttt{java}
+            [\texttt{main}
+              [\texttt{java}
+                [\texttt{pl.edu.pw.ee.grapher}
+                    [\texttt{bfs}]
+                    [\texttt{dijkstra}]
+                    [\texttt{generator}]
+                    [\texttt{graph}]
+                    [\texttt{graphio}]
+                    [\texttt{utils}]
+                ]
+              ]
+              [\texttt{resources}
+                [\texttt{fxml}]
+                [\texttt{img}]
+                [\texttt{css}]
+              ]
+            ]
+        ]
+        [\texttt{test}
+          [\texttt{java}
+            [\texttt{pl.edu.pw.ee.grapher}
+                [\texttt{<te same foldery co w src/java>}]
+                [\texttt{testData}]
+            ]
+          ]
+          [\texttt{resources}]
+        ]
+    ]
+  ]
+\end{forest}
+
+\subsection{Diagram Klas}
+Poniżej przedstawiamy diagram klas pokazujący zależności między klasami w naszym programie.
+
+\section{Wykorzystane algorytmy}
+    Nasz program wykorzystuje dwa algorytmy, które opisujemy w poniższych podrozdziałach.
+
+    \subsection{Algorytm Dijkstry}
+    Algorytm Dijkstry liczy najkrótszą odległość od wierzchołka początkowego do wszystkich innych wierzchołków,
+    ale w naszej implementacji skupiamy się jedynie na najkrótszej ścieżce między wierzchołkami zadanymi przez
+    użytkownika. Algorytm ten korzysta z kopca pełniącego role kolejki priorytetowej oraz trzech tablic przechowujących
+    poprzedników, wagi połączeń i i całowity dystans.
+    Algorytm dodaje odwiedzane wierchołki do kolejki priorytetowej a nastepnie pobiera je z niej akutalizując dystans
+    dopóki kopiec nie jest pusty. Następnie zaczynając od wierzchołka końcowego (podanego przez użytkownika) cofamy się aż trafimy do wierzchołka początkowego.
+    Podczas cofania zapisujemy przez jakie wierzchołki przeszliśmy oraz jaka była waga takiego przejścia.
+    \begin{figure}[h]
+      \begin{center}
+          \includegraphics[scale=0.5]{dijkstra.png}
+          \caption{Przykładowe działanie algorytmu Dijksty.}
+      \end{center}
+    \end{figure}
+    \newpage
+
+    \subsection{Breadth-first search(BFS)}
+    Nasz program wykorzystuje do sprawdzania spójności algorytm BFS. Nasza implementacja różni się od pierwotnie zakładanej w specyfikacji implementacyjnej
+    projektu, ponieważ wykorzystaliśmy algorytm \textit{Kosaraju}, który wjaśnimy niżej. 
+    Algorytm w celu sprawdzenia spójności tworzy tablicę poprzedników o długości odpowiadającej ilości wierzchołków
+    oraz zapełnia ją wartościami -1. Rozpoczynając iteracje od wierzchołka zero aż do ostatniego wierzchołka.
+    Algorytm BFS polega na sprawdzeniu spójności przez przechodzenie po sąsiadach danego wierzchołka i jeżeli algorytmowi uda się 
+    przejść po wszystkich wierzchołkach(oczywiście jeżeli algorytm zostanie wykonany ze wszystkich wierzchołków co gwarantuje tak zwaną \textit{silną spóność}), czyli w tablicy odwiedzonych wierzchołków wszystkie mają wartość \texttt{true}, to znaczy, że graf jest spójny.
+    \begin{figure}[h]
+      \begin{center}
+          \includegraphics[scale=0.5]{bfs.png}
+          \caption{Przykładowe działanie algorytmu BFS.}
+      \end{center}
+  \end{figure}
+
+  \subsection{Strongly Connected Components (Algorytm Kosaraju)}
+  Algorytm Kosaraju polega na wykorzystaniu silnych związków pomiędzy wierzchołkami grafu. Pierwszym krokiem jest włączenie BFS'a z zerowego wierzchołka i sprawdzenie, czy graf jest spójny.
+  Jeżeli jest spójny to trzeba odwrócić graf, to znaczy zamienić zwroty wszystkich krawędzi grafu żeby biegły w przeciwną stronę, a następnie uruchamiamy BFS'a po raz drugi ale już na odwróconym grafie.
+  Spójność po drugim uruchomieniu sprawdzania za pomocą algorytmu zapewnia nam spójność całego grafu.
+
+\newpage
+
+\section{Wywołania programu}
+
+\section{Przeprowadzone testy}
+
+\section{Zmiany względem specyfikacji}
+\subsection{Klasy i Diagram klas}
+
+\subsection{Obsługa błędów}
+
+\section{Podsumowanie współpracy}
+Współpraca podczas projektu obyła się bez znaczących problemów oraz przebiegała efektywnie.
+Dzięki ciągłemu kontaktowi mogliśmy dyskutować nasze pomysły na zmiany działania programu oraz jego wyglądu.
+W kontrolowaniu zmian pomagał nam system kontroli wersji \textit{git}, który pomagał na bezproblemową pracę z repozytorium oraz wprowadzanie w nim zmian.
+
+\section{Podsumowanie Projektu}
+Projekt \textit{grapher} był realizowany od 14.04.2022r do 02.06.2022r. W ramach jego powstała dokumentacja projektu, czyli
+specyfikacja funkcjonalna, implementacja oraz niniejsze sprawozdanie. Oczywiście powstał również sam projekt, który posiada graficzny interfejs uzytkownika.
+Program umożliwia generowanie grafu w trzech trybach oraz czytanie grafu z możliwością szukania najkrótszej ścieżki między wierzchołkami zadanymi przez użytkownika.
+Sam sposób wyświetlania ścieżki działa w dwóch trybach jeden pokazuje samą ścieżkę, a drugi pokazuje wagę przejść między wierzchołkami. Program został przetestowany za pomocą testów
+jednostkowych z wykorzystaniem framework'u JUnit.
+
+\section{Wnioski}
+Projekt ten wymagał od nas wiele wysiłku, ponieważ musieliśmy nauczyć się nowych konceptów takich jak przede wszystkim
+programowanie obiektowe. Wymagał on od nas naszej pierwszej pracy z projektowaniem graficznego interfejsu użytkownika co było dla nas zupełnie nowym i sporym wyzwaniem.
+To samo tyczy się testowania oprogramowania oraz pracy z programem maven, wymagały one od nas nauki zupełnie nowych technologii i wykorzystanie ich w projekcie wymagało od nas
+szybkiej nauki nowych technologii. Z radością możemy stwierdzić, że wszelkie problemy związane z tymi rzeczami stały się dla nas przeszłością i dowodem na to jest w pełni działające
+oprogramowanie.
+
+\end{document}
