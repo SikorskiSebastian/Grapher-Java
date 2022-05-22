@@ -7,7 +7,7 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static pl.edu.pw.ee.grapher.utils.Constants.*;
@@ -35,7 +35,7 @@ public class GraphReader{
                 }
             }
             return graph;
-        } catch (InputMismatchException | IOException e) {
+        } catch (IOException | NoSuchElementException e) {
             System.err.println("Wrong arguments given!");
             e.printStackTrace();
         }
