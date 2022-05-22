@@ -10,8 +10,16 @@ public class ControllerAlerts {
     public static void popUserDataGenAlert(){
         var alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(GRAPHER_ERROR);
-        alert.setHeaderText("NumberFormatException");
+        alert.setHeaderText("IllegalArgumentException");
         alert.setContentText("You have given wrong number of generation items!");
+        alert.show();
+    }
+
+    public static void popSamePointsInfo(){
+        var alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Grapher Information");
+        alert.setHeaderText("There is nothing to be done!");
+        alert.setContentText("Points are the same. I have nothing to do.");
         alert.show();
     }
 
@@ -50,8 +58,8 @@ public class ControllerAlerts {
     public static void popUserReadAlert(){
         var alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(GRAPHER_ERROR);
-        alert.setHeaderText("Given start or end is in wrong range!");
-        alert.setContentText("End cannot be bigger than start and they can not be less than 0.");
+        alert.setHeaderText("Given points are in wrong range!");
+        alert.setContentText("Points can not be less than 0 and bigger than the actual size of graph.");
         alert.show();
     }
 

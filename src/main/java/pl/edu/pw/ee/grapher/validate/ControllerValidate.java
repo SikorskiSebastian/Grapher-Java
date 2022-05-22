@@ -17,10 +17,13 @@ public class ControllerValidate {
             userData.setRangeEnd(Float.parseFloat(endInput.getText()));
             userData.setRangeStart(Float.parseFloat(startInput.getText()));
 
-            if (userData.getRows() <= 0 || userData.getColumns() <= 0){
-                throw new NumberFormatException();
+            var start = userData.getRangeStart();
+            var end = userData.getRangeEnd();
+
+            if (userData.getRows() <= 0 || userData.getColumns() <= 0 || end < start || start < 0 || end <= 0){
+                throw new IllegalArgumentException();
             }
-        } catch (NumberFormatException exception) {
+        } catch (IllegalArgumentException exception) {
             ControllerAlerts.popUserDataGenAlert();
             return false;
         }
@@ -31,13 +34,14 @@ public class ControllerValidate {
         try {
             userData.setStartPoint(Integer.parseInt(startPointInput.getText()));
             userData.setEndPoint(Integer.parseInt(endPointInput.getText()));
-            var start = userData.getStartPoint();
-            var end = userData.getEndPoint();
+            var numOfVertices = userData.getRows() * userData.getColumns();
+            var startPoint = userData.getStartPoint();
+            var endPoint = userData.getEndPoint();
 
-            if (end < start || start < 0 || end <= 0){
-                throw new NumberFormatException();
+            if (startPoint >= numOfVertices || endPoint >= numOfVertices || startPoint < 0 || endPoint < 0){
+                throw new IllegalArgumentException();
             }
-        } catch (NumberFormatException exception) {
+        } catch (IllegalArgumentException exception) {
             ControllerAlerts.popUserReadAlert();
             return false;
         }

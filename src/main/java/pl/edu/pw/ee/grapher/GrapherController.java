@@ -136,6 +136,12 @@ public class GrapherController implements Initializable {
                 ControllerAlerts.popNotCoherentGraph();
                 return;
             }
+
+            if (userData.getStartPoint() == userData.getEndPoint()){
+                ControllerAlerts.popSamePointsInfo();
+                return;
+            }
+
             path = Dijkstra.findPath(graph, userData);
 
             if(userData.getPrintMode() == STANDARD_MODE) {
