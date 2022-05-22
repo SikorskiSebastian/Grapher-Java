@@ -73,7 +73,7 @@ public class GrapherController implements Initializable {
 
         genButton.setOnMouseClicked(event -> {
             if (!ControllerValidate.setUserGenData(userData, columnInput, rowsInput, endInput, startInput)){
-                updateConsole("Wrong input!");
+                updateConsole("Wrong input!\n");
                 return;
             }
             makeGraph();
