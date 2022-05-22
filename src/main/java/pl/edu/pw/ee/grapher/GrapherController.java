@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import pl.edu.pw.ee.grapher.validate.ControllerAlerts;
+import pl.edu.pw.ee.grapher.validate.ControllerValidate;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
 import pl.edu.pw.ee.grapher.dijkstra.Dijkstra;
 import pl.edu.pw.ee.grapher.dijkstra.PathData;
@@ -70,34 +72,24 @@ public class GrapherController implements Initializable {
         initializeGrapher();
 
         genButton.setOnMouseClicked(event -> {
-            userData.setColumns(Integer.parseInt(columnInput.getText()));
-            userData.setRows(Integer.parseInt(rowsInput.getText()));
-            userData.setRangeEnd(Float.parseFloat(endInput.getText()));
-            userData.setRangeStart(Float.parseFloat(startInput.getText()));
-            graph = null;
-
-            if(userData.getMode() == WEIGHT_MODE) {
-                var graphGenW = new WageMode();
-                graph = new Graph(userData.getRows(), userData.getColumns());
-                graphGenW.generate(graph, userData);
-            } else if (userData.getMode() == EDGE_MODE) {
-                var graphGenE = new EdgeMode();
-                graph = new Graph(userData.getRows(), userData.getColumns());
-                graphGenE.generate(graph, userData);
-            } else if (userData.getMode() == RANDOM_MODE) {
-                var graphGenR = new GraphGenerator();
-                graph = new Graph(userData.getRows(), userData.getColumns());
-                graphGenR.generate(graph, userData);
+            if (!ControllerValidate.setUserGenData(userData, columnInput, rowsInput, endInput, startInput)){
+                updateConsole("Wrong input!\n");
+                return;
             }
+            makeGraph();
             updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)%n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
         });
 
         saveButton.setOnMouseClicked(event -> {
+            if (ControllerValidate.isGraphNull(graph)){
+                updateConsole("No graph to save!\n");
+                return;
+            }
             var fc = new FileChooser();
             var file = fc.showOpenDialog(null);
 
-            if (file == null || graph == null){
-                updateConsole("No graph to save or no file\n");
+            if (ControllerValidate.isFileNullGen(file)){
+                updateConsole("No file!\n");
                 return;
             }
 
@@ -109,8 +101,17 @@ public class GrapherController implements Initializable {
         openButton.setOnMouseClicked(event -> {
             var fc = new FileChooser();
             var file = fc.showOpenDialog(null);
+            if (ControllerValidate.isFileNullRead(file)){
+                updateConsole("No file!\n");
+                return;
+            }
 
             graph = GraphReader.readFromFile(file);
+            if (!ControllerValidate.isGraphRead(graph)){
+                updateConsole("Graph is null.\n");
+                return;
+            }
+
             fileInput.setText(file.getName());
             updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
         });
@@ -122,13 +123,24 @@ public class GrapherController implements Initializable {
         extendedRB.setOnMouseClicked(event -> userData.setPrintMode(EXTENDED_MODE));
 
         searchButton.setOnMouseClicked(event -> {
+            if (!ControllerValidate.setUserReadData(userData, startPointInput, endPointInput)){
+                updateConsole("Wrong start or end.\n");
+                return;
+            }
+            if (graph == null){
+                ControllerAlerts.popNullGraphAlert();
+                return;
+            }
             if(!Bfs.checkIfCoherent(graph)){
                 updateConsole("Selected graph is not coherent!\n");
+                ControllerAlerts.popNotCoherentGraph();
                 return;
             }
 
-            userData.setStartPoint(Integer.parseInt(startPointInput.getText().trim()));
-            userData.setEndPoint(Integer.parseInt(endPointInput.getText().trim()));
+            if (userData.getStartPoint() == userData.getEndPoint()){
+                ControllerAlerts.popSamePointsInfo();
+                return;
+            }
 
             path = Dijkstra.findPath(graph, userData);
 
@@ -146,6 +158,7 @@ public class GrapherController implements Initializable {
         consoleOutput.setEditable(false);
         consoleText = "Grapher by SS & SP\n";
         consoleOutput.setText(consoleText);
+        graph = null;
         setGenerationRadioButtons();
         setSearchRadioButtons();
     }
@@ -173,6 +186,22 @@ public class GrapherController implements Initializable {
         randomModeRB.setToggleGroup(genModeGroup);
         wageModeRB.setSelected(true);
         userData.setMode(WEIGHT_MODE);
+    }
+
+    private void makeGraph(){
+        if(userData.getMode() == WEIGHT_MODE) {
+            var graphGenW = new WageMode();
+            graph = new Graph(userData.getRows(), userData.getColumns());
+            graphGenW.generate(graph, userData);
+        } else if (userData.getMode() == EDGE_MODE) {
+            var graphGenE = new EdgeMode();
+            graph = new Graph(userData.getRows(), userData.getColumns());
+            graphGenE.generate(graph, userData);
+        } else if (userData.getMode() == RANDOM_MODE) {
+            var graphGenR = new GraphGenerator();
+            graph = new Graph(userData.getRows(), userData.getColumns());
+            graphGenR.generate(graph, userData);
+        }
     }
 }
 

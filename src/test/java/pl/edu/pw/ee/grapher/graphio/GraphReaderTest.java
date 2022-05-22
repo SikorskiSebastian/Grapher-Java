@@ -30,7 +30,7 @@ class GraphReaderTest {
         //when
 
         //then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> GraphReader.readFromFile(graphFile));
+        Assertions.assertNull(GraphReader.readFromFile(graphFile));
     }
 
     @Test
@@ -41,6 +41,6 @@ class GraphReaderTest {
         //when
 
         //then
-        Assertions.assertThrows(IllegalStateException.class, () -> GraphReader.readFromFile(graphFile));
+        Assertions.assertNull(GraphReader.readFromFile(graphFile));
     }
 }

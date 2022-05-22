@@ -31,4 +31,18 @@ class BfsTest {
         //then
         Assertions.assertEquals(expected, result);
     }
+
+    @Test
+    public void calculateVertex_test_pass(){
+        //given
+        var index = 4;
+        var numOfVertices = 12;
+        var expected = 5;
+
+        //when
+        var result = Bfs.calculateVertex(index, numOfVertices);
+
+        //then
+        Assertions.assertEquals(expected, result);
+    }
 }

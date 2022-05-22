@@ -7,7 +7,7 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import static pl.edu.pw.ee.grapher.utils.Constants.*;
@@ -31,15 +31,13 @@ public class GraphReader{
                 var insertion = insertGraph(graph, i, line);
 
                 if (!insertion){
-                    throw new IllegalStateException("I was not able to insert graph!");
+                    throw new NoSuchElementException("I was not able to insert graph!");
                 }
             }
             return graph;
-        } catch (InputMismatchException | IOException e) {
-            System.err.println("Wrong arguments given!");
-            e.printStackTrace();
+        } catch (IOException | NoSuchElementException | IllegalArgumentException e) {
+            return null;
         }
-        return null;
     }
 
     public static boolean insertGraph(@NotNull Graph graph, int index, @NotNull String line){
@@ -80,6 +78,8 @@ public class GraphReader{
                     return false;
                 }
             }
+        } catch (NoSuchElementException e) {
+            return false;
         }
 
         return true;
