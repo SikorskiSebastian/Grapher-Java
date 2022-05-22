@@ -10,20 +10,20 @@ class GraphGeneratorTest {
     @Test
     void generateGraph_EdgeWeights_test_pass(){
         //given
-        int rows = 3;
-        int columns = 3;
-        float rangeStart = 0F;
-        float rangeEnd = 1F;
-        boolean expected = true;
-        boolean result = true;
+        var rows = 3;
+        var columns = 3;
+        var rangeStart = 0F;
+        var rangeEnd = 1F;
+        var expected = true;
+        var result = true;
 
 
         //when
-        EntryData userData = new EntryData(rows, columns);
+        var userData = new EntryData(rows, columns);
         userData.setRangeStart(rangeStart);
         userData.setRangeEnd(rangeEnd);
-        GraphGenerator generator = new WageMode();
-        Graph graph = new Graph(userData.getRows(),userData.getColumns());
+        var generator = new WageMode();
+        var graph = new Graph(userData.getRows(),userData.getColumns());
         generator.generate(graph,userData);
 
         //then

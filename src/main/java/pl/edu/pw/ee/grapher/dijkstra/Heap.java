@@ -162,7 +162,7 @@ public class Heap {
         if (object == null || getClass() != object.getClass()){
             return false;
         }
-        Heap heap = (Heap) object;
+        var heap = (Heap) object;
 
         return numOfVertices == heap.numOfVertices && length == heap.length && Arrays.equals(priorities, heap.priorities) && Arrays.equals(vertices, heap.vertices) && Arrays.equals(vertexIndex, heap.vertexIndex);
     }

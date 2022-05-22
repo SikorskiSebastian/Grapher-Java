@@ -9,11 +9,11 @@ class BfsTest {
     @Test
     void checkIfCoherent_coherent_graph(){
         //given
-        GraphCoherent graph = new GraphCoherent();
-        boolean expected = true;
+        var graph = new GraphCoherent();
+        var expected = true;
 
         //when
-        boolean result = Bfs.checkIfCoherent(graph.getGraph());
+        var result = Bfs.checkIfCoherent(graph.getGraph());
 
         //then
         Assertions.assertEquals(expected, result);
@@ -22,11 +22,11 @@ class BfsTest {
     @Test
     void checkIfCoherent_not_coherent_graph(){
         //given
-        Graph graph = new Graph(2,2);
-        boolean expected = false;
+        var graph = new Graph(2,2);
+        var expected = false;
 
         //when
-        boolean result = Bfs.checkIfCoherent(graph);
+        var result = Bfs.checkIfCoherent(graph);
 
         //then
         Assertions.assertEquals(expected, result);

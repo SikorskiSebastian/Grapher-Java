@@ -15,11 +15,11 @@ public class Dijkstra {
         var distance = new float[numOfVertices];
         var heap = new Heap(numOfVertices);
 
-        PathData pathData = new PathData(numOfVertices);
+        var pathData = new PathData(numOfVertices);
         pathData.setStart(userData.getStartPoint());
         pathData.setEnd(userData.getEndPoint());
 
-        int currentPoint = pathData.getStart();
+        var currentPoint = pathData.getStart();
         Arrays.fill(distance, Float.MAX_VALUE);
 
         for (int i = 0; i < numOfVertices; i++){
@@ -32,11 +32,11 @@ public class Dijkstra {
             currentPoint = heap.popFromHeap();
 
             for (int i = 0; i < 4; i++){
-                Vertex vertex = graph.getVertex(currentPoint);
+                var vertex = graph.getVertex(currentPoint);
 
                 if (graph.getVertex(currentPoint).getExistence(i)){
                     var newDistance = distance[currentPoint] + vertex.getWeight(i);
-                    int j = vertex.getConnection(i);
+                    var j = vertex.getConnection(i);
 
                     if (distance[j] > newDistance){
                         heap.updatePriority(j, newDistance);

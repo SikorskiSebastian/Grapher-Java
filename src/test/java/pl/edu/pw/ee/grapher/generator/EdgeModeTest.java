@@ -11,22 +11,22 @@ class EdgeModeTest {
     @Test
     void generateGraph_EdgeMode_test_pass(){
         //given
-        int rows = 3;
-        int columns = 3;
-        float rangeStart = 0F;
-        float rangeEnd = 1F;
-        boolean expected = true;
+        var rows = 3;
+        var columns = 3;
+        var rangeStart = 0F;
+        var rangeEnd = 1F;
+        var expected = true;
 
         //when
-        EntryData userData = new EntryData(rows, columns);
+        var userData = new EntryData(rows, columns);
         userData.setRangeStart(rangeStart);
         userData.setRangeEnd(rangeEnd);
-        GraphGenerator generator = new EdgeMode();
-        Graph graph = new Graph(userData.getRows(),userData.getColumns());
+        var generator = new EdgeMode();
+        var graph = new Graph(userData.getRows(),userData.getColumns());
         generator.generate(graph,userData);
 
         //then
-        boolean result = Bfs.checkIfCoherent(graph);
+        var result = Bfs.checkIfCoherent(graph);
 
         Assertions.assertEquals(expected,result);
     }

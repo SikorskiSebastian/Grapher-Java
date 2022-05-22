@@ -8,10 +8,10 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 public class EdgeMode extends GraphGenerator{
     @Override
     public void generate(@NotNull Graph graph, EntryData userData) {
-        boolean continueGeneration = true;
-        int numOfTries = 0;
-        int maxNumOfTries = 500;
-        int numOfVertices = graph.getNumOfVertices();
+        var continueGeneration = true;
+        var numOfTries = 0;
+        var maxNumOfTries = 500;
+        var numOfVertices = graph.getNumOfVertices();
 
         for (int i = 0; i < numOfVertices; i++) {
             makeConnectionFromVertex(i, graph, userData);

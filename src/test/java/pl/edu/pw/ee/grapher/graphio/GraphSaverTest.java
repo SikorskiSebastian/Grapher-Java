@@ -12,9 +12,9 @@ class GraphSaverTest {
     @Test
     void saveToFile_test_pass() throws IOException {
         //given
-        GraphCoherent graph = new GraphCoherent();
-        File resultGraph = new File("src/test/resources/resultGraph.txt");
-        File expectedGraph = new File("src/test/resources/expectedGraph.txt");
+        var graph = new GraphCoherent();
+        var resultGraph = new File("src/test/resources/resultGraph.txt");
+        var expectedGraph = new File("src/test/resources/expectedGraph.txt");
 
         //when
         GraphSaver.saveToFile(graph.getGraph(), resultGraph);

@@ -49,7 +49,7 @@ public class Vertex {
         if (object == null || getClass() != object.getClass()){
             return false;
         }
-        Vertex vertex = (Vertex) object;
+        var vertex = (Vertex) object;
 
         return Arrays.equals(existence, vertex.existence) && Arrays.equals(connections, vertex.connections) && Arrays.equals(weights, vertex.weights);
     }

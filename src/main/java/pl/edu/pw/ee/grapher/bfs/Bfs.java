@@ -2,110 +2,96 @@ package pl.edu.pw.ee.grapher.bfs;
 
 import org.jetbrains.annotations.NotNull;
 import pl.edu.pw.ee.grapher.graph.Graph;
-import pl.edu.pw.ee.grapher.graph.Vertex;
+
 import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 
 import java.util.Arrays;
-import java.util.LinkedList;
 
 public class Bfs {
     private Bfs() {}
 
     public static boolean checkIfCoherent(@NotNull Graph graph) {
-        var queue = new LinkedList<Integer>();
-        boolean[] visited = new boolean[graph.getNumOfVertices()];
-        Arrays.fill(visited, false);
-        queue.add(0);
+        if (!bfsLaunch(graph)){
+            return false;
+        }
+        return bfsLaunch(invertGraph(graph));
+    }
 
-        while (!queue.isEmpty()) {
-            int currentIndex = queue.removeFirst();
-            Vertex currentVertex = graph.getVertex(currentIndex);
+    public static boolean bfsLaunch(@NotNull Graph graph){
+        var numOfVertices = graph.getNumOfVertices();
+        var queue = new int[numOfVertices];
+        Arrays.fill(queue, -1);
 
-            for (int i = 0; i < 4; i++) {
-                if (currentVertex.getExistence(i)) {
-                    if (!visited[currentVertex.getConnection(i)]) {
-                        queue.add(currentVertex.getConnection(i));
-                        visited[currentVertex.getConnection(i)] = true;
-                    }
+        var visited = new boolean[numOfVertices];
+        int reader = 0;
+        int writer = 0;
+
+        queue[writer] = 0;
+        visited[0] = true;
+        writer = Bfs.calculateVertex(writer, numOfVertices);
+
+        while (reader != writer){
+            int currentVertex = queue[reader];
+            reader = Bfs.calculateVertex(reader, numOfVertices);
+
+            for (int j = 0; j < 4; j++){
+                int aim = graph.getVertex(currentVertex).getConnection(j);
+
+                if (graph.getVertex(currentVertex).getExistence(j) && !visited[aim]){
+                    visited[aim] = true;
+                    queue[writer] = aim;
+                    writer = Bfs.calculateVertex(writer, numOfVertices);
                 }
             }
         }
-        visited[0] = true;
-        for (boolean b : visited) {
-            if (!b) {
+
+        for (boolean visit : visited){
+            if (!visit){
                 return false;
             }
-        }
-
-        Graph invertedGraph = invertGraph(graph);
-
-        Arrays.fill(visited, false);
-        queue.clear();
-        queue.add(0);
-
-        while (!queue.isEmpty()) {
-            int currentIndex = queue.removeFirst();
-            Vertex currentVertex = invertedGraph.getVertex(currentIndex);
-
-            for (int i = 0; i < 4; i++) {
-                if (currentVertex.getExistence(i)) {
-                    if (!visited[currentVertex.getConnection(i)]) {
-                        queue.add(currentVertex.getConnection(i));
-                        visited[currentVertex.getConnection(i)] = true;
-                    }
-                }
-            }
-        }
-        visited[0] = true;
-        for (boolean b : visited) {
-            if (!b)
-                return false;
         }
 
         return true;
     }
 
-    private static Graph invertGraph(Graph graph) {
-        Graph invertedGraph = new Graph(graph.getRows(),graph.getColumns());
-        int vertexUpIndex, vertexRightIndex, vertexDownIndex, vertexLeftIndex;
-        Vertex currentInvertedVertex;
+
+    public static int calculateVertex(int index, int numOfVertices){
+        return (index + 1) % numOfVertices;
+    }
+
+    private static @NotNull Graph invertGraph(@NotNull Graph graph) {
+        var invertedGraph = new Graph(graph.getRows(),graph.getColumns());
 
         for(int i = 0; i < graph.getNumOfVertices(); i++) {
-            Vertex currentVertex = graph.getVertex(i);
-
-            vertexUpIndex = currentVertex.getConnection(UP);
-            vertexRightIndex = currentVertex.getConnection(RIGHT);
-            vertexDownIndex = currentVertex.getConnection(DOWN);
-            vertexLeftIndex = currentVertex.getConnection(LEFT);
+            var currentVertex = graph.getVertex(i);
+            var vertexUpIndex = currentVertex.getConnection(UP);
+            var vertexRightIndex = currentVertex.getConnection(RIGHT);
+            var vertexDownIndex = currentVertex.getConnection(DOWN);
+            var vertexLeftIndex = currentVertex.getConnection(LEFT);
 
             if(vertexUpIndex != -1) {
-                currentInvertedVertex = invertedGraph.getVertex(vertexUpIndex);
-                currentInvertedVertex.setExistence(DOWN,true);
-                currentInvertedVertex.setConnections(DOWN, i);
-                currentInvertedVertex.setWeight(DOWN, currentVertex.getWeight(UP));
+                Bfs.setInvertedVertex(invertedGraph, DOWN, i, vertexUpIndex);
             }
             if(vertexRightIndex != -1) {
-                currentInvertedVertex = invertedGraph.getVertex(vertexRightIndex);
-                currentInvertedVertex.setExistence(LEFT,true);
-                currentInvertedVertex.setConnections(LEFT, i);
-                currentInvertedVertex.setWeight(LEFT, currentVertex.getWeight(RIGHT));
+                Bfs.setInvertedVertex(invertedGraph, LEFT, i, vertexRightIndex);
             }
             if(vertexDownIndex != -1) {
-                currentInvertedVertex = invertedGraph.getVertex(vertexDownIndex);
-                currentInvertedVertex.setExistence(UP,true);
-                currentInvertedVertex.setConnections(UP, i);
-                currentInvertedVertex.setWeight(UP, currentVertex.getWeight(DOWN));
+                Bfs.setInvertedVertex(invertedGraph, UP, i, vertexDownIndex);
             }
             if(vertexLeftIndex != -1) {
-                currentInvertedVertex = invertedGraph.getVertex(vertexLeftIndex);
-                currentInvertedVertex.setExistence(RIGHT,true);
-                currentInvertedVertex.setConnections(RIGHT, i);
-                currentInvertedVertex.setWeight(RIGHT, currentVertex.getWeight(LEFT));
+                Bfs.setInvertedVertex(invertedGraph, RIGHT, i, vertexLeftIndex);
             }
         }
 
         return invertedGraph;
+    }
+
+    private static void setInvertedVertex(@NotNull Graph invertedGraph, int direction, int index, int vertexIndex){
+        var currentInvertedVertex = invertedGraph.getVertex(vertexIndex);
+        currentInvertedVertex.setExistence(direction,true);
+        currentInvertedVertex.setConnections(direction, index);
+        currentInvertedVertex.setWeight(direction, invertedGraph.getVertex(index).getWeight(direction));
     }
 
 }
