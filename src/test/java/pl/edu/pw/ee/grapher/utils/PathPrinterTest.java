@@ -12,14 +12,12 @@ import static pl.edu.pw.ee.grapher.utils.PathPrinter.printExtendedPathToString;
 import static pl.edu.pw.ee.grapher.utils.PathPrinter.printStandardPathToString;
 
 class PathPrinterTest {
-    private GraphCoherent graph;
-    private TestEntry entry;
     private PathData path;
 
     @BeforeEach
     void testDataInit(){
-        graph = new GraphCoherent();
-        entry = new TestEntry();
+        var graph = new GraphCoherent();
+        var entry = new TestEntry();
         path = Dijkstra.findPath(graph.getGraph(), entry.getEntry());
     }
 
