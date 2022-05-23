@@ -247,7 +247,7 @@ Nasz program wykorzystuje do sprawdzania spójności algorytm BFS. Nasza impleme
       \end{center}
   \end{figure}
 
-  \subsection{Strongly Connected Components (Algorytm Kosaraju)}
+  \subsection{Strongly Connected Components (Algorytm Kosaraju)}\label{subsec:kosaraju}
   Algorytm Kosaraju polega na wykorzystaniu silnych związków pomiędzy wierzchołkami grafu. Pierwszym krokiem jest włączenie BFS'a z zerowego wierzchołka i sprawdzenie, czy graf jest spójny.
   Jeżeli jest spójny to trzeba odwrócić graf, to znaczy zamienić zwroty wszystkich krawędzi grafu żeby biegły w przeciwną stronę, a następnie uruchamiamy BFS'a po raz drugi ale już na odwróconym grafie.
   Spójność po drugim uruchomieniu sprawdzania za pomocą algorytmu zapewnia nam spójność całego grafu.
@@ -258,17 +258,33 @@ Nasz program wykorzystuje do sprawdzania spójności algorytm BFS. Nasza impleme
 
 
 \section{Przeprowadzone testy}\label{sec:przeprowadzone-testy}
-
+Program został przetestowany za pomoą testów wykonanych przy pomocy frameworku \textit{JUnit}. Testy można uruchomić za pomocą \textit{Maven'a} albo przy pomocą narzędzi programistycznych wbudowanych w odpowiedni IDE.
+Przetestowaliśmy wszystkie istotne metody naszego programu i jego wszelkie zachowania.
 
 \section{Zmiany względem specyfikacji}\label{sec:zmiany-względem-specyfikacji}
+W niniejszym rozdziale prezentujemy zmiany jakie wprowadziliśmy względem tego co pojawiło się w specyfikacjach.
 
 \subsection{Klasy i Diagram klas}\label{subsec:klasy-i-diagram-klas}
 W trakcie implementacji naszego programu postanowiliśmy zmienić strukturę klas, a co za tym idzie całego diagramu. W rozdziale poświęconemu strukturze programu przedstawiliśmy nowy diagram klas.
 Tutaj przedstawimy zmiany w klasach.
+\begin{itemize}
+  \item EntryData -- klasa otrzymała parametr odpowiedzialny za tryb wyświetlania wyświetlania ścieżki oraz dodano nowy konstruktor w tejże klasie,
+  \item Struktura grafu -- przechowywanie grafu odbywa się teraz za pomocą klas Graph i Vertex, a nie jak wcześniej Graph, Vertex, Weights, Connections, Existence,
+  \item Nazewnictwo nodes -- wszystkie nazwy \textit{nodes} zostały zmienione na \textit{vertex},
+  \item Klasa GraphIO -- owa klasa została rozbita na dwie mniejsze, czyli \textit{GraphReader} i \textit{GraphSaver},
+  \item Metoda getpath -- ta metoda została w pełni usunięta,
+  \item readFromFile -- metoda teraz zwraca wczytany graf, a nie przyjmuje tak jak to robiła wcześniej, co poskutkowało zmianą typu z \textit{void} na \textit{Graph},
+  \item Generacja -- klasa ta została usunięte tak samo RandomMode, ponieważ uznaliśmy, że domyślnym trybem jest tryb Random, a Edge i Wage są jego specjalizacją. Postanowiliśmy wykorzystać tutaj interfejs Generator, z którym są zgodne te klasy dziedzicząc po trybie Random implementującym go,
+  \item makeConnectionFromVertex -- metoda posiada teraz dostęp do obiekt klasy EntryData, czyli userData.
+  \item Reszta zmian w klasach -- wszystkie klasy staraliśmy się jak najbardziej podzielić klasy żeby podzielić odpowiedzialność na mniejsze klasy niż na kilka bardzo dużych.
+\end{itemize}
 
 \subsection{Obsługa błędów}\label{subsec:obsługa-błędów}
 W naszej specyfikacji implementacyjnej pokazaliśmy tabelę konkretnych błędów obsługiwanych przez nasz program. Ostatecznie postanowiliśmy z nich zrezygnować, ponieważ wyjątki obsługiwane w javie okazały się lepszym
 sposobem obsługiwania błędów. Wszelkie błędy są obsługiwane za pomocą wyjątków Javy oraz pokazują się odpowiednie komunikaty w graficznym interfejsie użytkownika.
+
+\subsection{Testowanie programu}\label{subsec:testowanie-programu}
+W specyfikacji napisaliśmy o wykorzystaniu biblioteki \textit{AssertJ} ale ostatecznie framework \textit{JUnit} zaspokoił w pełni nasze potrzeby związane z testowaniem.
 
 \section{Podsumowanie współpracy}\label{sec:podsumowanie-współpracy}
 Współpraca podczas projektu obyła się bez znaczących problemów oraz przebiegała efektywnie.
