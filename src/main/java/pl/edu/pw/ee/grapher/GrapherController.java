@@ -228,10 +228,8 @@ public class GrapherController implements Initializable {
 
         float pointSize = 25;
         float spacing = pointSize;
-        graphCanvas.setWidth(2*graph.getColumns()*pointSize);
-        graphCanvas.setHeight(2*graph.getRows()*pointSize);
-        scrollAnchor.setPrefHeight(graphCanvas.getHeight());
-        scrollAnchor.setPrefWidth(graphCanvas.getWidth());
+
+        resizePrintWindow(graphCanvas, scrollAnchor, pointSize);
 
         for(int i = 0; i < graph.getRows(); i++) {
             for(int j = 0; j < graph.getColumns(); j++) {
@@ -263,6 +261,24 @@ public class GrapherController implements Initializable {
             }
         }
 
+    }
+
+    private void resizePrintWindow(Canvas graphCanvas, AnchorPane scrollAnchor, float pointSize) {
+        if(2*graph.getColumns()*pointSize >= 500) {
+            graphCanvas.setWidth(2 * graph.getColumns() * pointSize);
+            scrollAnchor.setPrefWidth(graphCanvas.getWidth());
+
+        } else {
+            graphCanvas.setWidth(500-2);
+            scrollAnchor.setPrefWidth(500-2);
+        }
+        if(2*graph.getRows()*pointSize >= 460) {
+            graphCanvas.setHeight(2 * graph.getRows() * pointSize);
+            scrollAnchor.setPrefHeight(graphCanvas.getHeight());
+        } else {
+            graphCanvas.setHeight(460-2);
+            scrollAnchor.setPrefHeight(460-2);
+        }
     }
 
     private void makeArrowUp(GraphicsContext gc,Point2D coordsOfCenter, float spacing) {
