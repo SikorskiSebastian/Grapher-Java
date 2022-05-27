@@ -228,7 +228,7 @@ public class GrapherController implements Initializable {
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
         gc.setTextAlign(TextAlignment.CENTER);
 
-        float pointSize = 50;
+        float pointSize = 25;
 
         resizePrintWindow(graphCanvas, scrollAnchor, pointSize);
 
@@ -260,11 +260,11 @@ public class GrapherController implements Initializable {
             }
         }
 
-        gc.setFont(new Font(18));
+        gc.setFont(new Font(pointSize * 0.35));
         gc.setFill(new Color(1,1,1,1));
         for(int index = 0; index < graph.getNumOfVertices(); index++) {
             Point2D coordsOfCenter = canvasLocationOfNodes.get(index);
-            gc.fillText(String.valueOf(index),coordsOfCenter.getX(),coordsOfCenter.getY() + 6);
+            gc.fillText(String.valueOf(index),coordsOfCenter.getX(),coordsOfCenter.getY() + gc.getFont().getSize() / 3);
         }
         gc.setFill(new Color(0,0,0,1));
     }
