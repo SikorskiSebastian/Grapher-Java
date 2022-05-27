@@ -2,7 +2,11 @@ package pl.edu.pw.ee.grapher;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import pl.edu.pw.ee.grapher.validate.ControllerAlerts;
 import pl.edu.pw.ee.grapher.validate.ControllerValidate;
@@ -19,6 +23,7 @@ import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import static pl.edu.pw.ee.grapher.utils.Constants.STANDARD_MODE;
@@ -28,6 +33,10 @@ import static pl.edu.pw.ee.grapher.utils.Constants.EDGE_MODE;
 import static pl.edu.pw.ee.grapher.utils.Constants.RANDOM_MODE;
 
 public class GrapherController implements Initializable {
+    @FXML
+    private Canvas graphCanvas;
+    @FXML
+    private AnchorPane scrollAnchor;
     @FXML
     private Button genButton;
     @FXML
@@ -78,6 +87,7 @@ public class GrapherController implements Initializable {
             }
             makeGraph();
             updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)%n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
+            printGraph(graph);
         });
 
         saveButton.setOnMouseClicked(event -> {
@@ -202,6 +212,42 @@ public class GrapherController implements Initializable {
             graph = new Graph(userData.getRows(), userData.getColumns());
             graphGenR.generate(graph, userData);
         }
+    }
+
+    private void printGraph(Graph graph){
+
+        var canvasLocationOfNodes = new HashMap<Integer, Point2D>();
+        GraphicsContext gc = graphCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+
+
+        float pointSize = 25;
+        float spacing = pointSize;
+
+        graphCanvas.setWidth(2*graph.getColumns()*pointSize + spacing);
+        graphCanvas.setHeight(2*graph.getRows()*pointSize + spacing);
+        scrollAnchor.setPrefHeight(graphCanvas.getHeight());
+        scrollAnchor.setPrefWidth(graphCanvas.getWidth());
+
+        for(int i = 0; i < graph.getRows(); i++) {
+            for(int j = 0; j < graph.getColumns(); j++) {
+                gc.fillOval(spacing*(j+0.5) + j*pointSize, spacing*(i+0.5) + i*pointSize, pointSize, pointSize);
+                Point2D coordsOfCenter = new Point2D(spacing*(j+0.5) + j*pointSize + pointSize/2, spacing*(i+0.5) + i*pointSize + pointSize/2);
+                canvasLocationOfNodes.put(i*graph.getColumns() + j, coordsOfCenter);
+            }
+        }
+
+
+        for(int i = 0; i < graph.getRows(); i++) {
+            for(int j = 0; j < graph.getColumns(); j++) {
+                int index = i*graph.getColumns() + j;
+                if((index + 1) % graph.getColumns() != 0 ) {
+                    Point2D current = canvasLocationOfNodes.get(index);
+                    gc.fillRect(current.getX() + 0.6 * spacing, current.getY(), spacing * 0.8, 1);
+                }
+            }
+        }
+
     }
 }
 
