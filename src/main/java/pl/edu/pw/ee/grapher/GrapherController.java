@@ -7,8 +7,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import org.jetbrains.annotations.NotNull;
+import pl.edu.pw.ee.grapher.graph.Vertex;
 import pl.edu.pw.ee.grapher.validate.ControllerAlerts;
 import pl.edu.pw.ee.grapher.validate.ControllerValidate;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
@@ -27,11 +29,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import static pl.edu.pw.ee.grapher.utils.Constants.STANDARD_MODE;
-import static pl.edu.pw.ee.grapher.utils.Constants.EXTENDED_MODE;
-import static pl.edu.pw.ee.grapher.utils.Constants.WEIGHT_MODE;
-import static pl.edu.pw.ee.grapher.utils.Constants.EDGE_MODE;
-import static pl.edu.pw.ee.grapher.utils.Constants.RANDOM_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 public class GrapherController implements Initializable {
     @FXML
@@ -163,6 +161,11 @@ public class GrapherController implements Initializable {
                 updateConsole(PathPrinter.printExtendedPathToString(PathData.pathInOrder(path),path));
             }
         });
+
+        graphCanvas.setOnMouseClicked(event -> {
+            double posX = event.getX();
+            double posY = event.getY();
+        });
     }
 
     private void initializeGrapher() {
@@ -225,30 +228,64 @@ public class GrapherController implements Initializable {
 
         float pointSize = 25;
         float spacing = pointSize;
-
-        graphCanvas.setWidth(2*graph.getColumns()*pointSize + spacing);
-        graphCanvas.setHeight(2*graph.getRows()*pointSize + spacing);
+        graphCanvas.setWidth(2*graph.getColumns()*pointSize);
+        graphCanvas.setHeight(2*graph.getRows()*pointSize);
         scrollAnchor.setPrefHeight(graphCanvas.getHeight());
         scrollAnchor.setPrefWidth(graphCanvas.getWidth());
 
         for(int i = 0; i < graph.getRows(); i++) {
             for(int j = 0; j < graph.getColumns(); j++) {
+                int index = i*graph.getColumns() + j;
                 gc.fillOval(spacing*(j+0.5) + j*pointSize, spacing*(i+0.5) + i*pointSize, pointSize, pointSize);
                 Point2D coordsOfCenter = new Point2D(spacing*(j+0.5) + j*pointSize + pointSize/2, spacing*(i+0.5) + i*pointSize + pointSize/2);
-                canvasLocationOfNodes.put(i*graph.getColumns() + j, coordsOfCenter);
+                canvasLocationOfNodes.put(index, coordsOfCenter);
+                //System.out.println("Dodano punkt: " + index + " " + coordsOfCenter.getX() + " " + coordsOfCenter.getY());
             }
         }
 
         for(int i = 0; i < graph.getRows(); i++) {
             for(int j = 0; j < graph.getColumns(); j++) {
                 int index = i*graph.getColumns() + j;
-                if((index + 1) % graph.getColumns() != 0 ) {
-                    Point2D current = canvasLocationOfNodes.get(index);
-                    gc.fillRect(current.getX() + 0.6 * spacing, current.getY(), spacing * 0.8, 1);
+                Point2D coordsOfCenter = canvasLocationOfNodes.get(index);
+                Vertex currentVertex = graph.getVertex(index);
+                if(currentVertex.getExistence(UP)) {
+                    makeArrowUp(gc, coordsOfCenter, spacing);
+                }
+                if(currentVertex.getExistence(RIGHT)) {
+                    makeArrowRight(gc, coordsOfCenter, spacing);
+                }
+                if(currentVertex.getExistence(DOWN)) {
+                    makeArrowDown(gc, coordsOfCenter, spacing);
+                }
+                if(currentVertex.getExistence(LEFT)) {
+                    makeArrowLeft(gc, coordsOfCenter, spacing);
                 }
             }
         }
 
     }
+
+    private void makeArrowUp(GraphicsContext gc,Point2D coordsOfCenter, float spacing) {
+        gc.setFill(new Color(1,1,0,1));
+        gc.fillRect(coordsOfCenter.getX() + 5,coordsOfCenter.getY() - 0.6 * spacing - spacing * 0.8,spacing/20,spacing * 0.8);
+        gc.setFill(new Color(0,0,0,1));
+    }
+    private void makeArrowRight(GraphicsContext gc,Point2D coordsOfCenter, float spacing) {
+        gc.setFill(new Color(1,0,0,1));
+        gc.fillRect(coordsOfCenter.getX() + 0.6 * spacing, coordsOfCenter.getY() - 5, spacing * 0.8, spacing/20);
+        gc.setFill(new Color(0,0,0,1));
+    }
+    private void makeArrowDown(GraphicsContext gc,Point2D coordsOfCenter, float spacing) {
+        gc.setFill(new Color(0,0.5,1,1));
+        gc.fillRect(coordsOfCenter.getX() - 5, coordsOfCenter.getY() + 0.6 * spacing, spacing/20, spacing * 0.8);
+        gc.setFill(new Color(0,0,0,1));
+    }
+    private void makeArrowLeft(GraphicsContext gc,Point2D coordsOfCenter, float spacing) {
+        gc.setFill(new Color(0,1,0,1));
+        gc.fillRect(coordsOfCenter.getX() - 0.6 * spacing - spacing * 0.8, coordsOfCenter.getY() + 5, spacing * 0.8, spacing/20);
+        gc.setFill(new Color(0,0,0,1));
+    }
+
+
 }
 
