@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import org.jetbrains.annotations.NotNull;
 import pl.edu.pw.ee.grapher.validate.ControllerAlerts;
 import pl.edu.pw.ee.grapher.validate.ControllerValidate;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
@@ -133,12 +134,14 @@ public class GrapherController implements Initializable {
         extendedRB.setOnMouseClicked(event -> userData.setPrintMode(EXTENDED_MODE));
 
         searchButton.setOnMouseClicked(event -> {
-            if (!ControllerValidate.setUserReadData(userData, startPointInput, endPointInput)){
-                updateConsole("Wrong start or end.\n");
-                return;
-            }
             if (graph == null){
                 ControllerAlerts.popNullGraphAlert();
+                return;
+            }
+            userData.setColumns(graph.getColumns());
+            userData.setRows(graph.getRows());
+            if (!ControllerValidate.setUserReadData(userData, startPointInput, endPointInput)){
+                updateConsole("Wrong start or end.\n");
                 return;
             }
             if(!Bfs.checkIfCoherent(graph)){
@@ -214,8 +217,7 @@ public class GrapherController implements Initializable {
         }
     }
 
-    private void printGraph(Graph graph){
-
+    private void printGraph(@NotNull Graph graph){
         var canvasLocationOfNodes = new HashMap<Integer, Point2D>();
         GraphicsContext gc = graphCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
@@ -236,7 +238,6 @@ public class GrapherController implements Initializable {
                 canvasLocationOfNodes.put(i*graph.getColumns() + j, coordsOfCenter);
             }
         }
-
 
         for(int i = 0; i < graph.getRows(); i++) {
             for(int j = 0; j < graph.getColumns(); j++) {

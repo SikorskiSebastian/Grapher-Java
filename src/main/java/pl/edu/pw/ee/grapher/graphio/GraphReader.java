@@ -45,9 +45,9 @@ public class GraphReader{
         var columns = graph.getColumns();
 
         try (var in = new Scanner(line.replace(':', ' '))) {
-            while (in.hasNextInt()) {
+            while (in.hasNext()) {
                 var hasBeenAdded = false;
-                var vertex = in.nextInt();
+                var vertex = Integer.parseInt(in.next());
                 var weight = Float.parseFloat(in.next());
 
                 if (index - columns >= 0 && index - columns < columns * rows) {
@@ -73,7 +73,6 @@ public class GraphReader{
                 } else {
                     graph.getVertex(index).setExistence(LEFT, false);
                 }
-
                 if (!hasBeenAdded) {
                     return false;
                 }
