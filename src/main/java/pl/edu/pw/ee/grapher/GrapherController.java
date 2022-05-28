@@ -28,7 +28,6 @@ import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -76,17 +75,18 @@ public class GrapherController implements Initializable {
     private EntryData userData;
     private Graph graph;
     private PathData path;
-    private String consoleText;
 
     HashMap<Integer, Point2D> canvasLocationOfNodes;
     GraphicsContext gc;
     private float pointSize;
+    private int numberClicked = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeGrapher();
 
-        genButton.setOnMouseClicked(event -> {
+
+        genButton.setOnAction(event -> {
             if (!ControllerValidate.setUserGenData(userData, columnInput, rowsInput, endInput, startInput)){
                 updateConsole("Wrong input!\n");
                 return;
@@ -96,7 +96,7 @@ public class GrapherController implements Initializable {
             printGraph(graph, pointSize);
         });
 
-        saveButton.setOnMouseClicked(event -> {
+        saveButton.setOnAction(event -> {
             if (ControllerValidate.isGraphNull(graph)){
                 updateConsole("No graph to save!\n");
                 return;
@@ -114,7 +114,7 @@ public class GrapherController implements Initializable {
             updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)%n",graph.getColumns(), graph.getRows(),file.getName()));
         });
 
-        openButton.setOnMouseClicked(event -> {
+        openButton.setOnAction(event -> {
             var fc = new FileChooser();
             var file = fc.showOpenDialog(null);
             if (ControllerValidate.isFileNullRead(file)){
@@ -133,13 +133,38 @@ public class GrapherController implements Initializable {
             printGraph(graph, pointSize);
         });
 
-        wageModeRB.setOnMouseClicked(event -> userData.setMode(WEIGHT_MODE));
-        edgeModeRB.setOnMouseClicked(event -> userData.setMode(EDGE_MODE));
-        randomModeRB.setOnMouseClicked(event -> userData.setMode(RANDOM_MODE));
-        standardRB.setOnMouseClicked(event -> userData.setPrintMode(STANDARD_MODE));
-        extendedRB.setOnMouseClicked(event -> userData.setPrintMode(EXTENDED_MODE));
+        wageModeRB.setOnAction(event -> userData.setMode(WEIGHT_MODE));
+        edgeModeRB.setOnAction(event -> userData.setMode(EDGE_MODE));
+        randomModeRB.setOnAction(event -> userData.setMode(RANDOM_MODE));
+        standardRB.setOnAction(event -> userData.setPrintMode(STANDARD_MODE));
+        extendedRB.setOnAction(event -> userData.setPrintMode(EXTENDED_MODE));
 
-        searchButton.setOnMouseClicked(event -> {
+        graphCanvas.setOnMouseClicked(event -> {
+            if(numberClicked % 2 == 0) {
+                startPointInput.clear();
+                endPointInput.clear();
+            }
+            numberClicked++;
+            Point2D pointClicked = new Point2D(event.getX(), event.getY());
+
+            if(graph == null){
+                return;
+            }
+
+            for(int index = 0; index < graph.getNumOfVertices(); index++){
+                Point2D coordsOfCenter = canvasLocationOfNodes.get(index);
+                if(pointClicked.distance(coordsOfCenter) <= pointSize/2){
+                    if(numberClicked % 2 == 1){
+                        startPointInput.setText(String.valueOf(index));
+                    } else if(numberClicked % 2 == 0) {
+                        endPointInput.setText(String.valueOf(index));
+                        searchButton.fire();
+                    }
+                }
+            }
+        });
+
+        searchButton.setOnAction(event -> {
             if (graph == null){
                 ControllerAlerts.popNullGraphAlert();
                 return;
@@ -171,10 +196,6 @@ public class GrapherController implements Initializable {
             printPathOnGraph(graph, path, canvasLocationOfNodes, pointSize);
         });
 
-        graphCanvas.setOnMouseClicked(event -> {
-            double posX = event.getX();
-            double posY = event.getY();
-        });
     }
 
 
@@ -182,12 +203,12 @@ public class GrapherController implements Initializable {
         userData = new EntryData();
         fileInput.setEditable(false);
         consoleOutput.setEditable(false);
-        consoleText = "Grapher by SS & SP\n";
+        String consoleText = "Grapher by SS & SP\n";
         consoleOutput.setText(consoleText);
         graph = null;
         setGenerationRadioButtons();
         setSearchRadioButtons();
-        canvasLocationOfNodes = new HashMap<Integer, Point2D>();
+        canvasLocationOfNodes = new HashMap<>();
         gc = graphCanvas.getGraphicsContext2D();
         gc.setTextAlign(TextAlignment.CENTER);
         pointSize = 50;
@@ -252,16 +273,16 @@ public class GrapherController implements Initializable {
             Vertex currentVertex = graph.getVertex(index);
 
             if(currentVertex.getExistence(UP)) {
-                makeArrowUp(gc, coordsOfCenter, pointSize, new Color(0,0,0,1));
+                makeArrowUp(gc, coordsOfCenter, pointSize, (Color) gc.getFill());
             }
             if(currentVertex.getExistence(RIGHT)) {
-                makeArrowRight(gc, coordsOfCenter, pointSize, new Color(0,0,0,1));
+                makeArrowRight(gc, coordsOfCenter, pointSize, (Color) gc.getFill());
             }
             if(currentVertex.getExistence(DOWN)) {
-                makeArrowDown(gc, coordsOfCenter, pointSize, new Color(0,0,0,1));
+                makeArrowDown(gc, coordsOfCenter, pointSize, (Color) gc.getFill());
             }
             if(currentVertex.getExistence(LEFT)) {
-                makeArrowLeft(gc, coordsOfCenter, pointSize, new Color(0,0,0,1));
+                makeArrowLeft(gc, coordsOfCenter, pointSize, (Color) gc.getFill());
             }
         }
 
@@ -311,15 +332,15 @@ public class GrapherController implements Initializable {
         int[] pathInOrder = PathData.pathInOrder(path);
 
         gc.setFill(pathColor);
-        for(int index = 0; index < pathInOrder.length; index++){
-            Point2D currentCenterOfNode = canvasLocationOfNodes.get(pathInOrder[index]);
-            gc.fillOval(currentCenterOfNode.getX() - pointSize/2, currentCenterOfNode.getY() - pointSize/2, pointSize, pointSize);
+        for (int index : pathInOrder) {
+            Point2D currentCenterOfNode = canvasLocationOfNodes.get(index);
+            gc.fillOval(currentCenterOfNode.getX() - pointSize / 2, currentCenterOfNode.getY() - pointSize / 2, pointSize, pointSize);
         }
         gc.setFill(new Color(0,0,0,1));
 
-        for(int index = 0; index < pathInOrder.length; index++) {
-            Point2D coordsOfCenter = canvasLocationOfNodes.get(pathInOrder[index]);
-            gc.fillText(String.valueOf(pathInOrder[index]),coordsOfCenter.getX(),coordsOfCenter.getY() + gc.getFont().getSize() / 3);
+        for (int index : pathInOrder) {
+            Point2D coordsOfCenter = canvasLocationOfNodes.get(index);
+            gc.fillText(String.valueOf(index), coordsOfCenter.getX(), coordsOfCenter.getY() + gc.getFont().getSize() / 3);
         }
 
         int currentNode;
