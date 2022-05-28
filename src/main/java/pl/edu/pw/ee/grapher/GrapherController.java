@@ -244,7 +244,6 @@ public class GrapherController implements Initializable {
                 gc.fillOval(pointSize *(j+0.5) + j*pointSize, pointSize *(i+0.5) + i*pointSize, pointSize, pointSize);
                 Point2D coordsOfCenter = new Point2D(pointSize *(j+0.5) + j*pointSize + pointSize/2, pointSize *(i+0.5) + i*pointSize + pointSize/2);
                 canvasLocationOfNodes.put(index, coordsOfCenter);
-                //System.out.println("Dodano punkt: " + index + " " + coordsOfCenter.getX() + " " + coordsOfCenter.getY());
             }
         }
 
@@ -273,6 +272,36 @@ public class GrapherController implements Initializable {
             gc.fillText(String.valueOf(index),coordsOfCenter.getX(),coordsOfCenter.getY() + gc.getFont().getSize() / 3);
         }
         gc.setFill(new Color(0,0,0,1));
+
+        gc.setFont(new Font(pointSize * 0.2));
+        for(int index = 0; index < graph.getNumOfVertices(); index ++) {
+            Point2D coordsOfCenter = canvasLocationOfNodes.get(index);
+            if(graph.getVertex(index).getExistence(RIGHT)) {
+                printWeightRight(graph.getVertex(index).getWeight(RIGHT), gc, coordsOfCenter, pointSize);
+            }
+            if(graph.getVertex(index).getExistence(DOWN)) {
+                printWeightDown(graph.getVertex(index).getWeight(DOWN), gc, coordsOfCenter, pointSize);
+            }
+            if(graph.getVertex(index).getExistence(LEFT)) {
+                printWeightLeft(graph.getVertex(index).getWeight(LEFT), gc, coordsOfCenter, pointSize);
+            }
+            if(graph.getVertex(index).getExistence(UP)) {
+                printWeightUp(graph.getVertex(index).getWeight(UP), gc, coordsOfCenter, pointSize);
+            }
+        }
+    }
+
+    private void printWeightRight(float weight, GraphicsContext gc, Point2D coordsOfCenter, float pointSize) {
+        gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX()+ 0.9 * pointSize, coordsOfCenter.getY() - pointSize/5 - pointSize/10);
+    }
+    private void printWeightDown(float weight, GraphicsContext gc, Point2D coordsOfCenter, float pointSize) {
+        gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX() + pointSize/5 + pointSize/5 + pointSize/10, coordsOfCenter.getY() + pointSize);
+    }
+    private void printWeightLeft(float weight, GraphicsContext gc, Point2D coordsOfCenter, float pointSize) {
+        gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX() - pointSize, coordsOfCenter.getY() + 2.2 * pointSize/5);
+    }
+    private void printWeightUp(float weight, GraphicsContext gc, Point2D coordsOfCenter, float pointSize) {
+        gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX() - pointSize/5 - pointSize/5 - pointSize/10, coordsOfCenter.getY() - pointSize);
     }
 
     private void printPathOnGraph(Graph graph, PathData path, HashMap<Integer, Point2D> canvasLocationOfNodes, float pointSize) {
