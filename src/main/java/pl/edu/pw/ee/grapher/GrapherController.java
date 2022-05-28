@@ -28,6 +28,7 @@ import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -77,6 +78,10 @@ public class GrapherController implements Initializable {
     private PathData path;
     private String consoleText;
 
+    HashMap<Integer, Point2D> canvasLocationOfNodes;
+    GraphicsContext gc;
+    private float pointSize;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeGrapher();
@@ -88,7 +93,7 @@ public class GrapherController implements Initializable {
             }
             makeGraph();
             updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)%n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
-            printGraph(graph);
+            printGraph(graph, pointSize);
         });
 
         saveButton.setOnMouseClicked(event -> {
@@ -125,6 +130,7 @@ public class GrapherController implements Initializable {
 
             fileInput.setText(file.getName());
             updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
+            printGraph(graph, pointSize);
         });
 
         wageModeRB.setOnMouseClicked(event -> userData.setMode(WEIGHT_MODE));
@@ -162,6 +168,7 @@ public class GrapherController implements Initializable {
             } else if (userData.getPrintMode() == EXTENDED_MODE) {
                 updateConsole(PathPrinter.printExtendedPathToString(PathData.pathInOrder(path),path));
             }
+            printPathOnGraph(graph, path, canvasLocationOfNodes, pointSize);
         });
 
         graphCanvas.setOnMouseClicked(event -> {
@@ -169,6 +176,7 @@ public class GrapherController implements Initializable {
             double posY = event.getY();
         });
     }
+
 
     private void initializeGrapher() {
         userData = new EntryData();
@@ -179,11 +187,14 @@ public class GrapherController implements Initializable {
         graph = null;
         setGenerationRadioButtons();
         setSearchRadioButtons();
+        canvasLocationOfNodes = new HashMap<Integer, Point2D>();
+        gc = graphCanvas.getGraphicsContext2D();
+        gc.setTextAlign(TextAlignment.CENTER);
+        pointSize = 50;
     }
 
     private void updateConsole (String msg) {
-        consoleText += msg;
-        consoleOutput.setText(consoleText);
+        consoleOutput.setText(consoleOutput.getText() + msg);
         consoleOutput.setScrollTop(Double.MAX_VALUE);
     }
 
@@ -222,13 +233,8 @@ public class GrapherController implements Initializable {
         }
     }
 
-    private void printGraph(@NotNull Graph graph){
-        var canvasLocationOfNodes = new HashMap<Integer, Point2D>();
-        GraphicsContext gc = graphCanvas.getGraphicsContext2D();
+    private void printGraph(@NotNull Graph graph, float pointSize){
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
-        gc.setTextAlign(TextAlignment.CENTER);
-
-        float pointSize = 25;
 
         resizePrintWindow(graphCanvas, scrollAnchor, pointSize);
 
@@ -247,16 +253,16 @@ public class GrapherController implements Initializable {
             Vertex currentVertex = graph.getVertex(index);
 
             if(currentVertex.getExistence(UP)) {
-                makeArrowUp(gc, coordsOfCenter, pointSize);
+                makeArrowUp(gc, coordsOfCenter, pointSize, new Color(0,0,0,1));
             }
             if(currentVertex.getExistence(RIGHT)) {
-                makeArrowRight(gc, coordsOfCenter, pointSize);
+                makeArrowRight(gc, coordsOfCenter, pointSize, new Color(0,0,0,1));
             }
             if(currentVertex.getExistence(DOWN)) {
-                makeArrowDown(gc, coordsOfCenter, pointSize);
+                makeArrowDown(gc, coordsOfCenter, pointSize, new Color(0,0,0,1));
             }
             if(currentVertex.getExistence(LEFT)) {
-                makeArrowLeft(gc, coordsOfCenter, pointSize);
+                makeArrowLeft(gc, coordsOfCenter, pointSize, new Color(0,0,0,1));
             }
         }
 
@@ -267,6 +273,43 @@ public class GrapherController implements Initializable {
             gc.fillText(String.valueOf(index),coordsOfCenter.getX(),coordsOfCenter.getY() + gc.getFont().getSize() / 3);
         }
         gc.setFill(new Color(0,0,0,1));
+    }
+
+    private void printPathOnGraph(Graph graph, PathData path, HashMap<Integer, Point2D> canvasLocationOfNodes, float pointSize) {
+        var pathColor = new Color(1,0,0,1);
+        gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+        printGraph(graph,pointSize);
+        int[] pathInOrder = PathData.pathInOrder(path);
+
+        gc.setFill(pathColor);
+        for(int index = 0; index < pathInOrder.length; index++){
+            Point2D currentCenterOfNode = canvasLocationOfNodes.get(pathInOrder[index]);
+            gc.fillOval(currentCenterOfNode.getX() - pointSize/2, currentCenterOfNode.getY() - pointSize/2, pointSize, pointSize);
+        }
+        gc.setFill(new Color(0,0,0,1));
+
+        for(int index = 0; index < pathInOrder.length; index++) {
+            Point2D coordsOfCenter = canvasLocationOfNodes.get(pathInOrder[index]);
+            gc.fillText(String.valueOf(pathInOrder[index]),coordsOfCenter.getX(),coordsOfCenter.getY() + gc.getFont().getSize() / 3);
+        }
+
+        int currentNode;
+        int nextNode;
+        for(int index = 0; index < pathInOrder.length - 1; index++){
+            currentNode = pathInOrder[index];
+            nextNode = pathInOrder[index + 1];
+            Point2D currentCenterOfNode = canvasLocationOfNodes.get(currentNode);
+
+            if(currentNode + 1 == nextNode){
+                makeArrowRight(gc, currentCenterOfNode, pointSize, pathColor);
+            } else if (currentNode + graph.getColumns() == nextNode ){
+                makeArrowDown(gc, currentCenterOfNode, pointSize, pathColor);
+            } else if (currentNode - 1 == nextNode) {
+                makeArrowLeft(gc, currentCenterOfNode, pointSize, pathColor);
+            } else if (currentNode - graph.getColumns() == nextNode) {
+                makeArrowUp(gc, currentCenterOfNode, pointSize, pathColor);
+            }
+        }
     }
 
     private void resizePrintWindow(Canvas graphCanvas, AnchorPane scrollAnchor, float pointSize) {
@@ -287,8 +330,8 @@ public class GrapherController implements Initializable {
         }
     }
 
-    private void makeArrowUp(GraphicsContext gc,Point2D coordsOfCenter, float pointSize) {
-        gc.setFill(new Color(1,1,0,1));
+    private void makeArrowUp(GraphicsContext gc,Point2D coordsOfCenter, float pointSize, Color color) {
+        gc.setFill(color);
         gc.fillRect(coordsOfCenter.getX() - pointSize/5,coordsOfCenter.getY() - 0.6 * pointSize - pointSize * 0.8,pointSize/20,pointSize * 0.8);
 
         double[] xPoints = new double[3];
@@ -305,11 +348,10 @@ public class GrapherController implements Initializable {
 
 
         gc.fillPolygon(xPoints,yPoints,3);
-
-        gc.setFill(new Color(0,0,0,1));
+        gc.setFill(new Color(0, 0, 0, 1));
     }
-    private void makeArrowRight(GraphicsContext gc,Point2D coordsOfCenter, float pointSize) {
-        gc.setFill(new Color(1,0,0,1));
+    private void makeArrowRight(GraphicsContext gc,Point2D coordsOfCenter, float pointSize, Color color) {
+        gc.setFill(color);
         gc.fillRect(coordsOfCenter.getX() + 0.6 * pointSize, coordsOfCenter.getY() - pointSize/5, pointSize * 0.8, pointSize/20);
 
         double[] xPoints = new double[3];
@@ -326,12 +368,10 @@ public class GrapherController implements Initializable {
 
 
         gc.fillPolygon(xPoints,yPoints,3);
-
-
-        gc.setFill(new Color(0,0,0,1));
+        gc.setFill(new Color(0, 0, 0, 1));
     }
-    private void makeArrowDown(GraphicsContext gc,Point2D coordsOfCenter, float pointSize) {
-        gc.setFill(new Color(0,0.5,1,1));
+    private void makeArrowDown(GraphicsContext gc,Point2D coordsOfCenter, float pointSize, Color color) {
+        gc.setFill(color);
         gc.fillRect(coordsOfCenter.getX() + pointSize/5, coordsOfCenter.getY() + 0.6 * pointSize, pointSize/20, pointSize * 0.8);
 
         double[] xPoints = new double[3];
@@ -348,11 +388,10 @@ public class GrapherController implements Initializable {
 
 
         gc.fillPolygon(xPoints,yPoints,3);
-
-        gc.setFill(new Color(0,0,0,1));
+        gc.setFill(new Color(0, 0, 0, 1));
     }
-    private void makeArrowLeft(GraphicsContext gc,Point2D coordsOfCenter, float pointSize) {
-        gc.setFill(new Color(0,1,0,1));
+    private void makeArrowLeft(GraphicsContext gc,Point2D coordsOfCenter, float pointSize, Color color) {
+        gc.setFill(color);
         gc.fillRect(coordsOfCenter.getX() - 0.6 * pointSize - pointSize * 0.8, coordsOfCenter.getY() + pointSize/5, pointSize * 0.8, pointSize/20);
 
         double[] xPoints = new double[3];
@@ -369,10 +408,7 @@ public class GrapherController implements Initializable {
 
 
         gc.fillPolygon(xPoints,yPoints,3);
-
-        gc.setFill(new Color(0,0,0,1));
+        gc.setFill(new Color(0, 0, 0, 1));
     }
-
-
 }
 
