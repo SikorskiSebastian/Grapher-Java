@@ -82,7 +82,6 @@ public class GrapherController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeGrapher();
 
-
         genButton.setOnAction(event -> {
             if (!ControllerValidate.setUserGenData(userData, columnInput, rowsInput, endInput, startInput)){
                 updateConsole("Wrong input!\n");

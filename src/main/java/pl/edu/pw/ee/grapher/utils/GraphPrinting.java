@@ -1,6 +1,5 @@
 package pl.edu.pw.ee.grapher.utils;
 
-import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,31 +11,32 @@ import pl.edu.pw.ee.grapher.dijkstra.PathData;
 import pl.edu.pw.ee.grapher.graph.Graph;
 import pl.edu.pw.ee.grapher.graph.Vertex;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 public class GraphPrinting {
+    private GraphPrinting(){}
 
-    public static void resizePrintWindow(Graph graph, Canvas graphCanvas, AnchorPane scrollAnchor, float pointSize) {
+    public static void resizePrintWindow(@NotNull Graph graph, Canvas graphCanvas, AnchorPane scrollAnchor, float pointSize) {
         if(2*graph.getColumns()*pointSize >= 500) {
             graphCanvas.setWidth(2 * graph.getColumns() * pointSize);
             scrollAnchor.setPrefWidth(graphCanvas.getWidth());
 
         } else {
-            graphCanvas.setWidth(500-2);
-            scrollAnchor.setPrefWidth(500-2);
+            graphCanvas.setWidth(500.0-2.0);
+            scrollAnchor.setPrefWidth(500.0-2.0);
         }
         if(2*graph.getRows()*pointSize >= 460) {
             graphCanvas.setHeight(2 * graph.getRows() * pointSize);
             scrollAnchor.setPrefHeight(graphCanvas.getHeight());
         } else {
-            graphCanvas.setHeight(460-2);
-            scrollAnchor.setPrefHeight(460-2);
+            graphCanvas.setHeight(460.0-2.0);
+            scrollAnchor.setPrefHeight(460.0-2.0);
         }
     }
 
-    public static void printGraph(@NotNull Graph graph, float pointSize, GraphicsContext gc, Canvas graphCanvas, AnchorPane scrollAnchor, HashMap<Integer, Point2D> canvasLocationOfNodes){
+    public static void printGraph(@NotNull Graph graph, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor, Map<Integer, Point2D> canvasLocationOfNodes){
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
 
         GraphPrinting.resizePrintWindow(graph,graphCanvas, scrollAnchor, pointSize);
@@ -93,7 +93,7 @@ public class GraphPrinting {
             }
         }
     }
-    public static void printPathOnGraph(Graph graph, PathData path, HashMap<Integer, Point2D> canvasLocationOfNodes, float pointSize, GraphicsContext gc, Canvas graphCanvas, AnchorPane scrollAnchor) {
+    public static void printPathOnGraph(Graph graph, PathData path, Map<Integer, Point2D> canvasLocationOfNodes, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor) {
         var pathColor = new Color(1,0,0,1);
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
         GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfNodes);
@@ -130,7 +130,7 @@ public class GraphPrinting {
         }
     }
 
-    public static void makeArrowUp(GraphicsContext gc, Point2D coordsOfCenter, float pointSize, Color color) {
+    public static void makeArrowUp(@NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize, Color color) {
         gc.setFill(color);
         gc.fillRect(coordsOfCenter.getX() - pointSize/5,coordsOfCenter.getY() - 0.6 * pointSize - pointSize * 0.8,pointSize/20,pointSize * 0.8);
 
@@ -150,7 +150,7 @@ public class GraphPrinting {
         gc.fillPolygon(xPoints,yPoints,3);
         gc.setFill(new Color(0, 0, 0, 1));
     }
-    public static void makeArrowRight(GraphicsContext gc, Point2D coordsOfCenter, float pointSize, Color color) {
+    public static void makeArrowRight(@NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize, Color color) {
         gc.setFill(color);
         gc.fillRect(coordsOfCenter.getX() + 0.6 * pointSize, coordsOfCenter.getY() - pointSize/5, pointSize * 0.8, pointSize/20);
 
@@ -170,7 +170,7 @@ public class GraphPrinting {
         gc.fillPolygon(xPoints,yPoints,3);
         gc.setFill(new Color(0, 0, 0, 1));
     }
-    public static void makeArrowDown(GraphicsContext gc, Point2D coordsOfCenter, float pointSize, Color color) {
+    public static void makeArrowDown(@NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize, Color color) {
         gc.setFill(color);
         gc.fillRect(coordsOfCenter.getX() + pointSize/5, coordsOfCenter.getY() + 0.6 * pointSize, pointSize/20, pointSize * 0.8);
 
@@ -190,7 +190,7 @@ public class GraphPrinting {
         gc.fillPolygon(xPoints,yPoints,3);
         gc.setFill(new Color(0, 0, 0, 1));
     }
-    public static void makeArrowLeft(GraphicsContext gc, Point2D coordsOfCenter, float pointSize, Color color) {
+    public static void makeArrowLeft(@NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize, Color color) {
         gc.setFill(color);
         gc.fillRect(coordsOfCenter.getX() - 0.6 * pointSize - pointSize * 0.8, coordsOfCenter.getY() + pointSize/5, pointSize * 0.8, pointSize/20);
 
@@ -211,16 +211,16 @@ public class GraphPrinting {
         gc.setFill(new Color(0, 0, 0, 1));
     }
 
-    public static void printWeightRight(float weight, GraphicsContext gc, Point2D coordsOfCenter, float pointSize) {
+    public static void printWeightRight(float weight, @NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize) {
         gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX()+ 0.9 * pointSize, coordsOfCenter.getY() - pointSize/5 - pointSize/10);
     }
-    public static void printWeightDown(float weight, GraphicsContext gc, Point2D coordsOfCenter, float pointSize) {
+    public static void printWeightDown(float weight, @NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize) {
         gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX() + pointSize/5 + pointSize/5 + pointSize/10, coordsOfCenter.getY() + pointSize);
     }
-    public static void printWeightLeft(float weight, GraphicsContext gc, Point2D coordsOfCenter, float pointSize) {
+    public static void printWeightLeft(float weight, @NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize) {
         gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX() - pointSize, coordsOfCenter.getY() + 2.2 * pointSize/5);
     }
-    public static void printWeightUp(float weight, GraphicsContext gc, Point2D coordsOfCenter, float pointSize) {
+    public static void printWeightUp(float weight, @NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize) {
         gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX() - pointSize/5 - pointSize/5 - pointSize/10, coordsOfCenter.getY() - pointSize);
     }
 }
