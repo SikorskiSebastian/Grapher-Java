@@ -70,16 +70,16 @@ public class Bfs {
             var vertexDownIndex = currentVertex.getConnection(DOWN);
             var vertexLeftIndex = currentVertex.getConnection(LEFT);
 
-            if(vertexUpIndex != -1) {
+            if(currentVertex.getExistence(UP)) {
                 Bfs.setInvertedVertex(invertedGraph, DOWN, i, vertexUpIndex);
             }
-            if(vertexRightIndex != -1) {
+            if(currentVertex.getExistence(RIGHT)) {
                 Bfs.setInvertedVertex(invertedGraph, LEFT, i, vertexRightIndex);
             }
-            if(vertexDownIndex != -1) {
+            if(currentVertex.getExistence(DOWN)) {
                 Bfs.setInvertedVertex(invertedGraph, UP, i, vertexDownIndex);
             }
-            if(vertexLeftIndex != -1) {
+            if(currentVertex.getExistence(LEFT)) {
                 Bfs.setInvertedVertex(invertedGraph, RIGHT, i, vertexLeftIndex);
             }
         }
