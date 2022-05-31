@@ -37,6 +37,10 @@ public class GraphPrinting {
     }
 
     public static void printGraph(@NotNull Graph graph, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor, Map<Integer, Point2D> canvasLocationOfNodes){
+        if(!checkSizeForPrinting(graph)){
+            gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+            return;
+        }
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
 
         GraphPrinting.resizePrintWindow(graph,graphCanvas, scrollAnchor, pointSize);
@@ -94,6 +98,10 @@ public class GraphPrinting {
         }
     }
     public static void printPathOnGraph(Graph graph, PathData path, Map<Integer, Point2D> canvasLocationOfNodes, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor) {
+        if(!checkSizeForPrinting(graph)){
+            gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+            return;
+        }
         var pathColor = new Color(1,0,0,1);
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
         GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfNodes);
@@ -222,5 +230,12 @@ public class GraphPrinting {
     }
     public static void printWeightUp(float weight, @NotNull GraphicsContext gc, @NotNull Point2D coordsOfCenter, float pointSize) {
         gc.fillText(String.format("%.2f", weight),coordsOfCenter.getX() - pointSize/5 - pointSize/5 - pointSize/10, coordsOfCenter.getY() - pointSize);
+    }
+
+    public static boolean checkSizeForPrinting(Graph graph){
+        if(graph.getRows() > 55 || graph.getColumns() > 55){
+            return false;
+        }
+        return true;
     }
 }

@@ -1,5 +1,7 @@
 package pl.edu.pw.ee.grapher;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -69,6 +71,12 @@ public class GrapherController implements Initializable {
     private TextField endPointInput;
     @FXML
     private TextArea consoleOutput;
+    @FXML
+    private TitledPane pathListTitlePane;
+    @FXML
+    private ListView<PathData> pathListView;
+
+    ObservableList<PathData> itemsAsPathData;
     private EntryData userData;
     private Graph graph;
     private PathData path;
@@ -184,6 +192,10 @@ public class GrapherController implements Initializable {
 
             path = Dijkstra.findPath(graph, userData);
 
+            itemsAsPathData.add(path);
+            pathListView.setItems(itemsAsPathData);
+
+
             if(userData.getPrintMode() == STANDARD_MODE) {
                 updateConsole(PathPrinter.printStandardPathToString(PathData.pathInOrder(path),path));
             } else if (userData.getPrintMode() == EXTENDED_MODE) {
@@ -192,10 +204,19 @@ public class GrapherController implements Initializable {
             GraphPrinting.printPathOnGraph(graph, path, canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
         });
 
+        pathListView.setOnMouseClicked(event -> {
+            GraphPrinting.printPathOnGraph(graph, pathListView.getSelectionModel().getSelectedItem(), canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
+        });
+
     }
 
 
+
+
     private void initializeGrapher() {
+        pathListTitlePane.setExpanded(false);
+        itemsAsPathData = FXCollections.observableArrayList();
+        pathListView.setItems(itemsAsPathData);
         userData = new EntryData();
         fileInput.setEditable(false);
         consoleOutput.setEditable(false);
