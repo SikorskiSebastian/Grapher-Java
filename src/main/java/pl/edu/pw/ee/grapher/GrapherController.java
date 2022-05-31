@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import pl.edu.pw.ee.grapher.graphics.GraphPrinting;
+import pl.edu.pw.ee.grapher.utils.RadioButtonHandler;
 import pl.edu.pw.ee.grapher.validate.ControllerAlerts;
 import pl.edu.pw.ee.grapher.validate.ControllerValidate;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
@@ -79,10 +80,11 @@ public class GrapherController implements Initializable {
     private EntryData userData;
     private Graph graph;
     private PathData path;
-    private HashMap<Integer, Point2D> canvasLocationOfNodes;
+    private HashMap<Integer, Point2D> canvasLocationOfVertices;
     private GraphicsContext gc;
     private float pointSize;
     private int numberClicked = 0;
+    private RadioButtonHandler radioButtonHandler;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -95,7 +97,7 @@ public class GrapherController implements Initializable {
             }
             makeGraph();
             updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)%n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
-            GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfNodes);
+            GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfVertices);
             pathListView.getItems().clear();
         });
 
@@ -133,14 +135,10 @@ public class GrapherController implements Initializable {
 
             fileInput.setText(file.getName());
             updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
-            GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfNodes);
+            GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfVertices);
         });
 
-        wageModeRB.setOnAction(event -> userData.setMode(WEIGHT_MODE));
-        edgeModeRB.setOnAction(event -> userData.setMode(EDGE_MODE));
-        randomModeRB.setOnAction(event -> userData.setMode(RANDOM_MODE));
-        standardRB.setOnAction(event -> userData.setPrintMode(STANDARD_MODE));
-        extendedRB.setOnAction(event -> userData.setPrintMode(EXTENDED_MODE));
+        radioButtonHandler.setActionButtons(userData);
 
         graphCanvas.setOnMouseClicked(event -> {
             if (numberClicked % 2 == 0) {
@@ -155,12 +153,11 @@ public class GrapherController implements Initializable {
             }
 
             for (int index = 0; index < graph.getNumOfVertices(); index++) {
-                var coordsOfCenter = canvasLocationOfNodes.get(index);
+                var coordsOfCenter = canvasLocationOfVertices.get(index);
 
                 if (coordsOfCenter == null){
                     return;
                 }
-
                 if (pointClicked.distance(coordsOfCenter) <= pointSize / 2) {
                     if (numberClicked % 2 == 1) {
                         startPointInput.setText(String.valueOf(index));
@@ -188,7 +185,6 @@ public class GrapherController implements Initializable {
                 ControllerAlerts.popNotCoherentGraph();
                 return;
             }
-
             if (userData.getStartPoint() == userData.getEndPoint()){
                 ControllerAlerts.popSamePointsInfo();
                 return;
@@ -201,7 +197,7 @@ public class GrapherController implements Initializable {
             } else if (userData.getPrintMode() == EXTENDED_MODE) {
                 updateConsole(PathPrinter.printExtendedPathToString(PathData.pathInOrder(path),path));
             }
-            GraphPrinting.printPathOnGraph(graph, path, canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
+            GraphPrinting.printPathOnGraph(graph, path, canvasLocationOfVertices, pointSize, gc, graphCanvas, scrollAnchor);
             addToPathList(path);
         });
 
@@ -209,7 +205,7 @@ public class GrapherController implements Initializable {
             if (graph == null){
                 return;
             }
-            GraphPrinting.printPathOnGraph(graph, pathListView.getSelectionModel().getSelectedItem(), canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
+            GraphPrinting.printPathOnGraph(graph, pathListView.getSelectionModel().getSelectedItem(), canvasLocationOfVertices, pointSize, gc, graphCanvas, scrollAnchor);
             startPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getStart()));
             endPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getEnd()));
         });
@@ -242,12 +238,14 @@ public class GrapherController implements Initializable {
         userData = new EntryData();
         fileInput.setEditable(false);
         consoleOutput.setEditable(false);
-        var consoleText = "Grapher by SS & SP\n";
-        consoleOutput.setText(consoleText);
+        consoleOutput.setText("Grapher by SS & SP\n");
         graph = null;
-        setGenerationRadioButtons();
-        setSearchRadioButtons();
-        canvasLocationOfNodes = new HashMap<>();
+
+        radioButtonHandler = new RadioButtonHandler(wageModeRB, standardRB, extendedRB, edgeModeRB, randomModeRB);
+        radioButtonHandler.setGenerationRadioButtons(userData);
+        radioButtonHandler.setSearchRadioButtons(userData);
+
+        canvasLocationOfVertices = new HashMap<>();
         gc = graphCanvas.getGraphicsContext2D();
         gc.setTextAlign(TextAlignment.CENTER);
         pointSize = 40;
@@ -256,25 +254,6 @@ public class GrapherController implements Initializable {
     private void updateConsole (String msg) {
         consoleOutput.setText(consoleOutput.getText() + msg);
         consoleOutput.setScrollTop(Double.MAX_VALUE);
-    }
-
-    private void setSearchRadioButtons() {
-        var pathModeGroup = new ToggleGroup();
-
-        standardRB.setToggleGroup(pathModeGroup);
-        extendedRB.setToggleGroup(pathModeGroup);
-        standardRB.setSelected(true);
-        userData.setPrintMode(STANDARD_MODE);
-    }
-
-    private void setGenerationRadioButtons() {
-        var genModeGroup = new ToggleGroup();
-
-        wageModeRB.setToggleGroup(genModeGroup);
-        edgeModeRB.setToggleGroup(genModeGroup);
-        randomModeRB.setToggleGroup(genModeGroup);
-        wageModeRB.setSelected(true);
-        userData.setMode(WEIGHT_MODE);
     }
 
     private void makeGraph(){
@@ -292,6 +271,5 @@ public class GrapherController implements Initializable {
             graphGenR.generate(graph, userData);
         }
     }
-
 }
 
