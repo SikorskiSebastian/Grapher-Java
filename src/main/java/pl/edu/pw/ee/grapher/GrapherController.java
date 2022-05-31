@@ -11,7 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
-import pl.edu.pw.ee.grapher.utils.GraphPrinting;
+import pl.edu.pw.ee.grapher.graphics.GraphPrinting;
 import pl.edu.pw.ee.grapher.validate.ControllerAlerts;
 import pl.edu.pw.ee.grapher.validate.ControllerValidate;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
@@ -156,7 +156,7 @@ public class GrapherController implements Initializable {
 
             for (int index = 0; index < graph.getNumOfVertices(); index++) {
                 var coordsOfCenter = canvasLocationOfNodes.get(index);
-                
+
                 if (coordsOfCenter == null){
                     return;
                 }

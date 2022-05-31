@@ -80,7 +80,6 @@ public class GraphReader{
         } catch (NoSuchElementException exception) {
             return false;
         }
-
         return true;
     }
 }

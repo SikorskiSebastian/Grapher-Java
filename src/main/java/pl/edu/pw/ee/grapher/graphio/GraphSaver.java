@@ -36,7 +36,7 @@ public class GraphSaver {
         }
     }
 
-    public static void popEncodingError(){
+    private static void popEncodingError(){
         var alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(GRAPHER_ERROR);
         alert.setHeaderText("IOException");
