@@ -102,7 +102,7 @@ public class GraphPrinting {
             gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
             return;
         }
-        var pathColor = new Color(1,0,0,1);
+        var pathColor = new Color(0,0.3529,0.6274,1);
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
         GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfNodes);
         int[] pathInOrder = PathData.pathInOrder(path);
@@ -112,8 +112,9 @@ public class GraphPrinting {
             Point2D currentCenterOfNode = canvasLocationOfNodes.get(index);
             gc.fillOval(currentCenterOfNode.getX() - pointSize / 2, currentCenterOfNode.getY() - pointSize / 2, pointSize, pointSize);
         }
-        gc.setFill(new Color(0,0,0,1));
+        gc.setFill(new Color(1,1,1,1));
 
+        gc.setFont(new Font(pointSize * 0.35));
         for (int index : pathInOrder) {
             Point2D coordsOfCenter = canvasLocationOfNodes.get(index);
             gc.fillText(String.valueOf(index), coordsOfCenter.getX(), coordsOfCenter.getY() + gc.getFont().getSize() / 3);
