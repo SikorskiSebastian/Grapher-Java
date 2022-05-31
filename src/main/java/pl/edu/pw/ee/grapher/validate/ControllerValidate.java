@@ -74,12 +74,4 @@ public class ControllerValidate {
         }
         return false;
     }
-
-    public static boolean isGraphRead(Graph graph){
-        if (graph == null){
-            ControllerAlerts.popNullReadAlert();
-            return false;
-        }
-        return true;
-    }
 }

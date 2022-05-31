@@ -10,28 +10,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.FileChooser;
 import pl.edu.pw.ee.grapher.graphics.GraphPrinting;
-import pl.edu.pw.ee.grapher.utils.RadioButtonHandler;
-import pl.edu.pw.ee.grapher.validate.ControllerAlerts;
-import pl.edu.pw.ee.grapher.validate.ControllerValidate;
-import pl.edu.pw.ee.grapher.bfs.Bfs;
-import pl.edu.pw.ee.grapher.dijkstra.Dijkstra;
+import pl.edu.pw.ee.grapher.utils.*;
 import pl.edu.pw.ee.grapher.dijkstra.PathData;
-import pl.edu.pw.ee.grapher.generator.EdgeMode;
-import pl.edu.pw.ee.grapher.generator.GraphGenerator;
-import pl.edu.pw.ee.grapher.generator.WageMode;
 import pl.edu.pw.ee.grapher.graph.Graph;
-import pl.edu.pw.ee.grapher.graphio.GraphReader;
-import pl.edu.pw.ee.grapher.graphio.GraphSaver;
-import pl.edu.pw.ee.grapher.utils.EntryData;
-import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
-import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 public class GrapherController implements Initializable {
     @FXML
@@ -91,53 +77,20 @@ public class GrapherController implements Initializable {
         initializeGrapher();
 
         genButton.setOnAction(event -> {
-            if (!ControllerValidate.setUserGenData(userData, columnInput, rowsInput, endInput, startInput)){
-                updateConsole("Wrong input!\n");
+            if ((graph = ButtonHandler.genButtonAction(userData, columnInput, rowsInput, endInput, startInput, consoleOutput)) == null){
                 return;
             }
-            makeGraph();
-            updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)%n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
             GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfVertices);
             pathListView.getItems().clear();
         });
 
-        saveButton.setOnAction(event -> {
-            if (ControllerValidate.isGraphNull(graph)){
-                updateConsole("No graph to save!\n");
-                return;
-            }
-            var fc = new FileChooser();
-            var file = fc.showOpenDialog(null);
-
-            if (ControllerValidate.isFileNullGen(file)){
-                updateConsole("No file!\n");
-                return;
-            }
-
-            GraphSaver.saveToFile(graph, file);
-            fileInput.setText(file.getName());
-            updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)%n",graph.getColumns(), graph.getRows(),file.getName()));
-        });
-
+        saveButton.setOnAction(event -> ButtonHandler.saveButtonAction(graph, consoleOutput, fileInput));
         openButton.setOnAction(event -> {
-            var fc = new FileChooser();
-            var file = fc.showOpenDialog(null);
-            if (ControllerValidate.isFileNullRead(file)){
-                updateConsole("No file!\n");
+            if ((graph = ButtonHandler.openButtonAction(consoleOutput, fileInput)) == null){
                 return;
             }
-
-            graph = GraphReader.readFromFile(file);
-            if (!ControllerValidate.isGraphRead(graph)){
-                updateConsole("Graph is null.\n");
-                return;
-            }
-
-            fileInput.setText(file.getName());
-            updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
             GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfVertices);
         });
-
         radioButtonHandler.setActionButtons(userData);
 
         graphCanvas.setOnMouseClicked(event -> {
@@ -170,35 +123,11 @@ public class GrapherController implements Initializable {
         });
 
         searchButton.setOnAction(event -> {
-            if (graph == null){
-                ControllerAlerts.popNullGraphAlert();
+            if ((path = ButtonHandler.searchButtonAction(graph, userData, consoleOutput, startPointInput, endPointInput)) == null){
                 return;
-            }
-            userData.setColumns(graph.getColumns());
-            userData.setRows(graph.getRows());
-            if (!ControllerValidate.setUserReadData(userData, startPointInput, endPointInput)){
-                updateConsole("Wrong start or end.\n");
-                return;
-            }
-            if(!Bfs.checkIfCoherent(graph)){
-                updateConsole("Selected graph is not coherent!\n");
-                ControllerAlerts.popNotCoherentGraph();
-                return;
-            }
-            if (userData.getStartPoint() == userData.getEndPoint()){
-                ControllerAlerts.popSamePointsInfo();
-                return;
-            }
-
-            path = Dijkstra.findPath(graph, userData);
-
-            if(userData.getPrintMode() == STANDARD_MODE) {
-                updateConsole(PathPrinter.printStandardPathToString(PathData.pathInOrder(path),path));
-            } else if (userData.getPrintMode() == EXTENDED_MODE) {
-                updateConsole(PathPrinter.printExtendedPathToString(PathData.pathInOrder(path),path));
             }
             GraphPrinting.printPathOnGraph(graph, path, canvasLocationOfVertices, pointSize, gc, graphCanvas, scrollAnchor);
-            addToPathList(path);
+            ControllerInitializer.addToPathList(path, itemsAsPathData, pathListView);
         });
 
         pathListView.setOnMouseClicked(event -> {
@@ -221,17 +150,6 @@ public class GrapherController implements Initializable {
         });
     }
 
-    private void addToPathList(PathData path) {
-        for (PathData p : itemsAsPathData){
-            if(path.equals(p)){
-                return;
-            }
-        }
-        itemsAsPathData.add(path);
-        pathListView.setItems(itemsAsPathData);
-
-    }
-
     private void initializeGrapher() {
         itemsAsPathData = FXCollections.observableArrayList();
         pathListView.setItems(itemsAsPathData);
@@ -250,27 +168,6 @@ public class GrapherController implements Initializable {
         gc = graphCanvas.getGraphicsContext2D();
         gc.setTextAlign(TextAlignment.CENTER);
         pointSize = 40;
-    }
-
-    private void updateConsole (String msg) {
-        consoleOutput.setText(consoleOutput.getText() + msg);
-        consoleOutput.setScrollTop(Double.MAX_VALUE);
-    }
-
-    private void makeGraph(){
-        if(userData.getMode() == WEIGHT_MODE) {
-            var graphGenW = new WageMode();
-            graph = new Graph(userData.getRows(), userData.getColumns());
-            graphGenW.generate(graph, userData);
-        } else if (userData.getMode() == EDGE_MODE) {
-            var graphGenE = new EdgeMode();
-            graph = new Graph(userData.getRows(), userData.getColumns());
-            graphGenE.generate(graph, userData);
-        } else if (userData.getMode() == RANDOM_MODE) {
-            var graphGenR = new GraphGenerator();
-            graph = new Graph(userData.getRows(), userData.getColumns());
-            graphGenR.generate(graph, userData);
-        }
     }
 }
 
