@@ -135,7 +135,7 @@
                   <Font size="23.0" />
                </font>
             </TextField>
-            <TitledPane fx:id="pathListTitlePane" animated="false" layoutX="298.0" layoutY="55.0" maxHeight="120.0" maxWidth="339.0" minHeight="120.0" minWidth="339.0" prefHeight="120.0" prefWidth="339.0" text="Path List">
+            <TitledPane fx:id="pathListTitlePane" animated="false" expanded="false" layoutX="298.0" layoutY="55.0" maxHeight="120.0" maxWidth="339.0" minHeight="120.0" minWidth="339.0" prefHeight="120.0" prefWidth="339.0" text="Path List">
                <font>
                   <Font size="18.0" />
                </font>

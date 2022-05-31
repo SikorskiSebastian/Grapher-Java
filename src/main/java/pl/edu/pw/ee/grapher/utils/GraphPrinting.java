@@ -233,7 +233,7 @@ public class GraphPrinting {
     }
 
     public static boolean checkSizeForPrinting(Graph graph){
-        if(graph.getRows() > 55 || graph.getColumns() > 55){
+        if(graph.getRows() > 60 || graph.getColumns() > 60){
             return false;
         }
         return true;

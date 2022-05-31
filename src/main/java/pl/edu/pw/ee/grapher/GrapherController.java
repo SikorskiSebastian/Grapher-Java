@@ -76,13 +76,13 @@ public class GrapherController implements Initializable {
     @FXML
     private ListView<PathData> pathListView;
 
-    ObservableList<PathData> itemsAsPathData;
+    private ObservableList<PathData> itemsAsPathData;
     private EntryData userData;
     private Graph graph;
     private PathData path;
 
-    HashMap<Integer, Point2D> canvasLocationOfNodes;
-    GraphicsContext gc;
+    private HashMap<Integer, Point2D> canvasLocationOfNodes;
+    private GraphicsContext gc;
     private float pointSize;
     private int numberClicked = 0;
 
@@ -98,6 +98,7 @@ public class GrapherController implements Initializable {
             makeGraph();
             updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)%n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
             GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfNodes);
+            pathListView.getItems().clear();
         });
 
         saveButton.setOnAction(event -> {
@@ -192,31 +193,46 @@ public class GrapherController implements Initializable {
 
             path = Dijkstra.findPath(graph, userData);
 
-            itemsAsPathData.add(path);
-            pathListView.setItems(itemsAsPathData);
-
-
             if(userData.getPrintMode() == STANDARD_MODE) {
                 updateConsole(PathPrinter.printStandardPathToString(PathData.pathInOrder(path),path));
             } else if (userData.getPrintMode() == EXTENDED_MODE) {
                 updateConsole(PathPrinter.printExtendedPathToString(PathData.pathInOrder(path),path));
             }
             GraphPrinting.printPathOnGraph(graph, path, canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
+            addToPathList(path);
         });
 
         pathListView.setOnMouseClicked(event -> {
             GraphPrinting.printPathOnGraph(graph, pathListView.getSelectionModel().getSelectedItem(), canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
+            startPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getStart()));
+            endPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getEnd()));
         });
+
+        pathListTitlePane.setOnMouseClicked(event -> {
+            if(pathListTitlePane.isExpanded()){
+                searchButton.toBack();
+            }
+            if(!pathListTitlePane.isExpanded()){
+                searchButton.toFront();
+            }
+        });
+    }
+
+    private void addToPathList(PathData path) {
+        for (PathData p : itemsAsPathData){
+            if(path.equals(p)){
+                return;
+            }
+        }
+        itemsAsPathData.add(path);
+        pathListView.setItems(itemsAsPathData);
 
     }
 
-
-
-
     private void initializeGrapher() {
-        pathListTitlePane.setExpanded(false);
         itemsAsPathData = FXCollections.observableArrayList();
         pathListView.setItems(itemsAsPathData);
+        searchButton.toFront();
         userData = new EntryData();
         fileInput.setEditable(false);
         consoleOutput.setEditable(false);
@@ -228,7 +244,7 @@ public class GrapherController implements Initializable {
         canvasLocationOfNodes = new HashMap<>();
         gc = graphCanvas.getGraphicsContext2D();
         gc.setTextAlign(TextAlignment.CENTER);
-        pointSize = 50;
+        pointSize = 40;
     }
 
     private void updateConsole (String msg) {
