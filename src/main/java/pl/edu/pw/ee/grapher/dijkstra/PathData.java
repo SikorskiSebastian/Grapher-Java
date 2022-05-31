@@ -89,8 +89,7 @@ public class PathData {
 
     @Override
     public String toString(){
-        return "\nPredecessors:\n" + Arrays.toString(predecessors) +"\n" + "Weights:\n" +
-                Arrays.toString(weights) + "\n";
+        return String.format("( %d ; %d)", start, end);
     }
 
     public static int @NotNull [] pathInOrder (@NotNull PathData path) {

@@ -23,3 +23,9 @@
 #pathPane{
     -fx-background-color: #81abcc;
 }
+
+#pathListTitlePane{
+    -fx-font-family: 'Aldrich', sans-serif;
+    -fx-font-size: 15px;
+    -fx-color: #81abcc;
+}

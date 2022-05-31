@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import pl.edu.pw.ee.grapher.graph.Graph;
 
 import static pl.edu.pw.ee.grapher.utils.Constants.*;
-
-
 import java.util.Arrays;
 
 public class Bfs {
@@ -24,19 +22,19 @@ public class Bfs {
         Arrays.fill(queue, -1);
 
         var visited = new boolean[numOfVertices];
-        int reader = 0;
-        int writer = 0;
+        var reader = 0;
+        var writer = 0;
 
         queue[writer] = 0;
         visited[0] = true;
         writer = Bfs.calculateVertex(writer, numOfVertices);
 
         while (reader != writer){
-            int currentVertex = queue[reader];
+            var currentVertex = queue[reader];
             reader = Bfs.calculateVertex(reader, numOfVertices);
 
             for (int j = 0; j < 4; j++){
-                int aim = graph.getVertex(currentVertex).getConnection(j);
+                var aim = graph.getVertex(currentVertex).getConnection(j);
 
                 if (graph.getVertex(currentVertex).getExistence(j) && !visited[aim]){
                     visited[aim] = true;
@@ -45,7 +43,6 @@ public class Bfs {
                 }
             }
         }
-
         for (boolean visit : visited){
             if (!visit){
                 return false;
@@ -70,16 +67,16 @@ public class Bfs {
             var vertexDownIndex = currentVertex.getConnection(DOWN);
             var vertexLeftIndex = currentVertex.getConnection(LEFT);
 
-            if(vertexUpIndex != -1) {
+            if(currentVertex.getExistence(UP)) {
                 Bfs.setInvertedVertex(invertedGraph, DOWN, i, vertexUpIndex);
             }
-            if(vertexRightIndex != -1) {
+            if(currentVertex.getExistence(RIGHT)) {
                 Bfs.setInvertedVertex(invertedGraph, LEFT, i, vertexRightIndex);
             }
-            if(vertexDownIndex != -1) {
+            if(currentVertex.getExistence(DOWN)) {
                 Bfs.setInvertedVertex(invertedGraph, UP, i, vertexDownIndex);
             }
-            if(vertexLeftIndex != -1) {
+            if(currentVertex.getExistence(LEFT)) {
                 Bfs.setInvertedVertex(invertedGraph, RIGHT, i, vertexLeftIndex);
             }
         }

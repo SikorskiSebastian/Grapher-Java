@@ -23,8 +23,12 @@ public class ControllerValidate {
             if (userData.getRows() <= 0 || userData.getColumns() <= 0 || end < start || start < 0 || end <= 0){
                 throw new IllegalArgumentException();
             }
+            if (start >= Integer.MAX_VALUE || end >= Integer.MAX_VALUE){
+                throw new IllegalArgumentException();
+            }
         } catch (IllegalArgumentException exception) {
             ControllerAlerts.popUserDataGenAlert();
+            exception.printStackTrace();
             return false;
         }
         return true;
@@ -43,6 +47,7 @@ public class ControllerValidate {
             }
         } catch (IllegalArgumentException exception) {
             ControllerAlerts.popUserReadAlert();
+            exception.printStackTrace();
             return false;
         }
         return true;

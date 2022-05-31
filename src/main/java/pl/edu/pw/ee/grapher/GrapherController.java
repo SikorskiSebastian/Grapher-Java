@@ -1,9 +1,17 @@
 package pl.edu.pw.ee.grapher;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
+import pl.edu.pw.ee.grapher.utils.GraphPrinting;
 import pl.edu.pw.ee.grapher.validate.ControllerAlerts;
 import pl.edu.pw.ee.grapher.validate.ControllerValidate;
 import pl.edu.pw.ee.grapher.bfs.Bfs;
@@ -19,15 +27,16 @@ import pl.edu.pw.ee.grapher.utils.EntryData;
 import pl.edu.pw.ee.grapher.utils.PathPrinter;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import static pl.edu.pw.ee.grapher.utils.Constants.STANDARD_MODE;
-import static pl.edu.pw.ee.grapher.utils.Constants.EXTENDED_MODE;
-import static pl.edu.pw.ee.grapher.utils.Constants.WEIGHT_MODE;
-import static pl.edu.pw.ee.grapher.utils.Constants.EDGE_MODE;
-import static pl.edu.pw.ee.grapher.utils.Constants.RANDOM_MODE;
+import static pl.edu.pw.ee.grapher.utils.Constants.*;
 
 public class GrapherController implements Initializable {
+    @FXML
+    private Canvas graphCanvas;
+    @FXML
+    private AnchorPane scrollAnchor;
     @FXML
     private Button genButton;
     @FXML
@@ -62,25 +71,35 @@ public class GrapherController implements Initializable {
     private TextField endPointInput;
     @FXML
     private TextArea consoleOutput;
+    @FXML
+    private TitledPane pathListTitlePane;
+    @FXML
+    private ListView<PathData> pathListView;
+    private ObservableList<PathData> itemsAsPathData;
     private EntryData userData;
     private Graph graph;
     private PathData path;
-    private String consoleText;
+    private HashMap<Integer, Point2D> canvasLocationOfNodes;
+    private GraphicsContext gc;
+    private float pointSize;
+    private int numberClicked = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeGrapher();
 
-        genButton.setOnMouseClicked(event -> {
+        genButton.setOnAction(event -> {
             if (!ControllerValidate.setUserGenData(userData, columnInput, rowsInput, endInput, startInput)){
                 updateConsole("Wrong input!\n");
                 return;
             }
             makeGraph();
             updateConsole(String.format("Graph (%d x%d) was generated successfully, with edge weights in range of (%.2f %.2f)%n",userData.getColumns(),userData.getRows(),userData.getRangeStart(),userData.getRangeEnd()));
+            GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfNodes);
+            pathListView.getItems().clear();
         });
 
-        saveButton.setOnMouseClicked(event -> {
+        saveButton.setOnAction(event -> {
             if (ControllerValidate.isGraphNull(graph)){
                 updateConsole("No graph to save!\n");
                 return;
@@ -98,7 +117,7 @@ public class GrapherController implements Initializable {
             updateConsole(String.format("Graph (%d x %d) was successfully saved to a file (%s)%n",graph.getColumns(), graph.getRows(),file.getName()));
         });
 
-        openButton.setOnMouseClicked(event -> {
+        openButton.setOnAction(event -> {
             var fc = new FileChooser();
             var file = fc.showOpenDialog(null);
             if (ControllerValidate.isFileNullRead(file)){
@@ -114,21 +133,50 @@ public class GrapherController implements Initializable {
 
             fileInput.setText(file.getName());
             updateConsole(String.format("Graph (%d x %d) was successfully loaded from a file (%s)%n",graph.getColumns(), graph.getRows(), file.getName()));
+            GraphPrinting.printGraph(graph, pointSize, gc, graphCanvas, scrollAnchor, canvasLocationOfNodes);
         });
 
-        wageModeRB.setOnMouseClicked(event -> userData.setMode(WEIGHT_MODE));
-        edgeModeRB.setOnMouseClicked(event -> userData.setMode(EDGE_MODE));
-        randomModeRB.setOnMouseClicked(event -> userData.setMode(RANDOM_MODE));
-        standardRB.setOnMouseClicked(event -> userData.setPrintMode(STANDARD_MODE));
-        extendedRB.setOnMouseClicked(event -> userData.setPrintMode(EXTENDED_MODE));
+        wageModeRB.setOnAction(event -> userData.setMode(WEIGHT_MODE));
+        edgeModeRB.setOnAction(event -> userData.setMode(EDGE_MODE));
+        randomModeRB.setOnAction(event -> userData.setMode(RANDOM_MODE));
+        standardRB.setOnAction(event -> userData.setPrintMode(STANDARD_MODE));
+        extendedRB.setOnAction(event -> userData.setPrintMode(EXTENDED_MODE));
 
-        searchButton.setOnMouseClicked(event -> {
-            if (!ControllerValidate.setUserReadData(userData, startPointInput, endPointInput)){
-                updateConsole("Wrong start or end.\n");
+        graphCanvas.setOnMouseClicked(event -> {
+            if (numberClicked % 2 == 0) {
+                startPointInput.clear();
+                endPointInput.clear();
+            }
+            numberClicked++;
+            var pointClicked = new Point2D(event.getX(), event.getY());
+
+            if (graph == null) {
                 return;
             }
+
+            for (int index = 0; index < graph.getNumOfVertices(); index++) {
+                var coordsOfCenter = canvasLocationOfNodes.get(index);
+
+                if (pointClicked.distance(coordsOfCenter) <= pointSize / 2) {
+                    if (numberClicked % 2 == 1) {
+                        startPointInput.setText(String.valueOf(index));
+                    } else if (numberClicked % 2 == 0) {
+                        endPointInput.setText(String.valueOf(index));
+                        searchButton.fire();
+                    }
+                }
+            }
+        });
+
+        searchButton.setOnAction(event -> {
             if (graph == null){
                 ControllerAlerts.popNullGraphAlert();
+                return;
+            }
+            userData.setColumns(graph.getColumns());
+            userData.setRows(graph.getRows());
+            if (!ControllerValidate.setUserReadData(userData, startPointInput, endPointInput)){
+                updateConsole("Wrong start or end.\n");
                 return;
             }
             if(!Bfs.checkIfCoherent(graph)){
@@ -149,23 +197,57 @@ public class GrapherController implements Initializable {
             } else if (userData.getPrintMode() == EXTENDED_MODE) {
                 updateConsole(PathPrinter.printExtendedPathToString(PathData.pathInOrder(path),path));
             }
+            GraphPrinting.printPathOnGraph(graph, path, canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
+            addToPathList(path);
+        });
+
+        pathListView.setOnMouseClicked(event -> {
+            GraphPrinting.printPathOnGraph(graph, pathListView.getSelectionModel().getSelectedItem(), canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
+            startPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getStart()));
+            endPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getEnd()));
+        });
+
+        pathListTitlePane.setOnMouseClicked(event -> {
+            if(pathListTitlePane.isExpanded()){
+                searchButton.toBack();
+            }
+            if(!pathListTitlePane.isExpanded()){
+                searchButton.toFront();
+            }
         });
     }
 
+    private void addToPathList(PathData path) {
+        for (PathData p : itemsAsPathData){
+            if(path.equals(p)){
+                return;
+            }
+        }
+        itemsAsPathData.add(path);
+        pathListView.setItems(itemsAsPathData);
+
+    }
+
     private void initializeGrapher() {
+        itemsAsPathData = FXCollections.observableArrayList();
+        pathListView.setItems(itemsAsPathData);
+        searchButton.toFront();
         userData = new EntryData();
         fileInput.setEditable(false);
         consoleOutput.setEditable(false);
-        consoleText = "Grapher by SS & SP\n";
+        var consoleText = "Grapher by SS & SP\n";
         consoleOutput.setText(consoleText);
         graph = null;
         setGenerationRadioButtons();
         setSearchRadioButtons();
+        canvasLocationOfNodes = new HashMap<>();
+        gc = graphCanvas.getGraphicsContext2D();
+        gc.setTextAlign(TextAlignment.CENTER);
+        pointSize = 40;
     }
 
     private void updateConsole (String msg) {
-        consoleText += msg;
-        consoleOutput.setText(consoleText);
+        consoleOutput.setText(consoleOutput.getText() + msg);
         consoleOutput.setScrollTop(Double.MAX_VALUE);
     }
 
@@ -203,5 +285,6 @@ public class GrapherController implements Initializable {
             graphGenR.generate(graph, userData);
         }
     }
+
 }
 
