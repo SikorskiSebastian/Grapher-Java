@@ -28,6 +28,7 @@ public class ControllerValidate {
             }
         } catch (IllegalArgumentException exception) {
             ControllerAlerts.popUserDataGenAlert();
+            exception.printStackTrace();
             return false;
         }
         return true;
@@ -46,6 +47,7 @@ public class ControllerValidate {
             }
         } catch (IllegalArgumentException exception) {
             ControllerAlerts.popUserReadAlert();
+            exception.printStackTrace();
             return false;
         }
         return true;

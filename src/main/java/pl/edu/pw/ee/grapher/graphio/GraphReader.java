@@ -77,7 +77,8 @@ public class GraphReader{
                     return false;
                 }
             }
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException exception) {
+            exception.printStackTrace();
             return false;
         }
 

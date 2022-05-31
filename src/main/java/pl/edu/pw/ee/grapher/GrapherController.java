@@ -75,12 +75,10 @@ public class GrapherController implements Initializable {
     private TitledPane pathListTitlePane;
     @FXML
     private ListView<PathData> pathListView;
-
     private ObservableList<PathData> itemsAsPathData;
     private EntryData userData;
     private Graph graph;
     private PathData path;
-
     private HashMap<Integer, Point2D> canvasLocationOfNodes;
     private GraphicsContext gc;
     private float pointSize;
@@ -145,23 +143,24 @@ public class GrapherController implements Initializable {
         extendedRB.setOnAction(event -> userData.setPrintMode(EXTENDED_MODE));
 
         graphCanvas.setOnMouseClicked(event -> {
-            if(numberClicked % 2 == 0) {
+            if (numberClicked % 2 == 0) {
                 startPointInput.clear();
                 endPointInput.clear();
             }
             numberClicked++;
-            Point2D pointClicked = new Point2D(event.getX(), event.getY());
+            var pointClicked = new Point2D(event.getX(), event.getY());
 
-            if(graph == null){
+            if (graph == null) {
                 return;
             }
 
-            for(int index = 0; index < graph.getNumOfVertices(); index++){
-                Point2D coordsOfCenter = canvasLocationOfNodes.get(index);
-                if(pointClicked.distance(coordsOfCenter) <= pointSize/2){
-                    if(numberClicked % 2 == 1){
+            for (int index = 0; index < graph.getNumOfVertices(); index++) {
+                var coordsOfCenter = canvasLocationOfNodes.get(index);
+
+                if (pointClicked.distance(coordsOfCenter) <= pointSize / 2) {
+                    if (numberClicked % 2 == 1) {
                         startPointInput.setText(String.valueOf(index));
-                    } else if(numberClicked % 2 == 0) {
+                    } else if (numberClicked % 2 == 0) {
                         endPointInput.setText(String.valueOf(index));
                         searchButton.fire();
                     }
@@ -236,7 +235,7 @@ public class GrapherController implements Initializable {
         userData = new EntryData();
         fileInput.setEditable(false);
         consoleOutput.setEditable(false);
-        String consoleText = "Grapher by SS & SP\n";
+        var consoleText = "Grapher by SS & SP\n";
         consoleOutput.setText(consoleText);
         graph = null;
         setGenerationRadioButtons();

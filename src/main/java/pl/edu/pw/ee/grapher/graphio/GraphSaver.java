@@ -18,7 +18,6 @@ public class GraphSaver {
         var myGraph = new StringBuilder();
 
         myGraph.append(graph.getRows()).append(" ").append(graph.getColumns()).append("\n");
-
         for (int i = 0; i < graph.getNumOfVertices(); i++){
             myGraph.append("\t");
             for (int j = 0; j < 4; j++){
@@ -33,6 +32,7 @@ public class GraphSaver {
         try {
             Files.writeString(graphFile.toPath(), myGraph.toString(), StandardCharsets.UTF_8);
         } catch (IOException exception) {
+            exception.printStackTrace();
             GraphSaver.popEncodingError();
         }
     }
@@ -42,6 +42,6 @@ public class GraphSaver {
         alert.setTitle(GRAPHER_ERROR);
         alert.setHeaderText("IOException");
         alert.setContentText("There is a problem with encoding.");
-        alert.show();
+        alert.showAndWait();
     }
 }
