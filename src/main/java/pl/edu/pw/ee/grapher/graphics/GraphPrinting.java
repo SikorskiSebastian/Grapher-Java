@@ -34,36 +34,39 @@ public class GraphPrinting {
     }
 
     public static void printGraph(@NotNull Graph graph, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor, Map<Integer, Point2D> canvasLocationOfNodes){
-            if (!(graph.getRows() <= 60 && graph.getColumns() <= 60)) {
-                gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
-                return;
-            }
+        if (!(graph.getRows() <= 60 && graph.getColumns() <= 60)) {
             gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
-            GraphPrinting.resizePrintWindow(graph, graphCanvas, scrollAnchor, pointSize);
+            return;
+        }
+        gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+        GraphPrinting.resizePrintWindow(graph, graphCanvas, scrollAnchor, pointSize);
 
-            for (int i = 0; i < graph.getRows(); i++) {
-                for (int j = 0; j < graph.getColumns(); j++) {
-                    var index = i * graph.getColumns() + j;
-                    gc.fillOval(pointSize * (j + 0.5) + j * pointSize, pointSize * (i + 0.5) + i * pointSize, pointSize, pointSize);
-                    var coordsOfCenter = new Point2D(pointSize * (j + 0.5) + j * pointSize + pointSize / 2, pointSize * (i + 0.5) + i * pointSize + pointSize / 2);
-                    canvasLocationOfNodes.put(index, coordsOfCenter);
-                }
+        for (int i = 0; i < graph.getRows(); i++) {
+            for (int j = 0; j < graph.getColumns(); j++) {
+                var index = i * graph.getColumns() + j;
+                gc.fillOval(pointSize * (j + 0.5) + j * pointSize, pointSize * (i + 0.5) + i * pointSize, pointSize, pointSize);
+                var coordsOfCenter = new Point2D(pointSize * (j + 0.5) + j * pointSize + pointSize / 2, pointSize * (i + 0.5) + i * pointSize + pointSize / 2);
+                canvasLocationOfNodes.put(index, coordsOfCenter);
             }
-            ArrowPrinter.printArrows(graph, gc, pointSize, canvasLocationOfNodes);
+        }
+        ArrowPrinter.printArrows(graph, gc, pointSize, canvasLocationOfNodes);
 
-            gc.setFont(new Font(pointSize * 0.35));
-            gc.setFill(new Color(1, 1, 1, 1));
-            for (int index = 0; index < graph.getNumOfVertices(); index++) {
-                var coordsOfCenter = canvasLocationOfNodes.get(index);
-                gc.fillText(String.valueOf(index), coordsOfCenter.getX(), coordsOfCenter.getY() + gc.getFont().getSize() / 3);
-            }
+        gc.setFont(new Font(pointSize * 0.35));
+        gc.setFill(new Color(1, 1, 1, 1));
+        for (int index = 0; index < graph.getNumOfVertices(); index++) {
+            var coordsOfCenter = canvasLocationOfNodes.get(index);
+            gc.fillText(String.valueOf(index), coordsOfCenter.getX(), coordsOfCenter.getY() + gc.getFont().getSize() / 3);
+        }
 
-            WeightPrinter.printWeights(graph, gc, pointSize, canvasLocationOfNodes);
+        WeightPrinter.printWeights(graph, gc, pointSize, canvasLocationOfNodes);
     }
 
     public static void printPathOnGraph(@NotNull Graph graph, PathData path, Map<Integer, Point2D> canvasLocationOfNodes, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor) {
         if(!(graph.getRows() <= 60 && graph.getColumns() <= 60)){
             gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+            return;
+        }
+        if (path == null){
             return;
         }
         var pathColor = new Color(0,0.3529,0.6274,1);
@@ -76,8 +79,8 @@ public class GraphPrinting {
             var currentCenterOfNode = canvasLocationOfNodes.get(index);
             gc.fillOval(currentCenterOfNode.getX() - pointSize / 2, currentCenterOfNode.getY() - pointSize / 2, pointSize, pointSize);
         }
-        gc.setFill(new Color(1,1,1,1));
 
+        gc.setFill(new Color(1,1,1,1));
         gc.setFont(new Font(pointSize * 0.35));
         for (int index : pathInOrder) {
             var coordsOfCenter = canvasLocationOfNodes.get(index);

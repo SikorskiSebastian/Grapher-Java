@@ -202,9 +202,10 @@ public class GrapherController implements Initializable {
         });
 
         pathListView.setOnMouseClicked(event -> {
-            if (graph == null){
+            if (graph == null || path == null || pathListView.getSelectionModel().getSelectedItem() == null){
                 return;
             }
+
             GraphPrinting.printPathOnGraph(graph, pathListView.getSelectionModel().getSelectedItem(), canvasLocationOfVertices, pointSize, gc, graphCanvas, scrollAnchor);
             startPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getStart()));
             endPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getEnd()));
