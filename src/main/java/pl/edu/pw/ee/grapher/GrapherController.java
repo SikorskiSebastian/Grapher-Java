@@ -156,6 +156,10 @@ public class GrapherController implements Initializable {
 
             for (int index = 0; index < graph.getNumOfVertices(); index++) {
                 var coordsOfCenter = canvasLocationOfNodes.get(index);
+                
+                if (coordsOfCenter == null){
+                    return;
+                }
 
                 if (pointClicked.distance(coordsOfCenter) <= pointSize / 2) {
                     if (numberClicked % 2 == 1) {
@@ -202,6 +206,9 @@ public class GrapherController implements Initializable {
         });
 
         pathListView.setOnMouseClicked(event -> {
+            if (graph == null){
+                return;
+            }
             GraphPrinting.printPathOnGraph(graph, pathListView.getSelectionModel().getSelectedItem(), canvasLocationOfNodes, pointSize, gc, graphCanvas, scrollAnchor);
             startPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getStart()));
             endPointInput.setText(String.valueOf(pathListView.getSelectionModel().getSelectedItem().getEnd()));

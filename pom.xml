@@ -20,6 +20,8 @@
         <javafx.version>18.0.1</javafx.version>
         <javafx.plug.version>0.0.8</javafx.plug.version>
         <jetbrains.annotations>23.0.0</jetbrains.annotations>
+        <main.class>pl.edu.pw.ee.grapher/pl.edu.pw.ee.grapher.GrapherClient</main.class>
+        <maven.assembly.version>3.3.0</maven.assembly.version>
     </properties>
 
     <dependencies>
@@ -60,6 +62,13 @@
             <version>${jetbrains.annotations}</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -86,10 +95,9 @@
                 <version>${javafx.plug.version}</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>pl.edu.pw.ee.grapher/pl.edu.pw.ee.grapher.GrapherClient</mainClass>
+                            <mainClass>${main.class}</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -97,6 +105,30 @@
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven.assembly.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${main.class}</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

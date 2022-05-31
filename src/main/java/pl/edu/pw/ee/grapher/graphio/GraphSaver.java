@@ -32,7 +32,6 @@ public class GraphSaver {
         try {
             Files.writeString(graphFile.toPath(), myGraph.toString(), StandardCharsets.UTF_8);
         } catch (IOException exception) {
-            exception.printStackTrace();
             GraphSaver.popEncodingError();
         }
     }
