@@ -17,6 +17,7 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class GrapherController implements Initializable {
@@ -66,7 +67,7 @@ public class GrapherController implements Initializable {
     private EntryData userData;
     private Graph graph;
     private PathData path;
-    private HashMap<Integer, Point2D> canvasLocationOfVertices;
+    private Map<Integer, Point2D> canvasLocationOfVertices;
     private GraphicsContext gc;
     private float pointSize;
     private int numberClicked = 0;
