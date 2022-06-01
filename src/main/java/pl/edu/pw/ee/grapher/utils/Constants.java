@@ -1,6 +1,6 @@
 package pl.edu.pw.ee.grapher.utils;
 
-public class Constants {
+public abstract class Constants {
     private Constants(){}
 
     public static final int NO_MODE = -1;
@@ -15,6 +15,4 @@ public class Constants {
     public static final int RIGHT = 1;
     public static final int DOWN = 2;
     public static final int LEFT = 3;
-
-    public static final String GRAPHER_ERROR = "Grapher Error";
 }

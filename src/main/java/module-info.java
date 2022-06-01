@@ -14,4 +14,7 @@ module pl.edu.pw.ee.grapher {
 
     exports pl.edu.pw.ee.grapher;
     opens pl.edu.pw.ee.grapher to javafx.fxml;
+
+    exports pl.edu.pw.ee.grapher.graphics;
+    opens pl.edu.pw.ee.grapher.graphics to javafx.fxml;
 }

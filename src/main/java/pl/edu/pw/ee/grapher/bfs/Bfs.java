@@ -6,22 +6,27 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 import static pl.edu.pw.ee.grapher.utils.Constants.*;
 import java.util.Arrays;
 
-public class Bfs {
-    private Bfs() {}
+public class Bfs implements CoherenceChecker {
+    private final boolean[] visited;
+    private final int[] queue;
+    private final int numOfVertices;
 
-    public static boolean checkIfCoherent(@NotNull Graph graph) {
+    public Bfs(int numOfVertices) {
+        this.queue = new int[numOfVertices];
+        this.visited = new boolean[numOfVertices];
+        this.numOfVertices = numOfVertices;
+    }
+
+    public boolean checkIfCoherent(@NotNull Graph graph) {
         if (!bfsLaunch(graph)){
             return false;
         }
         return bfsLaunch(invertGraph(graph));
     }
 
-    public static boolean bfsLaunch(@NotNull Graph graph){
-        var numOfVertices = graph.getNumOfVertices();
-        var queue = new int[numOfVertices];
+    public boolean bfsLaunch(@NotNull Graph graph){
         Arrays.fill(queue, -1);
-
-        var visited = new boolean[numOfVertices];
+        Arrays.fill(visited, false);
         var reader = 0;
         var writer = 0;
 

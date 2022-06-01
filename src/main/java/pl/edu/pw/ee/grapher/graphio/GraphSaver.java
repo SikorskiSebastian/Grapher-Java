@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-import static pl.edu.pw.ee.grapher.utils.Constants.GRAPHER_ERROR;
-
 public class GraphSaver {
     private GraphSaver(){}
 
@@ -32,14 +30,13 @@ public class GraphSaver {
         try {
             Files.writeString(graphFile.toPath(), myGraph.toString(), StandardCharsets.UTF_8);
         } catch (IOException exception) {
-            exception.printStackTrace();
             GraphSaver.popEncodingError();
         }
     }
 
-    public static void popEncodingError(){
+    private static void popEncodingError(){
         var alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(GRAPHER_ERROR);
+        alert.setTitle("Grapher Error");
         alert.setHeaderText("IOException");
         alert.setContentText("There is a problem with encoding.");
         alert.showAndWait();

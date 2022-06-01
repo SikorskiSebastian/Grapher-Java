@@ -2,9 +2,9 @@ package pl.edu.pw.ee.grapher.validate;
 
 import javafx.scene.control.Alert;
 
-import static pl.edu.pw.ee.grapher.utils.Constants.GRAPHER_ERROR;
-
 public class ControllerAlerts {
+    private static final String GRAPHER_ERROR = "Grapher Error";
+
     private ControllerAlerts(){}
 
     public static void popUserDataGenAlert(){

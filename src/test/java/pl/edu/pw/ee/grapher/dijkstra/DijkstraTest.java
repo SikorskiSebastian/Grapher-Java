@@ -12,9 +12,10 @@ class DijkstraTest {
         var graph = new GraphCoherent();
         var entry = new TestEntry();
         var expected = new ExpectedPath();
+        var tester = new Dijkstra(graph.getGraph().getNumOfVertices());
 
         //when
-        var result = Dijkstra.findPath(graph.getGraph(), entry.getEntry());
+        var result = tester.findPath(graph.getGraph(), entry.getEntry());
 
         //then
         Assertions.assertEquals(expected.getPathData(), result);
