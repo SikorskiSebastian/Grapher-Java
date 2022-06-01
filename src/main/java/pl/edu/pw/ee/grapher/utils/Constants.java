@@ -1,6 +1,6 @@
 package pl.edu.pw.ee.grapher.utils;
 
-public class Constants {
+public abstract class Constants {
     private Constants(){}
 
     public static final int NO_MODE = -1;

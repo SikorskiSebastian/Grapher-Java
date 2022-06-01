@@ -24,9 +24,10 @@ class EdgeModeTest {
         var generator = new EdgeMode();
         var graph = new Graph(userData.getRows(),userData.getColumns());
         generator.generate(graph,userData);
+        var tester = new Bfs(graph.getNumOfVertices());
 
         //then
-        var result = Bfs.checkIfCoherent(graph);
+        var result = tester.checkIfCoherent(graph);
 
         Assertions.assertEquals(expected,result);
     }

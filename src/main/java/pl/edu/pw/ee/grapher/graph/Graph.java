@@ -3,7 +3,7 @@ package pl.edu.pw.ee.grapher.graph;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Graph {
+public class Graph implements GraphStructure{
     private final Vertex[] vertices;
     private final int rows;
     private final int columns;

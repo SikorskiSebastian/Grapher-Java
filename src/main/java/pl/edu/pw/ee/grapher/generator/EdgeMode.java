@@ -13,8 +13,9 @@ public class EdgeMode extends GraphGenerator{
         var numOfTries = 0;
         var maxNumOfTries = 500;
         var numOfVertices = graph.getNumOfVertices();
+        var coherenceFinder = new Bfs(numOfVertices);
 
-        while (!Bfs.checkIfCoherent(graph)){
+        while (!coherenceFinder.checkIfCoherent(graph)){
             for (int i = 0; i < numOfVertices; i++) {
                 makeConnectionFromVertex(i, graph, userData);
             }

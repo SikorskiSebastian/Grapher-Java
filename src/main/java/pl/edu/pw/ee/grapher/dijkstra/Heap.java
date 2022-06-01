@@ -3,7 +3,7 @@ package pl.edu.pw.ee.grapher.dijkstra;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Heap {
+public class Heap implements HeapStructure {
     private final int numOfVertices;
     private int length;
     private final float[] priorities;

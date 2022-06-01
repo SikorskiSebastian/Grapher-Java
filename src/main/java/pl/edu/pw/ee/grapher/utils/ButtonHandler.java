@@ -39,7 +39,9 @@ public class ButtonHandler {
             ControllerInitializer.updateConsole("Wrong start or end.\n", consoleOutput);
             return null;
         }
-        if(!Bfs.checkIfCoherent(graph)){
+
+        var finder = new Bfs(graph.getNumOfVertices());
+        if(!finder.checkIfCoherent(graph)){
             ControllerInitializer.updateConsole("Selected graph is not coherent!\n", consoleOutput);
             ControllerAlerts.popNotCoherentGraph();
             return null;
@@ -49,7 +51,8 @@ public class ButtonHandler {
             return null;
         }
 
-        PathData path = Dijkstra.findPath(graph, userData);
+        var shortPathFinder = new Dijkstra(graph.getNumOfVertices());
+        var path = shortPathFinder.findPath(graph, userData);
 
         if(userData.getPrintMode() == STANDARD_MODE) {
             ControllerInitializer.updateConsole(PathPrinter.printStandardPathToString(PathData.pathInOrder(path),path), consoleOutput);

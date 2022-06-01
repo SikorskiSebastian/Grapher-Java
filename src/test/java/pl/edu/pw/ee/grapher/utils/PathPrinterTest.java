@@ -18,7 +18,8 @@ class PathPrinterTest {
     void testDataInit(){
         var graph = new GraphCoherent();
         var entry = new TestEntry();
-        path = Dijkstra.findPath(graph.getGraph(), entry.getEntry());
+        var tester = new Dijkstra(graph.getGraph().getNumOfVertices());
+        path = tester.findPath(graph.getGraph(), entry.getEntry());
     }
 
     @Test

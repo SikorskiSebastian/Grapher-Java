@@ -6,14 +6,18 @@ import pl.edu.pw.ee.grapher.graph.Graph;
 
 import java.util.Arrays;
 
-public class Dijkstra {
-    private Dijkstra() {}
+public class Dijkstra implements PathFinder {
+    private final Heap heap;
+    private final float[] distance;
+    private final int numOfVertices;
 
-    public static @NotNull PathData findPath(@NotNull Graph graph, @NotNull EntryData userData){
-        var numOfVertices = graph.getColumns() * graph.getRows();
-        var distance = new float[numOfVertices];
-        var heap = new Heap(numOfVertices);
+    public Dijkstra(int numOfVertices) {
+        this.distance = new float[numOfVertices];
+        this.heap = new Heap(numOfVertices);
+        this.numOfVertices = numOfVertices;
+    }
 
+    public @NotNull PathData findPath(@NotNull Graph graph, @NotNull EntryData userData){
         var pathData = new PathData(numOfVertices);
         pathData.setStart(userData.getStartPoint());
         pathData.setEnd(userData.getEndPoint());
@@ -46,7 +50,6 @@ public class Dijkstra {
                 }
             }
         }
-
         return pathData;
     }
 }
