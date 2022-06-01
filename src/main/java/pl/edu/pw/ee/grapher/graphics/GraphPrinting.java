@@ -34,7 +34,7 @@ public class GraphPrinting {
     }
 
     public static void printGraph(@NotNull Graph graph, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor, Map<Integer, Point2D> canvasLocationOfNodes){
-        if (!(graph.getRows() <= 60 && graph.getColumns() <= 60)) {
+        if (graph.getNumOfVertices() > 3600) {
             gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
             return;
         }
@@ -62,7 +62,7 @@ public class GraphPrinting {
     }
 
     public static void printPathOnGraph(@NotNull Graph graph, PathData path, Map<Integer, Point2D> canvasLocationOfNodes, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor) {
-        if(!(graph.getRows() <= 60 && graph.getColumns() <= 60)){
+        if(graph.getNumOfVertices() > 3600){
             gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
             return;
         }
