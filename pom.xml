@@ -20,8 +20,9 @@
         <javafx.version>18.0.1</javafx.version>
         <javafx.plug.version>0.0.8</javafx.plug.version>
         <jetbrains.annotations>23.0.0</jetbrains.annotations>
-        <main.class>pl.edu.pw.ee.grapher/pl.edu.pw.ee.grapher.GrapherClient</main.class>
+        <main.class.maven.run>pl.edu.pw.ee.grapher/pl.edu.pw.ee.grapher.Main</main.class.maven.run>
         <maven.assembly.version>3.3.0</maven.assembly.version>
+        <jar.main.class>pl.edu.pw.ee.grapher.Main</jar.main.class>
     </properties>
 
     <dependencies>
@@ -97,7 +98,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>${main.class}</mainClass>
+                            <mainClass>${main.class.maven.run}</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -115,7 +116,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>${main.class}</mainClass>
+                            <mainClass>${jar.main.class}</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
