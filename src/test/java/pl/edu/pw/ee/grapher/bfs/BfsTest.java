@@ -43,7 +43,7 @@ class BfsTest {
         var tester = new Bfs(numOfVertices);
 
         //when
-        var result = tester.calculateVertex(index, numOfVertices);
+        var result = Bfs.calculateVertex(index, numOfVertices);
 
         //then
         Assertions.assertEquals(expected, result);

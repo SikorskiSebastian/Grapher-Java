@@ -18,8 +18,8 @@ class GraphSaverTest {
 
         //when
         GraphSaver.saveToFile(graph.getGraph(), resultGraph);
-        byte[] expected = Files.readAllBytes(resultGraph.toPath());
-        byte[] result = Files.readAllBytes(expectedGraph.toPath());
+        var expected = Files.readAllBytes(resultGraph.toPath());
+        var result = Files.readAllBytes(expectedGraph.toPath());
 
         //then
         Assertions.assertArrayEquals(expected, result);
