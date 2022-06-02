@@ -3,6 +3,7 @@ package pl.edu.pw.ee.grapher.graphics;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -36,6 +37,7 @@ public class GraphPrinting {
     public static void printGraph(@NotNull Graph graph, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor, Map<Integer, Point2D> canvasLocationOfNodes){
         if (graph.getNumOfVertices() > 3600) {
             gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+            popBigGraphWarning();
             return;
         }
         gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
@@ -64,6 +66,7 @@ public class GraphPrinting {
     public static void printPathOnGraph(@NotNull Graph graph, PathData path, Map<Integer, Point2D> canvasLocationOfNodes, float pointSize, @NotNull GraphicsContext gc, @NotNull Canvas graphCanvas, AnchorPane scrollAnchor) {
         if(graph.getNumOfVertices() > 3600){
             gc.clearRect(0, 0, graphCanvas.getWidth(), graphCanvas.getHeight());
+            popBigGraphWarning();
             return;
         }
         if (path == null){
@@ -102,5 +105,13 @@ public class GraphPrinting {
                 ArrowPrinter.makeArrowUp(gc, currentCenterOfNode, pointSize, pathColor);
             }
         }
+    }
+
+    public static void popBigGraphWarning(){
+        var alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText("Graph is really big!");
+        alert.setContentText("Such big graphs may not be able to be rendered. We will generate graph without its graphical representation.");
+        alert.showAndWait();
     }
 }
