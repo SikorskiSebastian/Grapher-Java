@@ -233,7 +233,7 @@ Nowy diagram klas został umieszczony w pliku HTML w folderze \textit{diagram} z
 rozbudowaną strukturę.
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[scale=0.33]{diagram.png}
+    \includegraphics[scale=0.125]{diagram.jpg}
     \caption{Diagram klas.}
   \end{center}
 \end{figure}
@@ -251,7 +251,7 @@ użytkownika. Algorytm ten korzysta z kopca pełniącego funkcje kolejki
 priorytetowej oraz trzech tablic przechowujących
 poprzedników, wagi połączeń i całkowity dystans.
 Algorytm dodaje odwiedzane wierzchołki do kolejki priorytetowej, a następnie
-pobiera je z niej aktualizując dystans,
+pobiera je z niej, następnie aktualizując dystans,
 dopóki kopiec nie jest pusty. Następnie zaczynając od wierzchołka końcowego
 (podanego przez użytkownika) cofamy się aż trafimy do wierzchołka początkowego.
 Podczas cofania zapisujemy przez jakie wierzchołki przeszliśmy oraz jaka była
@@ -268,7 +268,7 @@ waga takiego przejścia.
 Nasz program wykorzystuje do sprawdzania spójności algorytm BFS. Nasza
 implementacja różni się od pierwotnie zakładanej w specyfikacji
 implementacyjnej
-projektu, ponieważ wykorzystaliśmy algorytm \textit{Kosaraju}, który wjaśnimy
+projektu, ponieważ wykorzystaliśmy algorytm \textit{Kosaraju}, który wyjaśnimy
 niżej.
 Algorytm w celu sprawdzenia spójności tworzy tablicę poprzedników o długości
 odpowiadającej ilości wierzchołków
@@ -298,6 +298,14 @@ uruchamiamy BFS'a po raz drugi ale już na odwróconym grafie.
 Spójność po drugim uruchomieniu sprawdzania za pomocą algorytmu zapewnia nam
 spójność całego grafu.
 
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.19]{KosarajuInvertedBfsExample.jpg}
+    \caption{Przykładowe działanie KosarajuBFS.}
+  \end{center}
+\end{figure}
+Algorytm Kosaraju wywołuje Bfs z wierzchołka zero, odwraca graf i wywołuje Bfs ponownie. 
+W pierwszej próbie wywołania dostajemy wynik silnej spójności negatywny, ponieważ niemożliwe jest dotarcie do wszytkich wierzchołków po odwróceniu. KosarajuBFS zwróci wynik pozytywny dla grafu drugiego, ponieważ Bfs zadziała przed jak i po odwróceniu.
 \newpage
 
 \section{Wywołania programu}\label{sec:wywołania-programu}
@@ -450,7 +458,7 @@ Tutaj przedstawimy zmiany w klasach.
   \item readFromFile -- metoda teraz zwraca wczytany graf, a nie przyjmuje, tak
         jak to robiła wcześniej, co poskutkowało zmianą typu z \textit{void} na
         \textit{Graph},
-  \item Generacja -- klasa ta została usunięte tak samo RandomMode, ponieważ
+  \item Generacja -- klasa ta została usunięta tak samo RandomMode, ponieważ
         uznaliśmy, że domyślnym trybem jest tryb Random, a Edge i Wage są jego
         specjalizacją. Postanowiliśmy wykorzystać tutaj interfejs Generator, z którym
         są zgodne te klasy dziedzicząc po trybie Random implementującym go,
@@ -470,8 +478,8 @@ Javy oraz pokazują się odpowiednie komunikaty w graficznym interfejsie
 użytkownika.
 
 \subsection{Testowanie programu}\label{subsec:testowanie-programu}
-W specyfikacji napisaliśmy o wykorzystaniu biblioteki \textit{AssertJ} ale
-ostatecznie framework \textit{JUnit} zaspokoił w pełni nasze potrzeby związane
+W specyfikacji napisaliśmy o wykorzystaniu biblioteki \textit{AssertJ}, ale
+ostatecznie \textit{JUnit} zaspokoił w pełni nasze potrzeby związane
 z testowaniem.
 
 \subsection{Cel projektu}\label{subsec:cel-projektu}
@@ -490,7 +498,7 @@ Projekt \textit{grapher} był realizowany od 14.04.2022r do 02.06.2022r. W
 ramach jego powstała dokumentacja projektu, czyli
 specyfikacja funkcjonalna, implementacja oraz niniejsze sprawozdanie.
 Oczywiście powstał również sam projekt, który posiada graficzny interfejs
-uzytkownika.
+użytkownika.
 Program umożliwia generowanie grafu w trzech trybach oraz czytanie grafu z
 możliwością szukania najkrótszej ścieżki między wierzchołkami zadanymi przez
 użytkownika.
@@ -503,7 +511,7 @@ jednostkowych z wykorzystaniem JUnit.
 Projekt ten wymagał od nas wiele wysiłku, ponieważ musieliśmy nauczyć się
 nowych konceptów takich jak przede wszystkim
 programowanie obiektowe. Wymagał on od nas naszej pierwszej pracy z
-projektowaniem graficznego interfejsu użytkownika co było dla nas zupełnie
+projektowaniem graficznego interfejsu użytkownika, co było dla nas zupełnie
 nowym i sporym wyzwaniem.
 To samo tyczy się testowania oprogramowania oraz pracy z programem maven,
 wymagały one od nas nauki zupełnie nowych technologii i wykorzystanie ich w
