@@ -9,7 +9,7 @@ It is a project made to generate graphs in different modes. This program is a mi
 * CSS.
 
 # Font
-We decided to use custom font form [GoogleFonts](https://fonts.google.com/). We put the link to the font and we do not claim any rights to it. It is made only in educational purposes.
+We decided to use custom font from [GoogleFonts](https://fonts.google.com/). We put the link to the font and we do not claim any rights to it. It is made only for educational purposes.
 
 Font: [Aldrich](https://fonts.google.com/specimen/Aldrich?query=Aldrich)\
 Author: [MADType](https://fonts.google.com/?query=MADType)
